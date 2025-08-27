@@ -1,5 +1,3 @@
-basePath: "${workbench.base.dir}"
-
 inventories:
   - "inventory":
       file: "${inventory.path}"
@@ -32,7 +30,7 @@ transformations:
       advisoryProviders: '[{"name":"${overview.advisors}"}]'
       inputDatabase: "${input.database}"
     maven:
-      pom: "processors/util/util_merge-filter-enrich-advisors.xml"
+      pom: "${kontinuum.processors.dir}/util/util_merge-filter-enrich-advisors.xml"
       workingDir: "."
       command: "generate-sources"
 

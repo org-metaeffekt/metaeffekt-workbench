@@ -12,7 +12,8 @@
 **/log
 **/ae-common-content
 
-**/99_tmp
-**/intermediate-inventories
-
-
+# exclude derived results from workspace-001
+**/workspace-001/sample-product-1.0.0/03_*
+**/workspace-001/sample-product-1.0.0/04_*
+**/workspace-001/sample-product-1.0.0/05_*
+**/workspace-001/sample-product-1.0.0/99_*
