@@ -7,7 +7,7 @@
 
 ## Processors
 
-* [ ] move ae-workbench-parent.xml to a dedicated folder (the current location is too prominent)
+* [x] move ae-workbench-parent.xml to a dedicated folder (the current location is too prominent)
 
 ## Folder descriptors
 
