@@ -231,8 +231,6 @@ CMD+=("-Dparam.overview.advisors=$PARAM_OVERVIEW_ADVISORS")
 CMD+=("-Dparam.template.dir=$ENV_REPORT_TEMPLATE_DIR")
 
 CMD+=("-Dparam.property.selector.organization=metaeffekt")
-CMD+=("-Dparam.property.selector.classification=GROUP-CONFIDENTIAL")
-CMD+=("-Dparam.property.selector.control=DEFENSE-CONTROLLED")
 
 CMD+=("-Denv.vulnerability.mirror.dir=$ENV_VULNERABILITY_MIRROR_DIR")
 CMD+=("-Denv.workbench.processors.dir=$PROCESSORS_DIR")
