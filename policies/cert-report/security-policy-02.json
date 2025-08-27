@@ -1,0 +1,43 @@
+{
+  "insignificantThreshold": 0.0,
+  "vulnerabilityStatusDisplayMapperName": "abstracted",
+  "includeVulnerabilitiesWithAdvisoryProviders": [{"name":"CERT_FR"}],
+  "includeVulnerabilitiesWithAdvisoryReviewStatus": ["new", "in review", "reviewed"],
+  "includeAdvisoryProviders": [{"name":"CERT_FR"}],
+  "includeAdvisoryTypes": [ "alert", "news", "notice" ],
+  "priorityScoreConfiguration": {
+    "vulnerabilityStatus": {
+      "set": {
+        "void": 0.0,
+        "not applicable": 0.0
+      },
+      "add":{
+        "applicable": 0.0
+      }
+    },
+    "epss": {
+      "min":0.5,
+      "f": 0.0,
+      "F": 0.0
+    },
+    "kev": {
+      "exploit": 0.0,
+      "ransomware": 0.0
+    },
+    "eol": {
+      "noExtendedSupport": {
+        "supportValid": 0.0,
+        "supportEndingSoon": 0.0,
+        "supportExpired": 0.0
+      },
+      "extendedSupport": {
+        "supportValid": 0.0,
+        "supportEndingSoon": 0.0,
+        "extendedSupportValid": 0.0,
+        "extendedSupportEndingSoon": 0.0,
+        "extendedSupportExpired": 0.0
+      }
+    }
+  }
+}
+

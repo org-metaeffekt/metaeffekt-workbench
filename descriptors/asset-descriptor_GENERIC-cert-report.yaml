@@ -1,0 +1,78 @@
+basePath: "${workbench.base.dir}"
+
+inventories:
+  - "inventory":
+      file: "${inventory.path}"
+      type: INPUT
+  - "reference-inventory":
+      file: "${reference.inventory.path}"
+      type: INPUT
+      licensePath: "${reference.license.path}"
+      componentPath: "${reference.component.path}"
+
+  - "filtered-inventory":
+      file: "${computed.inventory.path}/${asset.name}-vulnerability-report-inventory.xlsx"
+      type: COMPUTED
+  - "filtered-enriched-inventory":
+      file: "${computed.inventory.path}/${asset.name}-statistics-report-inventory.xlsx"
+      type: COMPUTED
+
+transformations:
+  "transform-with-maven":
+    inputInventories:
+      - "inventory"
+    outputInventories:
+      - "filtered-inventory"
+      - "filtered-enriched-inventory"
+    params:
+      inventories: "${inventory.file}"
+      vulnerabilityAdvisoryFilter: '[{"name":"${overview.advisors}"}]'
+      filteredInventoryFile: "${filtered-inventory.file}"
+      enrichmentOutputInventory: "${filtered-enriched-inventory.file}"
+      advisoryProviders: '[{"name":"${overview.advisors}"}]'
+      inputDatabase: "${input.database}"
+    maven:
+      pom: "processors/util/util_merge-filter-enrich-advisors.xml"
+      workingDir: "."
+      command: "generate-sources"
+
+documents:
+  "cert-report":
+    type: VULNERABILITY_REPORT
+    language: "${document.language}"
+    parts:
+      "vulnerability-report":
+        type: VULNERABILITY_REPORT
+        params:
+          generateOverviewTablesForAdvisories: "${overview.advisors}"
+          securityPolicyFile: "${policy.basedir}/security-policy-02.json"
+        inventories:
+          - inventoryRef: "filtered-inventory"
+
+            # these fields are used as overwrites if not all artifacts are contained in a primary asset, remove to enable dynamic asset detection
+            assetName: "${asset.name}"
+            assetVersion: "${asset.version}"
+
+      "statistics-report":
+        type: VULNERABILITY_STATISTICS_REPORT
+        params:
+          generateOverviewTablesForAdvisories: "${overview.advisors}"
+          securityPolicyFile: "${policy.basedir}/security-policy-03.json"
+        inventories:
+          - inventoryRef: "filtered-enriched-inventory"
+
+            # these fields are used as overwrites if not all artifacts are contained in a primary asset, remove to enable dynamic asset detection
+            assetName: "${asset.name}"
+            assetVersion: "${asset.version}"
+
+      "summary-report":
+        type: VULNERABILITY_SUMMARY_REPORT
+        params:
+          generateOverviewTablesForAdvisories: "${overview.advisors}"
+          securityPolicyFile: "${policy.basedir}/security-policy-02.json"
+        inventories:
+          - inventoryRef: "filtered-enriched-inventory"
+
+            # these fields are used as overwrites if not all artifacts are contained in a primary asset, remove to enable dynamic asset detection
+            assetName: "${asset.name}"
+            assetVersion: "${asset.version}"
