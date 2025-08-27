@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE bookmap PUBLIC "-//OASIS//DTD DITA BookMap//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/bookmap.dtd">
+<bookmap id="map_software-distribution-annex_en" xml:lang="en">
+    <title>
+        <ph>${product.name} ${product.version}</ph>
+    </title>
+    <bookmeta>
+        <category>${product.name} - Bill of Materials</category>
+        <bookid>
+            <bookpartno>${document.id}</bookpartno>
+        </bookid>
+        <bookrights>
+            <copyrlast>
+                <year>${document.copyright.year}</year>
+            </copyrlast>
+            <bookowner>
+                <organization>${organization.name}</organization>
+            </bookowner>
+        </bookrights>
+    </bookmeta>
+
+    <frontmatter>
+        <topicref href="asset-report/gen/imprint/tpc_imprint.dita" />
+        <topicref href="asset-report/en/tpc_notice.dita" />
+        <booklists>
+            <toc/>
+        </booklists>
+    </frontmatter>
+
+    <topicref format="ditamap" href="asset-report/gen/map_initial-license-documentation-document.ditamap" />
+
+    <backmatter>
+        <booklists>
+            <glossarylist>
+                <topicref format="ditamap" href="glossary/gen/glossary/en/gmap_glossary.ditamap" />
+            </glossarylist>
+        </booklists>
+        <topicref href="asset-report/en/tpc_report-history.dita" />
+    </backmatter>
+
+</bookmap>

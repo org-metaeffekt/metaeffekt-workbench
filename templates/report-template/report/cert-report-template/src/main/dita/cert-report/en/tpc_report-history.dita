@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8?>
+<!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd">
+<topic id="tpc_report-history" xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/">
+    <title>Log of Template Changes</title>
+    <body>
+        <p>
+            <table otherprops="wide" id="table_bom-history">
+                <tgroup cols="4">
+                    <colspec colname="COLSPEC0" colnum="1" colwidth="9*" />
+                    <colspec colname="COLSPEC1" colnum="2" colwidth="11*" />
+                    <colspec colname="COLSPEC2" colnum="3" colwidth="20*" />
+                    <colspec colname="COLSPEC3" colnum="4" colwidth="60*" />
+                    <thead>
+                        <row>
+                            <entry colname="COLSPEC0" valign="top">Revision</entry>
+                            <entry colname="COLSPEC1" valign="top">Date</entry>
+                            <entry colname="COLSPEC2" valign="top">Author</entry>
+                            <entry colname="COLSPEC3" valign="top">Modification</entry>
+                        </row>
+                    </thead>
+
+                    <tbody>
+                        <row>
+                            <entry>01</entry>
+                            <entry>27.08.2025</entry>
+                            <entry>K. Klein</entry>
+                            <entry>Initial structure for report generation.</entry>
+                        </row>
+                        <row>
+                          <entry>&nbsp;</entry>
+                          <entry>&nbsp;</entry>
+                          <entry>&nbsp;</entry>
+                          <entry>&nbsp;</entry>
+                        </row>
+                        <row>
+                          <entry>&nbsp;</entry>
+                          <entry>&nbsp;</entry>
+                          <entry>&nbsp;</entry>
+                          <entry>&nbsp;</entry>
+                        </row>
+                    </tbody>
+                </tgroup>
+            </table>
+        </p>
+    </body>
+</topic>

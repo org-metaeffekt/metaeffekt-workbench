@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Concept//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd">
+<topic id="tpc_notice">
+    <title>Notice</title>
+    <body>
+        <section>
+            <title>Names and Trademarks</title>
+            <p>
+                All company names, organization names, license names, and product names mentioned in this documentation
+                are used for identification purposes only. A trademark is explicitly identified as registered or
+                unregistered trademark only if required by appropriate guidelines or license terms.
+            </p>
+        </section>
+
+        <section>
+            <title>Warranty and Liability</title>
+            <p>
+                The covered open source software is used or made available WITHOUT ANY WARRANTY;
+                without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. The individual
+                licenses may contain more details with respect to limitation of warranty or liability.
+            </p>
+            <p>
+                The individual open source warranty or liability disclaimers indemnify the original authors of the
+                individual components. Warranties and liabilities declared on the offering by ${organization.name} are
+                subject to additional terms of use and are not affected (neither reduced nor extended) by the individual
+                disclaimers of the used open source components.
+            </p>
+        </section>
+
+        <section>
+            <title>Availability of Source Code</title>
+            <p>
+                This software distribution annex covers the corresponding source code of the used open source components.
+            </p>
+            <p>
+                In case you regard the provision of source code to be inaccurate or incomplete please address your
+                source code request to your point of contact for the given software distribution
+            </p>
+            <p>
+                Please note, that ${organization.name} is only obliged to make source code available in case the
+                effective license demands such provisioning within a given period of time after you obtaining the
+                software.
+            </p>
+        </section>
+
+        <p>
+        </p>
+        <p>
+        </p>
+
+        <p>
+            This documentation is protected by copyright ${document.copyright.year}, ${organization.name}.
+        </p>
+    </body>
+</topic>

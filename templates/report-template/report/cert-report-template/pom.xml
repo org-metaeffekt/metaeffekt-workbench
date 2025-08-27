@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.metaeffekt.template</groupId>
+        <artifactId>ae-reports</artifactId>
+        <version>TEMPLATE-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <artifactId>ae-cert-report-template</artifactId>
+    <packaging>jar</packaging>
+
+    <properties>
+
+        <document.report.period.since>1 week</document.report.period.since>
+        <document.report.period.until>now</document.report.period.until>
+
+        <asset.id>${product.name}</asset.id>
+        <asset.version>${product.version}</asset.version>
+
+        <document.version>09</document.version>
+        <document.status>Periodic Report</document.status>
+
+        <validate.annex>false</validate.annex>
+
+        <inventory.source>${project.basedir}/external-resources/reference</inventory.source>
+        <system.id>default</system.id>
+
+        <report.summary.path>cert-report/gen/summary-report/svg/fig_summary.svg</report.summary.path>
+        <filteredDescriptorDir>${project.build.directory}/asset-descriptors</filteredDescriptorDir>
+
+        <document.classifier>cr_${document.language}</document.classifier>
+        <document.qualifier>${asset.id}_${asset.version}_SW-CR</document.qualifier>
+    </properties>
+
+    <profiles>
+        <profile>
+            <id>CR_en</id>
+            <properties>
+                <document.ditamap>cert-report_en.ditamap</document.ditamap>
+            </properties>
+        </profile>
+        <profile>
+            <id>CR_de</id>
+            <properties>
+                <document.ditamap>cert-report_de.ditamap</document.ditamap>
+            </properties>
+        </profile>
+    </profiles>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>2.6</version>
+                    <executions>
+                        <!-- Copy and filter asset-descriptor -->
+                        <execution>
+                            <id>copy-asset-descriptors</id>
+                            <phase>initialize</phase>
+                            <goals>
+                                <goal>copy-resources</goal>
+                            </goals>
+                            <configuration>
+                                <!-- Required for copying to the target dita directory. -->
+                                <outputDirectory>${filteredDescriptorDir}</outputDirectory>
+                                <resources>
+                                    <resource>
+                                        <directory>${asset.descriptor.basedir}</directory>
+                                        <filtering>true</filtering>
+                                        <includes>
+                                            <include>${asset.descriptor.path}</include>
+                                        </includes>
+                                    </resource>
+                                </resources>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <plugin>
+                    <groupId>com.metaeffekt.artifact.analysis</groupId>
+                    <artifactId>ae-asset-descriptor-maven-plugin</artifactId>
+                    <version>${ae.artifact.analysis.version_}</version>
+                    <executions>
+                        <execution>
+                            <id>transform-inventory</id>
+                            <goals>
+                                <goal>transform</goal>
+                            </goals>
+                            <phase>generate-sources</phase>
+                            <configuration>
+                                <assetDescriptorFile>${filteredDescriptorDir}/${asset.descriptor.path}</assetDescriptorFile>
+                            </configuration>
+                        </execution>
+
+                        <execution>
+                            <id>default-descriptor</id>
+                            <goals>
+                                <goal>generate-documents</goal>
+                            </goals>
+                            <phase>process-sources</phase>
+                            <configuration>
+                                <assetDescriptorFile>${filteredDescriptorDir}/${asset.descriptor.path}</assetDescriptorFile>
+                                <targetReportDir>${project.basedir}/src/main/dita/cert-report/gen</targetReportDir>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <plugin>
+                    <groupId>com.metaeffekt.artifact.analysis</groupId>
+                    <artifactId>ae-inventory-enrichment-plugin</artifactId>
+                    <version>${ae.artifact.analysis.version}</version>
+                    <executions>
+
+                        <!-- Generate diagrams overview SVG for main part -->
+                        <execution>
+                            <id>generate-overview-svg</id>
+                            <goals>
+                                <goal>ae-generate-inventory-report-svg</goal>
+                            </goals>
+                            <phase>generate-sources</phase>
+                            <configuration>
+                                <inventoryInputFile>
+                                    ${computed.inventory.path}/${asset.name}-vulnerability-report-inventory.xlsx
+                                </inventoryInputFile>
+                                <outputDirectory>
+                                    ${project.basedir}/src/main/dita/cert-report/gen/resources/svg
+                                </outputDirectory>
+
+                                <overviewActive>true</overviewActive>
+                                <cvssActive>true</cvssActive>
+
+                                <cvssVulnerabilityCountLimit>400</cvssVulnerabilityCountLimit>
+                                <securityPolicyFile>${policy.basedir}/security-policy-02.json</securityPolicyFile>
+                            </configuration>
+                        </execution>
+
+                        <!-- Generate overview SVG for appendix part -->
+                        <execution>
+                            <id>generate-overview-svg-overall</id>
+                            <goals>
+                                <goal>ae-generate-inventory-report-svg</goal>
+                            </goals>
+                            <phase>generate-sources</phase>
+                            <configuration>
+                                <active>true</active>
+
+                                <inventoryInputFile>${computed.inventory.path}/${asset.name}-statistics-report-inventory.xlsx</inventoryInputFile>
+                                <outputDirectory>${project.basedir}/src/main/dita/cert-report-overall/gen/resources/svg</outputDirectory>
+
+                                <overviewActive>true</overviewActive>
+                                <cvssActive>false</cvssActive>
+
+                                <cvssVulnerabilityCountLimit>-1</cvssVulnerabilityCountLimit>
+
+                                <securityPolicyFile>${policy.basedir}/security-policy-03.json</securityPolicyFile>
+                            </configuration>
+                        </execution>
+
+                    </executions>
+                    <dependencies>
+                        <!-- ensure the latest ae-core version is used -->
+                        <dependency>
+                            <groupId>org.metaeffekt.core</groupId>
+                            <artifactId>ae-inventory-processor</artifactId>
+                            <version>${ae.core.version}</version>
+                        </dependency>
+
+                        <!-- fixes an incompatibility with older maven 3.3.9 -->
+                        <dependency>
+                            <groupId>org.apache.maven</groupId>
+                            <artifactId>maven-core</artifactId>
+                            <version>3.3.9</version>
+                        </dependency>
+                    </dependencies>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.metaeffekt.dita</groupId>
+                    <artifactId>ae-dita-maven-plugin</artifactId>
+                    <version>${version.ae.dita}</version>
+
+                    <configuration>
+                        <ditaCleanTemp>false</ditaCleanTemp>
+                    </configuration>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>properties-maven-plugin</artifactId>
+                    <version>1.1.0</version>
+                    <executions>
+                        <execution>
+                            <phase>process-sources</phase>
+                            <goals>
+                                <goal>read-project-properties</goal>
+                            </goals>
+                            <configuration>
+                                <files>
+                                    <!-- read the generated properties file; the content can be used for resource filtering -->
+                                    <file>${project.basedir}/src/main/dita/cert-report/gen/filtered-inventory/vulnerability-report.properties</file>
+                                    <file>${project.basedir}/src/main/dita/cert-report/gen/filtered-enriched-inventory/vulnerability-summary.properties</file>
+                                </files>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+        <plugins>
+            <plugin>
+                <groupId>com.metaeffekt.artifact.analysis</groupId>
+                <artifactId>ae-asset-descriptor-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.metaeffekt.dita</groupId>
+                <artifactId>ae-dita-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>create-property-file</id>
+                        <phase>process-classes</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <copy file="${project.build.directory}/${project.artifactId}-${project.version}-${document.classifier}.pdf"
+                                      tofile="${output.document.file}" />
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>buildnumber-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>com.metaeffekt.artifact.analysis</groupId>
+                <artifactId>ae-inventory-enrichment-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>properties-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <version>3.5.0</version>
+                <executions>
+                    <execution>
+                        <id>enforce-property</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <requireProperty>
+                                    <property>policy.basedir</property>
+                                    <message>You must set the parameter 'policy.basedir' to specify the directory containing the security policy files.</message>
+                                </requireProperty>
+                                <requireProperty>
+                                    <property>overview.advisors</property>
+                                    <message>You must set the parameter 'overview.advisors' to specify the list of advisors for the overview.</message>
+                                </requireProperty>
+                                <requireProperty>
+                                    <property>input.database</property>
+                                    <message>You must set the parameter 'input.database' to specify the location of the vulnerability database.</message>
+                                </requireProperty>
+                            </rules>
+                            <fail>true</fail>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

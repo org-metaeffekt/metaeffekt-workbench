@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.metaeffekt.template</groupId>
+        <artifactId>ae-reports</artifactId>
+        <version>TEMPLATE-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <artifactId>ae-asset-report-template</artifactId>
+    <packaging>jar</packaging>
+
+    <properties>
+        <document.name>${asset.name} SW-BOM</document.name>
+        <document.status>Released</document.status>
+
+        <document.classifier>bom_${document.language}</document.classifier>
+        <document.qualifier>${asset.id}_${asset.version}_SW-BOM</document.qualifier>
+    </properties>
+
+    <profiles>
+        <profile>
+            <id>SDA_en</id>
+            <properties>
+                <document.ditamap>software-distribution-annex_en.ditamap</document.ditamap>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>SDA_de</id>
+            <properties>
+                <document.ditamap>software-distribution-annex_de.ditamap</document.ditamap>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>LD_en</id>
+            <properties>
+                <document.ditamap>license-documentation_en.ditamap</document.ditamap>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>LD_de</id>
+            <properties>
+                <document.ditamap>license-documentation_de.ditamap</document.ditamap>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>ILD_en</id>
+            <properties>
+                <document.ditamap>initial-license-documentation_en.ditamap</document.ditamap>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>ILD_de</id>
+            <properties>
+                <document.ditamap>initial-license-documentation_de.ditamap</document.ditamap>
+            </properties>
+        </profile>
+    </profiles>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>2.6</version>
+                    <executions>
+                        <!-- Copy and filter asset-descriptor -->
+                        <execution>
+                            <id>copy-asset-descriptors</id>
+                            <phase>generate-sources</phase>
+                            <goals>
+                                <goal>copy-resources</goal>
+                            </goals>
+                            <configuration>
+                                <!-- Required for copying to the target dita directory. -->
+                                <outputDirectory>${project.build.directory}/asset-descriptors</outputDirectory>
+                                <resources>
+                                    <resource>
+                                        <directory>${asset.descriptor.basedir}</directory>
+                                        <filtering>true</filtering>
+                                        <includes>
+                                            <include>${asset.descriptor.path}</include>
+                                        </includes>
+                                    </resource>
+                                </resources>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <plugin>
+                    <groupId>com.metaeffekt.artifact.analysis</groupId>
+                    <artifactId>ae-asset-descriptor-maven-plugin</artifactId>
+                    <version>${ae.artifact.analysis.version_}</version>
+                    <executions>
+                        <execution>
+                            <id>default-descriptor</id>
+                            <goals>
+                                <goal>generate-documents</goal>
+                            </goals>
+                            <phase>process-sources</phase>
+                            <configuration>
+                                <assetDescriptorFile>${project.build.directory}/asset-descriptors/${asset.descriptor.path}</assetDescriptorFile>
+                                <targetReportDir>${project.basedir}/src/main/dita/asset-report/gen</targetReportDir>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-dependency-plugin</artifactId>
+                    <executions>
+                        <execution>
+                            <id>download-sources</id>
+                            <goals>
+                                <goal>copy-dependencies</goal>
+                            </goals>
+                            <phase>generate-sources</phase>
+                            <configuration>
+                                <outputDirectory>${project.build.directory}/annex/sources</outputDirectory>
+                                <overWriteReleases>false</overWriteReleases>
+                                <overWriteSnapshots>true</overWriteSnapshots>
+                                <useSubDirectoryPerArtifact>false</useSubDirectoryPerArtifact>
+                                <excludeScope>provided</excludeScope>
+                                <includeClassifiers>source,sources</includeClassifiers>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>buildnumber-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>com.metaeffekt.artifact.analysis</groupId>
+                <artifactId>ae-asset-descriptor-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.metaeffekt.dita</groupId>
+                <artifactId>ae-dita-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>create-property-file</id>
+                        <phase>process-classes</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <copy file="${project.build.directory}/${project.artifactId}-${project.version}-${document.classifier}.pdf"
+                                      tofile="${output.document.file}" />
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <version>3.5.0</version>
+                <executions>
+                    <execution>
+                        <id>enforce-property</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <requireProperty>
+                                    <property>asset.descriptor.basedir</property>
+                                    <message>You must set the parameter 'asset.descriptor.basedir' to specify the resource dir of the asset descriptor to use.</message>
+                                </requireProperty>
+                                <requireProperty>
+                                    <property>asset.descriptor.path</property>
+                                    <message>You must set the parameter 'asset.descriptor.path' to specify the asset descriptor in asset descriptor resource dir.</message>
+                                </requireProperty>
+                            </rules>
+                            <fail>true</fail>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

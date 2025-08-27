@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+        xmlns="http://www.w3.org/2000/svg"
+        xmlns:xlink="http://www.w3.org/1999/xlink"
+        width="210mm"
+        height="297mm"
+        viewBox="0 0 744.0 1052.0"
+        id="svg2"
+        version="1.1"
+        style="
+            font-style:normal;font-weight:normal;font-variant:normal;font-stretch:normal;
+            font-family:Helvetica;font-variant-ligatures:normal;font-variant-caps:normal;
+            font-variant-numeric:normal;font-feature-settings:normal;
+            letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;
+            font-family:sans-serif;
+        ">
+
+    <g id="g97">
+
+        <!-- HEADER -->
+
+        <!-- top left; logo -->
+        <g id="g4137" transform="matrix(1.25,0,0,-1.25,-33.421717,1066)">
+            <g id="g4145" transform="matrix(120,0,0,45.25,47.375,795.64)">
+                <image id="image4147" width="1.2" height="1.2"
+                       preserveAspectRatio="none"
+                       transform="matrix(1,0,0,-1,0,1)"
+                       xlink:href="${organization.logo.url}"/>
+            </g>
+        </g>
+
+        <!-- top middle; classification -->
+        <text>
+            <tspan x="375.69922" y="55.262596"
+                style="font-size:10px;line-height:1.25;text-align:center;text-anchor:middle;fill:${document.classification.color}">
+                ${document.classification}
+            </tspan>
+        </text>
+
+        <!-- top right; watermark -->
+        <text>
+            <tspan x="709" y="54.929344" style="font-size:17.5px;line-height:1.25;text-anchor:end">
+                ${product.watermark}
+            </tspan>
+        </text>
+
+        <!-- top line separator -->
+        <path
+                style="fill:none;stroke:#000000;stroke-width:0.9375px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+                d="m 36,69 h 676"
+                id="path5877"/>
+
+
+        <!-- FOOTER -->
+
+        <!-- document control
+        <g transform="translate(0, 12)">
+            <rect x="260" y="910" width="228" height="30" style="fill:none;stroke-width:1px;stroke:rgb(0,0,0)"/>
+
+            <text style="font-size:17px">
+                <tspan x="375" y="931" style="font-size:18px;line-height:1.25;text-anchor:middle">
+                    ${document.control}
+                </tspan>
+            </text>
+        </g> -->
+
+        <!-- document footer -->
+        <g transform="translate(0, -20)">
+
+            <rect x="30" y="980" width="688" height="60" style="fill:none;stroke-width:1px;stroke:rgb(0,0,0)"/>
+
+            <!-- left lines -->
+            <line x1="230" y1="980" x2="230" y2="1040" style="fill:none;stroke-width:1px;stroke:rgb(0,0,0)"/>
+            <line x1="30" y1="1000" x2="230" y2="1000" style="fill:none;stroke-width:1px;stroke:rgb(0,0,0)"/>
+
+            <!-- right lines -->
+            <line x1="518" y1="980" x2="518" y2="1040" style="fill:none;stroke-width:1px;stroke:rgb(0,0,0)"/>
+            <line x1="619" y1="980" x2="619" y2="1040" style="fill:none;stroke-width:1px;stroke:rgb(0,0,0)"/>
+            <line x1="518" y1="1000" x2="718" y2="1000" style="fill:none;stroke-width:1px;stroke:rgb(0,0,0)"/>
+            <line x1="518" y1="1020" x2="718" y2="1020" style="fill:none;stroke-width:1px;stroke:rgb(0,0,0)"/>
+
+            <!-- left text -->
+            <text style="font-family:sans-serif;font-size:17.px;font-family:Helvetica;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;
+                letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1">
+                <tspan x="36" y="994" style="font-size:10px;line-height:1.25">
+                    <!-- Document Identifier --> ${product.name}
+                </tspan>
+                <tspan x="36" y="1014" style="font-size:10px;line-height:1.25">
+                    <!-- ${document.id} --> ${product.version}
+                </tspan>
+            </text>
+
+            <!-- middle text -->
+            <text>
+                <tspan x="375.45789" y="1006" style="font-size:12px;text-align:center;text-anchor:middle">${document.name}</tspan>
+            </text>
+
+            <!-- right text (keys) -->
+            <text style="font-size:17.px">
+                <tspan x="525" y="994" style="font-size:10px;line-height:1.25">
+                    Version:
+                </tspan>
+                <tspan x="525" y="1014" style="font-size:10px;line-height:1.25">
+                    Date:
+                </tspan>
+                <tspan x="525" y="1034" style="font-size:10px;line-height:1.25">
+                    Page:
+                </tspan>
+            </text>
+
+            <!-- right text (keys) -->
+            <text style="text-align:right;text-anchor:end;font-size:10px">
+                <tspan x="715" y="994">${document.version}</tspan>
+                <tspan x="712" y="1014">${document.date_en}</tspan>
+                <!-- page value is filled on dita level -->
+            </text>
+
+        </g>
+        <!-- footer text -->
+        <g transform="translate(0, 4)">
+            <text style="font-size:7.5px;text-align:center;text-anchor:middle">
+                <tspan x="375.185" y="1025.75">
+                    <!-- add restrictions here -->
+                </tspan>
+                <tspan x="375.185" y="1035.75">
+                    written permission of ${organization.name}.
+                </tspan>
+                <tspan x="375.185" y="1045.75">
+                    &#169; ${document.copyright.year} ${organization.name} - All rights reserved
+                </tspan>
+            </text>
+        </g>
+
+    </g>
+</svg>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE bookmap PUBLIC "-//OASIS//DTD DITA BookMap//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/bookmap.dtd">
+<bookmap id="map_cert-report_en" xml:lang="en">
+    <title>
+        <ph>${product.name} ${product.version}</ph>
+    </title>
+    <bookmeta>
+        <category>CERT Vulnerability Report</category>
+        <bookid>
+            <bookpartno>${document.id}</bookpartno>
+        </bookid>
+        <bookrights>
+            <copyrlast>
+                <year>${document.copyright.year}</year>
+            </copyrlast>
+            <bookowner>
+                <organization>${organization.name}</organization>
+            </bookowner>
+        </bookrights>
+    </bookmeta>
+
+    <frontmatter>
+        <topicref href="cert-report/gen/imprint/tpc_imprint.dita" />
+        <booklists>
+            <toc/>
+        </booklists>
+    </frontmatter>
+
+    <chapter href="cert-report/gen/filtered-inventory/tpc_inventory-cert.dita" />
+
+    <!-- periodic -->
+    <chapter href="cert-report/en/tpc_vulnerability-cert-${ae.vulnerability.report.overview.switch}.dita" />
+
+    <!-- details -->
+    <chapter href="cert-report/gen/filtered-inventory/tpc_inventory-vulnerability-report.dita" />
+    <chapter href="cert-report/gen/filtered-inventory/tpc_inventory-vulnerability-assets.dita" />
+    <chapter href="cert-report/gen/filtered-inventory/tpc_inventory-vulnerability-components.dita" />
+    <chapter href="cert-report/gen/filtered-inventory/tpc_inventory-vulnerability-details.dita" />
+
+	<appendix href="appendix.dita" >
+		<!-- overall -->
+		<topicref href="cert-report-overall/en/tpc_vulnerability-cert-report.dita" />
+	</appendix>
+	
+    <backmatter>
+	    <booklists>
+            <glossarylist>
+                <topicref format="ditamap" href="glossary/gen/glossary/en/gmap_glossary.ditamap" />
+            </glossarylist>
+        </booklists>
+        <topicref href="tmp/en/tpc_vulnerability-report-notice.dita" />
+        <topicref href="cert-report/en/tpc_report-history.dita" />
+    </backmatter>
+	
+</bookmap>

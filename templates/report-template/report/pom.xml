@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.metaeffekt.template</groupId>
+        <artifactId>ae-templates</artifactId>
+        <version>TEMPLATE-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <artifactId>ae-reports</artifactId>
+    <packaging>pom</packaging>
+
+    <properties>
+        <document.status_en>Released</document.status_en>
+
+        <!-- default setting; usually overwritten from external -->
+        <output.document.file>${document.target.dir}/${document.qualifier}.pdf</output.document.file>
+        <document.target.dir>${project.build.directory}/report</document.target.dir>
+    </properties>
+
+    <profiles>
+        <profile>
+            <id>SDA_en</id>
+            <modules>
+                <module>asset-report-template</module>
+            </modules>
+            <properties>
+                <document.name>${asset.id} SDA-REPORT</document.name>
+                <document.qualifier>${asset.id}_${asset.version}_SDA-REPORT</document.qualifier>
+                <asset.report.type>ANNEX</asset.report.type>
+                <document.language>en</document.language>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>SDA_de</id>
+            <modules>
+                <module>asset-report-template</module>
+            </modules>
+            <properties>
+                <document.name>${asset.id} SDA-REPORT</document.name>
+                <document.qualifier>${asset.id}_${asset.version}_SDA-REPORT</document.qualifier>
+                <asset.report.type>ANNEX</asset.report.type>
+                <document.language>de</document.language>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>LD_en</id>
+            <modules>
+                <module>asset-report-template</module>
+            </modules>
+            <properties>
+                <document.name>${asset.id} LD-REPORT</document.name>
+                <document.qualifier>${asset.id}_${asset.version}_LD-REPORT</document.qualifier>
+                <asset.report.type>LICENSE DOCUMENTATION</asset.report.type>
+                <document.language>en</document.language>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>LD_de</id>
+            <modules>
+                <module>asset-report-template</module>
+            </modules>
+            <properties>
+                <document.name>${asset.id} LD-REPORT</document.name>
+                <document.qualifier>${asset.id}_${asset.version}_LD-REPORT</document.qualifier>
+                <asset.report.type>LICENSE DOCUMENTATION</asset.report.type>
+                <document.language>de</document.language>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>ILD_en</id>
+            <modules>
+                <module>asset-report-template</module>
+            </modules>
+            <properties>
+                <document.name>${asset.id} ILD-REPORT</document.name>
+                <document.qualifier>${asset.id}_${asset.version}_ILD-REPORT</document.qualifier>
+                <asset.report.type>INITIAL LICENSE DOCUMENTATION</asset.report.type>
+                <document.language>en</document.language>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>ILD_de</id>
+            <modules>
+                <module>asset-report-template</module>
+            </modules>
+            <properties>
+                <document.name>${asset.id} ILD-REPORT</document.name>
+                <document.qualifier>${asset.id}_${asset.version}_ILD-REPORT</document.qualifier>
+                <asset.report.type>INITIAL LICENSE DOCUMENTATION</asset.report.type>
+                <document.language>de</document.language>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>VR_en</id>
+            <modules>
+                <module>vulnerability-report-template</module>
+            </modules>
+            <properties>
+                <document.name>${asset.id} SW-REPORT</document.name>
+                <document.qualifier>${asset.id}_${asset.version}_SW-REPORT</document.qualifier>
+                <document.language>en</document.language>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>VR_de</id>
+            <modules>
+                <module>vulnerability-report-template</module>
+            </modules>
+            <properties>
+                <document.name>${asset.id} SW-REPORT</document.name>
+                <document.qualifier>${asset.id}_${asset.version}_SW-REPORT</document.qualifier>
+                <document.language>de</document.language>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>CR_en</id>
+            <modules>
+                <module>cert-report-template</module>
+            </modules>
+            <properties>
+                <document.name>${asset.id} CERT-SW-REPORT</document.name>
+                <document.qualifier>${asset.id}_${product.version}_CERT-REPORT</document.qualifier>
+                <document.language>en</document.language>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>CR_de</id>
+            <modules>
+                <module>cert-report-template</module>
+            </modules>
+            <properties>
+                <document.name>${asset.id} CERT-SW-REPORT</document.name>
+                <document.qualifier>${asset.id}_${product.version}_CERT-REPORT</document.qualifier>
+                <document.language>de</document.language>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>all</id>
+            <modules>
+                <module>asset-report-template</module>
+                <module>cert-report-template</module>
+                <module>vulnerability-report-template</module>
+            </modules>
+        </profile>
+    </profiles>
+
+</project>
