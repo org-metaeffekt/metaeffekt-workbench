@@ -21,7 +21,8 @@ TMP_DIR="$TARGET_BASE_DIR/99_tmp"
 ENV_REFERENCE_INVENTORY_DIR="$WORKBENCH_DIR/inventories/example-reference-inventory/inventory"
 ENV_REFERENCE_LICENSES_DIR="$WORKBENCH_DIR/inventories/example-reference-inventory/licenses"
 ENV_REFERENCE_COMPONENTS_DIR="$WORKBENCH_DIR/inventories/example-reference-inventory/components"
-ENV_VULNERABILITY_MIRROR_DIR="$WORKSPACE_DIR/.vulnerability-mirror/.database"
+ENV_VULNERABILITY_MIRROR_BASE_DIR="$WORKBENCH_DIR/.vulnerability-mirror"
+ENV_VULNERABILITY_MIRROR_DIR="$ENV_VULNERABILITY_MIRROR_BASE_DIR/.database"
 
 ENV_REPORT_TEMPLATE_DIR="$WORKBENCH_DIR/templates/report-template"
 ENV_SECURITY_POLICY_DIR="$WORKBENCH_DIR/policies"
@@ -38,6 +39,20 @@ if ! mkdir -p "$ANALYZED_DIR" "$ADVISED_DIR" "$REPORTED_DIR" "$TMP_DIR" ; then
     echo "Error: Failed to create target directories" >&2
     exit 1
 fi
+
+###################################
+# Ensure mirror is up-to-date     #
+###################################
+MIRROR_TARGET_DIR="$ENV_VULNERABILITY_MIRROR_BASE_DIR"
+# NOTE: on 0.135 we need to use the legacy mirror
+MIRROR_ARCHIVE_URL="http://ae-scanner/mirror/index/index-database_legacy.zip"
+MIRROR_ARCHIVE_NAME="index-database_legacy.zip"
+CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/util/util_update-mirror.xml" compile -P withoutProxy)
+CMD+=("-Doutput.vulnerability.mirror.dir=$MIRROR_TARGET_DIR")
+CMD+=("-Dparam.mirror.archive.url=$MIRROR_ARCHIVE_URL")
+CMD+=("-Dparam.mirror.archive.name=$MIRROR_ARCHIVE_NAME")
+echo "${CMD[@]}"
+"${CMD[@]}"
 
 ###################################
 # Enrich with reference inventory #

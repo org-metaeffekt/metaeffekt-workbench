@@ -157,7 +157,6 @@
     </xsl:attribute-set>
 
     <xsl:variable name="page-margin-bottom">35mm</xsl:variable>
-
     <xsl:attribute-set name="region-after">
         <xsl:attribute name="extent">30mm</xsl:attribute>
         <xsl:attribute name="display-align">after</xsl:attribute>

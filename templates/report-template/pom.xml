@@ -269,7 +269,7 @@
                             </configuration>
                         </execution>
                         <execution>
-                            <id>retrieve-gsr-branding</id>
+                            <id>retrieve-custom-branding</id>
                             <goals>
                                 <goal>unpack</goal>
                             </goals>
