@@ -4,14 +4,14 @@
 set -euo pipefail
 
 WORKBENCH_DIR="$(pwd)"
-WORKSPACE_DIR="$WORKBENCH_DIR/../gsr-workspace"
+WORKSPACE_DIR="$WORKBENCH_DIR/tests/resources/workspace-001"
 PROCESSORS_DIR="$WORKBENCH_DIR/processors"
 
 # this assumes that metaeffekt-kontinuum is checked out on the same level as the workbench
-KONTINUUM_PROCESSORS_DIR="$WORKBENCH_DIR/../../metaeffekt-kontinuum/processors"
+KONTINUUM_PROCESSORS_DIR="$WORKBENCH_DIR/../metaeffekt-kontinuum/processors"
 
 # Define target directories
-TARGET_BASE_DIR="$WORKSPACE_DIR/sample-product"
+TARGET_BASE_DIR="$WORKSPACE_DIR/sample-product-1.0.0"
 ANALYZED_DIR="$TARGET_BASE_DIR/02_analyzed"
 CURATED_DIR="$TARGET_BASE_DIR/03_curated"
 ADVISED_DIR="$TARGET_BASE_DIR/04_advised"
@@ -51,8 +51,8 @@ CMD+=("-Dinput.inventory.file=$ANALYZED_INVENTORY_FILE")
 CMD+=("-Dinput.reference.inventory.dir=$ENV_REFERENCE_INVENTORY_DIR")
 CMD+=("-Doutput.inventory.dir=$CURATED_INVENTORY_DIR")
 CMD+=("-Doutput.inventory.path=$CURATED_INVENTORY_PATH")
-echo "${CMD[@]}"
-"${CMD[@]}"
+echo #"${CMD[@]}"
+#"${CMD[@]}"
 
 #########################
 # Create annex document #
@@ -102,8 +102,8 @@ CMD+=("-Denv.vulnerability.mirror.dir=$ENV_VULNERABILITY_MIRROR_DIR")
 CMD+=("-Denv.workbench.processors.dir=$PROCESSORS_DIR")
 CMD+=("-Denv.kontinuum.processors.dir=$KONTINUUM_PROCESSORS_DIR")
 
-echo "${CMD[@]}"
-"${CMD[@]}"
+echo #"${CMD[@]}"
+#"${CMD[@]}"
 
 ##########
 # Advise #
@@ -131,8 +131,8 @@ CMD+=("-Doutput.tmp.dir=$PROCESSOR_TMP_DIR")
 
 CMD+=("-Denv.vulnerability.mirror.dir=$ENV_VULNERABILITY_MIRROR_DIR")
 
-echo "${CMD[@]}"
-"${CMD[@]}"
+echo #"${CMD[@]}"
+#"${CMD[@]}"
 
 
 #################################
@@ -184,8 +184,8 @@ CMD+=("-Denv.vulnerability.mirror.dir=$ENV_VULNERABILITY_MIRROR_DIR")
 CMD+=("-Denv.workbench.processors.dir=$PROCESSORS_DIR")
 CMD+=("-Denv.kontinuum.processors.dir=$KONTINUUM_PROCESSORS_DIR")
 
-echo "${CMD[@]}"
-"${CMD[@]}"
+echo #"${CMD[@]}"
+#"${CMD[@]}"
 
 
 #################################
@@ -237,8 +237,8 @@ CMD+=("-Denv.vulnerability.mirror.dir=$ENV_VULNERABILITY_MIRROR_DIR")
 CMD+=("-Denv.workbench.processors.dir=$PROCESSORS_DIR")
 CMD+=("-Denv.kontinuum.processors.dir=$KONTINUUM_PROCESSORS_DIR")
 
-echo "${CMD[@]}"
-"${CMD[@]}"
+echo #"${CMD[@]}"
+#"${CMD[@]}"
 
 
 ################
@@ -250,5 +250,5 @@ CMD+=("-Dinput.inventory.file=$ADVISED_INVENTORY_FILE")
 CMD+=("-Dinput.security.policy.file=$ENV_SECURITY_POLICY_FILE")
 CMD+=("-Doutput.dashboard.file=$OUTPUT_DASHBOARD_FILE")
 CMD+=("-Denv.vulnerability.mirror.dir=$ENV_VULNERABILITY_MIRROR_DIR")
-echo "${CMD[@]}"
+echo #"${CMD[@]}"
 "${CMD[@]}"
