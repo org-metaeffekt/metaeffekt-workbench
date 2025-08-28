@@ -51,8 +51,8 @@ CMD+=("-Dinput.inventory.file=$ANALYZED_INVENTORY_FILE")
 CMD+=("-Dinput.reference.inventory.dir=$ENV_REFERENCE_INVENTORY_DIR")
 CMD+=("-Doutput.inventory.dir=$CURATED_INVENTORY_DIR")
 CMD+=("-Doutput.inventory.path=$CURATED_INVENTORY_PATH")
-echo #"${CMD[@]}"
-#"${CMD[@]}"
+echo "${CMD[@]}"
+"${CMD[@]}"
 
 #########################
 # Create annex document #
@@ -102,8 +102,8 @@ CMD+=("-Denv.vulnerability.mirror.dir=$ENV_VULNERABILITY_MIRROR_DIR")
 CMD+=("-Denv.workbench.processors.dir=$PROCESSORS_DIR")
 CMD+=("-Denv.kontinuum.processors.dir=$KONTINUUM_PROCESSORS_DIR")
 
-echo #"${CMD[@]}"
-#"${CMD[@]}"
+echo "${CMD[@]}"
+"${CMD[@]}"
 
 ##########
 # Advise #
@@ -131,8 +131,8 @@ CMD+=("-Doutput.tmp.dir=$PROCESSOR_TMP_DIR")
 
 CMD+=("-Denv.vulnerability.mirror.dir=$ENV_VULNERABILITY_MIRROR_DIR")
 
-echo #"${CMD[@]}"
-#"${CMD[@]}"
+echo "${CMD[@]}"
+"${CMD[@]}"
 
 
 #################################
@@ -184,8 +184,8 @@ CMD+=("-Denv.vulnerability.mirror.dir=$ENV_VULNERABILITY_MIRROR_DIR")
 CMD+=("-Denv.workbench.processors.dir=$PROCESSORS_DIR")
 CMD+=("-Denv.kontinuum.processors.dir=$KONTINUUM_PROCESSORS_DIR")
 
-echo #"${CMD[@]}"
-#"${CMD[@]}"
+echo "${CMD[@]}"
+"${CMD[@]}"
 
 
 #################################
@@ -237,8 +237,8 @@ CMD+=("-Denv.vulnerability.mirror.dir=$ENV_VULNERABILITY_MIRROR_DIR")
 CMD+=("-Denv.workbench.processors.dir=$PROCESSORS_DIR")
 CMD+=("-Denv.kontinuum.processors.dir=$KONTINUUM_PROCESSORS_DIR")
 
-echo #"${CMD[@]}"
-#"${CMD[@]}"
+echo "${CMD[@]}"
+"${CMD[@]}"
 
 
 ################
@@ -250,5 +250,5 @@ CMD+=("-Dinput.inventory.file=$ADVISED_INVENTORY_FILE")
 CMD+=("-Dinput.security.policy.file=$ENV_SECURITY_POLICY_FILE")
 CMD+=("-Doutput.dashboard.file=$OUTPUT_DASHBOARD_FILE")
 CMD+=("-Denv.vulnerability.mirror.dir=$ENV_VULNERABILITY_MIRROR_DIR")
-echo #"${CMD[@]}"
+echo "${CMD[@]}"
 "${CMD[@]}"
