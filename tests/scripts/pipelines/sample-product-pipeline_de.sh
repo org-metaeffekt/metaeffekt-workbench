@@ -8,7 +8,7 @@ WORKSPACE_DIR="$WORKBENCH_DIR/tests/resources/workspace-001"
 PROCESSORS_DIR="$WORKBENCH_DIR/processors"
 
 # this assumes that metaeffekt-kontinuum is checked out on the same level as the workbench
-KONTINUUM_PROCESSORS_DIR="$WORKBENCH_DIR/../metaeffekt-kontinuum/processors"
+KONTINUUM_PROCESSORS_DIR="$WORKBENCH_DIR/../metaeffekt-kontinuum-0.135.x/processors"
 
 # Define target directories
 TARGET_BASE_DIR="$WORKSPACE_DIR/sample-product-1.0.0"
