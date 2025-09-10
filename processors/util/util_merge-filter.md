@@ -4,8 +4,7 @@ This process merges inventories based on an individual security advisor and filt
 
 ## Properties
 
-The different properties are sorted into three different groups which are explained in the top level [README](../../README.md)
-of this repository.
+The different properties are sorted into three different groups. 
 
 ### Input / Output
 | Parameter                       | Required | Description                                                                |

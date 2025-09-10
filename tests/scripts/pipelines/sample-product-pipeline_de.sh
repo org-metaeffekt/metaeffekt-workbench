@@ -7,8 +7,19 @@ WORKBENCH_DIR="$(pwd)"
 WORKSPACE_DIR="$WORKBENCH_DIR/tests/resources/workspace-001"
 PROCESSORS_DIR="$WORKBENCH_DIR/processors"
 
-# this assumes that metaeffekt-kontinuum is checked out on the same level as the workbench
-KONTINUUM_PROCESSORS_DIR="$WORKBENCH_DIR/../metaeffekt-kontinuum-0.135.x/processors"
+if [ -f "$WORKBENCH_DIR/external-template.rc" ]; then
+    source "$WORKBENCH_DIR/external-template.rc"
+else
+    echo "Missing external-template.rc file in root of repository."
+    exit 1
+fi
+
+if [ -n "$EXTERNAL_KONTINUUM_DIR" ]; then
+    KONTINUUM_PROCESSORS_DIR="$EXTERNAL_KONTINUUM_DIR/processors"
+    echo "Found kontinuum repository at $EXTERNAL_KONTINUUM_DIR"
+else
+    echo "Could not find kontinuum repository at path specified in the external-template.rc file"
+fi
 
 # Define target directories
 TARGET_BASE_DIR="$WORKSPACE_DIR/sample-product-1.0.0"

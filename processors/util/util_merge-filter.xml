@@ -20,10 +20,10 @@
     -->
 
     <parent>
-        <groupId>com.metaeffekt.kontinuum</groupId>
-        <artifactId>ae-kontinuum-processors</artifactId>
+        <groupId>com.metaeffekt.workbench</groupId>
+        <artifactId>ae-workbench-processors</artifactId>
         <version>WORKBENCH-SNAPSHOT</version>
-        <relativePath>../_common_/ae-kontinuum-processors.xml</relativePath>
+        <relativePath>../workbench-parent.xml</relativePath>
     </parent>
 
     <artifactId>util_merge-filter</artifactId>
