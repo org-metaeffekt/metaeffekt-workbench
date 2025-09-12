@@ -7,10 +7,10 @@ WORKBENCH_DIR="$(pwd)"
 WORKSPACE_DIR="$WORKBENCH_DIR/tests/resources/workspace-001"
 PROCESSORS_DIR="$WORKBENCH_DIR/processors"
 
-if [ -f "$WORKBENCH_DIR/external-template.rc" ]; then
-    source "$WORKBENCH_DIR/external-template.rc"
+if [ -f "$WORKBENCH_DIR/external.rc" ]; then
+    source "$WORKBENCH_DIR/external.rc"
 else
-    echo "Missing external-template.rc file in root of repository."
+    echo "Missing external.rc file in root of repository."
     exit 1
 fi
 
@@ -18,7 +18,7 @@ if [ -n "$EXTERNAL_KONTINUUM_DIR" ]; then
     KONTINUUM_PROCESSORS_DIR="$EXTERNAL_KONTINUUM_DIR/processors"
     echo "Found kontinuum repository at $EXTERNAL_KONTINUUM_DIR"
 else
-    echo "Could not find kontinuum repository at path specified in the external-template.rc file"
+    echo "Could not find kontinuum repository at path specified in the external.rc file"
 fi
 
 # Define target directories
@@ -190,7 +190,7 @@ CMD+=("-Dinput.security.policy.dir=$ENV_SECURITY_POLICY_DIR/vulnerability-report
 
 CMD+=("-Doutput.document.file=$OUTPUT_VR_FILE")
 
-CMD+=("-Dcomputed.inventory.path=$OUTPUT_COMPUTED_INVENTORY_DIR") # Do not change parameter name, needed by asset descriptor
+CMD+=("-Doutput.computed.inventory.path=$OUTPUT_COMPUTED_INVENTORY_DIR") # Do not change parameter name, needed by asset descriptor
 
 CMD+=("-Dparam.asset.id=$PARAM_ASSET_ID")
 CMD+=("-Dparam.asset.name=$PARAM_ASSET_NAME")
@@ -243,7 +243,7 @@ CMD+=("-Dinput.security.policy.dir=$ENV_SECURITY_POLICY_DIR/cert-report")
 
 CMD+=("-Doutput.document.file=$OUTPUT_CR_FILE")
 
-CMD+=("-Dcomputed.inventory.path=$OUTPUT_COMPUTED_INVENTORY_DIR") # Do not change parameter name, needed by asset descriptor
+CMD+=("-Doutput.computed.inventory.path=$OUTPUT_COMPUTED_INVENTORY_DIR") # Do not change parameter name, needed by asset descriptor
 
 CMD+=("-Dparam.asset.id=$PARAM_ASSET_ID")
 CMD+=("-Dparam.asset.name=$PARAM_ASSET_NAME")
