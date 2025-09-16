@@ -24,7 +24,7 @@ CMD+=("-Dinput.asset.descriptor.dir=$INPUT_ASSET_DESCRIPTOR_DIR")
 CMD+=("-Dinput.asset.descriptor.path=$INPUT_ASSET_DESCRIPTOR_FILE")
 CMD+=("-Dinput.security.policy.dir=$INPUT_SECURITY_POLICY_DIR")
 CMD+=("-Doutput.document.file=$OUTPUT_DOCUMENT_FILE")
-CMD+=("-Dcomputed.inventory.path=$OUTPUT_COMPUTED_INVENTORY_DIR") # Do not change parameter name, needed by asset descriptor
+CMD+=("-Doutput.computed.inventory.path=$OUTPUT_COMPUTED_INVENTORY_DIR") # Do not change parameter name, needed by asset descriptor
 CMD+=("-Dparam.asset.id=$PARAM_ASSET_ID")
 CMD+=("-Dparam.asset.name=$PARAM_ASSET_NAME")
 CMD+=("-Dparam.asset.version=$PARAM_ASSET_VERSION")
