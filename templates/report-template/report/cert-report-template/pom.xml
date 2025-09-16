@@ -86,7 +86,7 @@
                 <plugin>
                     <groupId>com.metaeffekt.artifact.analysis</groupId>
                     <artifactId>ae-asset-descriptor-maven-plugin</artifactId>
-                    <version>${ae.artifact.analysis.version_}</version>
+                    <version>${ae.artifact.analysis.version}</version>
                     <executions>
                         <execution>
                             <id>transform-inventory</id>
@@ -138,7 +138,11 @@
                                 <cvssActive>true</cvssActive>
 
                                 <cvssVulnerabilityCountLimit>400</cvssVulnerabilityCountLimit>
-                                <securityPolicyFile>${policy.basedir}/security-policy-02.json</securityPolicyFile>
+                                <securityPolicy>
+                                    <files>
+                                        <file>${policy.basedir}/security-policy-02.json</file>
+                                    </files>
+                                </securityPolicy>
                             </configuration>
                         </execution>
 
@@ -160,7 +164,11 @@
 
                                 <cvssVulnerabilityCountLimit>-1</cvssVulnerabilityCountLimit>
 
-                                <securityPolicyFile>${policy.basedir}/security-policy-03.json</securityPolicyFile>
+                                <securityPolicy>
+                                    <files>
+                                        <file>${policy.basedir}/security-policy-03.json</file>
+                                    </files>
+                                </securityPolicy>
                             </configuration>
                         </execution>
 

@@ -100,7 +100,7 @@
                 <plugin>
                     <groupId>com.metaeffekt.artifact.analysis</groupId>
                     <artifactId>ae-asset-descriptor-maven-plugin</artifactId>
-                    <version>${ae.artifact.analysis.version_}</version>
+                    <version>${ae.artifact.analysis.version}</version>
                     <executions>
                         <execution>
                             <id>default-descriptor</id>

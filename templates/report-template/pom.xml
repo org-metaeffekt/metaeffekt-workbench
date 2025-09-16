@@ -15,16 +15,9 @@
     </scm>
 
     <properties>
+        <ae.core.version>0.144.0</ae.core.version>
+        <ae.artifact.analysis.version>0.147.0</ae.artifact.analysis.version>
 
-        <ae.core.version>0.135.10</ae.core.version>
-        <ae.artifact.analysis.version>0.135.16</ae.artifact.analysis.version>
-
-        <!-- NOTE: this branch requires some features from newer versions
-            - the newer artifact.analysis version is require for asset-descriptor usage
-            - the core version is required for the common-content artifact
-        -->
-        <ae.core.version_>0.142.0</ae.core.version_>
-        <ae.artifact.analysis.version_>0.145.0</ae.artifact.analysis.version_>
 
         <version.ae.universe>1.16.0</version.ae.universe>
         <version.ae.dita>0.29.0</version.ae.dita>
@@ -391,7 +384,7 @@
             <artifactId>ae-common-content</artifactId>
             <type>jar</type>
             <classifier>doc</classifier>
-            <version>${ae.core.version_}</version>
+            <version>${ae.core.version}</version>
         </dependency>
     </dependencies>
 

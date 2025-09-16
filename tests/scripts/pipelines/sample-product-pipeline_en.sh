@@ -21,7 +21,7 @@ set_global_variables() {
   readonly KONTINUUM_PROCESSORS_DIR="$EXTERNAL_KONTINUUM_DIR/processors"
 
   LOG_DIR="$WORKBENCH_DIR/.logs"
-  LOG_LEVEL="CONFIG"
+  LOG_LEVEL="MIRROR"
 
   readonly TARGET_BASE_DIR="$WORKSPACE_DIR/sample-product-1.0.0"
   readonly ANALYZED_DIR="$TARGET_BASE_DIR/02_analyzed"
@@ -55,9 +55,8 @@ update_mirror() {
   log_info "Running processor update_mirror process."
 
   MIRROR_TARGET_DIR="$EXTERNAL_VULNERABILITY_MIRROR_DIR"
-  # NOTE: on 0.135 we need to use the legacy mirror
-  MIRROR_ARCHIVE_URL="http://ae-scanner/mirror/index/index-database_legacy.zip"
-  MIRROR_ARCHIVE_NAME="index-database_legacy.zip"
+  MIRROR_ARCHIVE_URL="$EXTERNAL_VULNERABILITY_MIRROR_URL"
+  MIRROR_ARCHIVE_NAME="$EXTERNAL_VULNERABILITY_MIRROR_NAME"
   CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/util/util_update-mirror.xml" compile -P withoutProxy)
   CMD+=("-Doutput.vulnerability.mirror.dir=$MIRROR_TARGET_DIR")
   CMD+=("-Dparam.mirror.archive.url=$MIRROR_ARCHIVE_URL")

@@ -24,30 +24,32 @@ rather than in sub-scripts. This design aims to improve readability and simplifi
 Additionally this repository requires a local instance of the [metaeffekt-kontinuum](https://github.com/org-metaeffekt/metaeffekt-kontinuum)
 repository on branch 0.135.x.
 
+## Prerequisites
+
+To ensure all reference processes and pipelines in this repository can run, we need to create an external.rc file
+in the root of this repository. A template for this file has been provided here: [external-template.rc](external-template.rc).
+
+- EXTERNAL_KONTINUUM_DIR="/PATH/TO/KONTINUUM" 
+  - Point this to the absolute path of a [metaeffekt-kontinuum](https://github.com/org-metaeffekt/metaeffekt-kontinuum) instance on branch 0.135.x
+- EXTERNAL_VULNERABILITY_MIRROR_DIR="/PATH/TO/MIRROR"
+  - Point this to an instance of a vulnerability mirror. If you are not sure what this means, or you don't have a local instance of
+  the mirror, point this to the metaeffekt-kontinuum/.mirror instead.
+- EXTERNAL_VULNERABILITY_MIRROR_URL="https://mirror-url/mirror.tar.gz"
+    - Point this to a valid URL where an instance of the mirror can be downloaded.
+- EXTERNAL_VULNERABILITY_MIRROR_NAME="mirror.tar.gz"
+    - The name of the mirror archive file
+
 ## Running the Reference Pipeline
 
-To get started with executing processors, edit the following pipeline scripts to point to your local
-[metaeffekt-kontinuum](https://github.com/org-metaeffekt/metaeffekt-kontinuum) repository:
+To first get started it is recommended to execute one of the following reference pipelines. No adjustments to the actual
+pipeline scripts should be necessary if the external.rc file has been set correctly.
 
 - [`sample-product-pipeline_de.sh`](tests/scripts/pipelines/sample-product-pipeline_de.sh)
 - [`sample-product-pipeline_en.sh`](tests/scripts/pipelines/sample-product-pipeline_en.sh)
-- ```bash
-  KONTINUUM_PROCESSORS_DIR="/PATH/TO/KONTINUUM-0.135.x"
-  ```
 
-### Running With a Local Vulnerability Mirror
+## Running single Processors
 
-Since the provided pipelines require a local vulnerability mirror instance, you must manually configure the mirror path:
 
-1. Navigate to the [`tests/scripts/pipelines`](tests/scripts/pipelines) directory
-2. Update the `MIRROR_ARCHIVE_URL` and `MIRROR_ARCHIVE_NAME` environment variable in the following files:
-    - [`sample-product-pipeline_de.sh`](tests/scripts/pipelines/sample-product-pipeline_de.sh)
-    - [`sample-product-pipeline_en.sh`](tests/scripts/pipelines/sample-product-pipeline_en.sh)
-3. Since the `MIRROR_ARCHIVE_URL` requires a valid URL, local files need a file resource locator as a prefix.
-    ```bash
-   MIRROR_ARCHIVE_URL="file:///absolute/path/index-database.tar.gz"
-   ```
-4. Run one of the pipelines
 
 **Note:** Scripts can be executed from any directory. All required resources for processor execution are included
 in this repository. The only additional requirement is a local instance of our vulnerability mirror

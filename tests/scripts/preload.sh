@@ -25,12 +25,6 @@ fi
 
 if [ -n "${EXTERNAL_VULNERABILITY_MIRROR_DIR:-}" ];then
     echo "EXTERNAL_VULNERABILITY_MIRROR_DIR was set in external.rc file."
-    if [ -d "$EXTERNAL_VULNERABILITY_MIRROR_DIR" ]; then
-      echo "External vulnerability mirror directory is a valid directory."
-    else
-      echo "Terminating: External vulnerability mirror directory was set in external.rc file but does not exist."
-      exit 1
-    fi
 else
   echo "Terminating: EXTERNAL_VULNERABILITY_MIRROR_DIR in external.rc is not set."
   exit 1
@@ -40,6 +34,12 @@ if [ -n "${EXTERNAL_VULNERABILITY_MIRROR_URL:-}" ];then
     echo "EXTERNAL_VULNERABILITY_MIRROR_URL was set in external.rc file."
 else
   echo "EXTERNAL_VULNERABILITY_MIRROR_URL in external.rc is not set."
+fi
+
+if [ -n "${EXTERNAL_VULNERABILITY_MIRROR_NAME:-}" ];then
+    echo "EXTERNAL_VULNERABILITY_MIRROR_NAME was set in external.rc file."
+else
+  echo "EXTERNAL_VULNERABILITY_MIRROR_NAME in external.rc is not set."
 fi
 
 
