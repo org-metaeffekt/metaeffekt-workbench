@@ -21,7 +21,7 @@ set_global_variables() {
   readonly KONTINUUM_PROCESSORS_DIR="$EXTERNAL_KONTINUUM_DIR/processors"
 
   LOG_DIR="$WORKBENCH_DIR/.logs"
-  LOG_LEVEL="MIRROR"
+  LOG_LEVEL="CONFIG"
 
   readonly TARGET_BASE_DIR="$WORKSPACE_DIR/sample-product-1.0.0"
   readonly ANALYZED_DIR="$TARGET_BASE_DIR/02_analyzed"
