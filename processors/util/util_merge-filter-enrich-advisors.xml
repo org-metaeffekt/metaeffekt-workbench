@@ -51,8 +51,9 @@
                             <!-- THIS IS CORRECT: Transformations do not use the 0.135.x branch so we need the new policy. -->
                             <securityPolicy>
                                 <files>
-                                    <file>${input.security.policy.file}</file>
+                                    <file>${securityPolicyFile}</file>
                                 </files>
+                                <activeIds>${securityPolicyActiveIds}</activeIds>
                             </securityPolicy>
                         </configuration>
                     </execution>
@@ -92,8 +93,9 @@
                             <!-- THIS IS CORRECT: Transformations do not use the 0.135.x branch so we need the new policy. -->
                             <securityPolicy>
                                 <files>
-                                    <file>${input.security.policy.file}</file>
+                                    <file>${securityPolicyFile}</file>
                                 </files>
+                                <activeIds>${securityPolicyActiveIds}</activeIds>
                             </securityPolicy>
                         </configuration>
                     </execution>

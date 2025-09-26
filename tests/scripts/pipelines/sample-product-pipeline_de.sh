@@ -35,8 +35,7 @@ set_global_variables() {
   ENV_REFERENCE_COMPONENTS_DIR="$WORKBENCH_DIR/inventories/example-reference-inventory/components"
 
   ENV_REPORT_TEMPLATE_DIR="$WORKBENCH_DIR/templates/report-template"
-  ENV_SECURITY_POLICY_DIR="$WORKBENCH_DIR/policies"
-  ENV_SECURITY_POLICY_FILE="$WORKBENCH_DIR/policies/security-policy.json"
+  PARAM_SECURITY_POLICY_FILE="$WORKBENCH_DIR/policies/security-policy/security-policy.json"
 
   ENV_DESCRIPTOR_DIR="$WORKBENCH_DIR/descriptors"
   ENV_SDA_DESCRIPTOR_PATH="asset-descriptor_GENERIC-software-distribution-annex.yaml"
@@ -52,7 +51,7 @@ create_target_directories() {
 }
 
 update_mirror() {
-  log_info "Running processor update_mirror process."
+  log_info "Running update_mirror process."
 
   MIRROR_TARGET_DIR="$EXTERNAL_VULNERABILITY_MIRROR_DIR"
   MIRROR_ARCHIVE_URL="$EXTERNAL_VULNERABILITY_MIRROR_URL"
@@ -75,7 +74,7 @@ update_mirror() {
 }
 
 enrich_inventory_with_reference() {
-  log_info "Running processor enrich_inventory_with_reference process."
+  log_info "Running enrich_inventory_with_reference process."
 
   ANALYZED_INVENTORY_FILE="$ANALYZED_DIR/sample-asset-1.0/sample-asset-1.0-inventory.xls"
   CURATED_INVENTORY_DIR="$CURATED_DIR/sample-asset-1.0"
@@ -104,7 +103,7 @@ enrich_inventory_with_reference() {
 }
 
 create_annex() {
-  log_info "Running processor create_annex process."
+  log_info "Running create_annex process."
 
   OUTPUT_ANNEX_FILE="$REPORTED_DIR/software-distribution-annex-de.pdf"
   OUTPUT_COMPUTED_INVENTORY_DIR="$TMP_DIR/report"
@@ -128,7 +127,7 @@ create_annex() {
 
   CMD+=("-Dinput.asset.descriptor.dir=$ENV_DESCRIPTOR_DIR")
   CMD+=("-Dinput.asset.descriptor.path=$ENV_SDA_DESCRIPTOR_PATH")
-  CMD+=("-Dinput.security.policy.dir=$ENV_SECURITY_POLICY_DIR")
+  CMD+=("-Dparam.security.policy.file=$PARAM_SECURITY_POLICY_FILE")
 
   CMD+=("-Doutput.document.file=$OUTPUT_ANNEX_FILE")
 
@@ -172,7 +171,7 @@ create_annex() {
 }
 
 enrich_inventory() {
-  log_info "Running processor enrich_inventory process."
+  log_info "Running enrich_inventory process."
 
   ADVISED_INVENTORY_FILE="$ADVISED_DIR/sample-product-asset-inventory.xlsx"
   ASSESSMENT_DIR="$WORKBENCH_DIR/assessments/example-001"
@@ -183,7 +182,9 @@ enrich_inventory() {
 
   CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/advise/advise_enrich-inventory.xml" process-resources)
   CMD+=("-Dinput.inventory.file=$CURATED_INVENTORY_DIR/$CURATED_INVENTORY_PATH")
-  CMD+=("-Dinput.security.policy.file=$ENV_SECURITY_POLICY_FILE")
+  CMD+=("-Dinput.security.policy.file=$PARAM_SECURITY_POLICY_FILE")
+  # FIXME-RTU: consider where to set these active Ids
+  CMD+=("-Dparam.security.policy.active.ids=assessment_enrichment_configuration")
 
   # these are params
   CMD+=("-Dinput.assessment.dir=$ASSESSMENT_DIR")
@@ -197,7 +198,7 @@ enrich_inventory() {
   CMD+=("-Denv.vulnerability.mirror.dir=$EXTERNAL_VULNERABILITY_MIRROR_DIR/.database")
 
   log_config "input.inventory.file=$CURATED_INVENTORY_DIR/$CURATED_INVENTORY_PATH
-              input.security.policy.file=$ENV_SECURITY_POLICY_FILE" "
+              input.security.policy.file=$PARAM_SECURITY_POLICY_FILE" "
               output.inventory.file=$ADVISED_INVENTORY_FILE
               output.tmp.dir=$PROCESSOR_TMP_DIR"
 
@@ -212,7 +213,7 @@ enrich_inventory() {
 }
 
 generate_vulnerability_report() {
-  log_info "Running processor generate_vulnerability_report process."
+  log_info "Running generate_vulnerability_report process."
 
   OUTPUT_VR_FILE="$REPORTED_DIR/vulnerability-report-de.pdf"
   OUTPUT_COMPUTED_INVENTORY_DIR="$TMP_DIR/report"
@@ -236,7 +237,7 @@ generate_vulnerability_report() {
 
   CMD+=("-Dinput.asset.descriptor.dir=$ENV_DESCRIPTOR_DIR")
   CMD+=("-Dinput.asset.descriptor.path=$ENV_VR_DESCRIPTOR_PATH")
-  CMD+=("-Dinput.security.policy.dir=$ENV_SECURITY_POLICY_DIR/vulnerability-report")
+  CMD+=("-Dparam.security.policy.file=$PARAM_SECURITY_POLICY_FILE")
 
   CMD+=("-Doutput.document.file=$OUTPUT_VR_FILE")
 
@@ -265,8 +266,7 @@ generate_vulnerability_report() {
               input.reference.license.dir=$ENV_REFERENCE_LICENSES_DIR
               input.reference.component.dir=$ENV_REFERENCE_COMPONENTS_DIR
               input.asset.descriptor.dir=$ENV_DESCRIPTOR_DIR
-              input.asset.descriptor.path=$ENV_VR_DESCRIPTOR_PATH
-              input.security.policy.dir=$ENV_SECURITY_POLICY_DIR/vulnerability-report" "
+              input.asset.descriptor.path=$ENV_VR_DESCRIPTOR_PATH" "
               output.document.file=$OUTPUT_VR_FILE
               output.computed.inventory.path=$OUTPUT_COMPUTED_INVENTORY_DIR"
 
@@ -281,7 +281,7 @@ generate_vulnerability_report() {
 }
 
 generate_cert_report() {
-  log_info "Running processor generate_cert_report process."
+  log_info "Running generate_cert_report process."
 
   OUTPUT_CR_FILE="$REPORTED_DIR/cert-report-de.pdf"
   OUTPUT_COMPUTED_INVENTORY_DIR="$TMP_DIR/report"
@@ -305,7 +305,7 @@ generate_cert_report() {
 
   CMD+=("-Dinput.asset.descriptor.dir=$ENV_DESCRIPTOR_DIR")
   CMD+=("-Dinput.asset.descriptor.path=$ENV_CR_DESCRIPTOR_PATH")
-  CMD+=("-Dinput.security.policy.dir=$ENV_SECURITY_POLICY_DIR/cert-report")
+  CMD+=("-Dparam.security.policy.file=$PARAM_SECURITY_POLICY_FILE")
 
   CMD+=("-Doutput.document.file=$OUTPUT_CR_FILE")
 
@@ -334,8 +334,7 @@ generate_cert_report() {
               input.reference.license.dir=$ENV_REFERENCE_LICENSES_DIR
               input.reference.component.dir=$ENV_REFERENCE_COMPONENTS_DIR
               input.asset.descriptor.dir=$ENV_DESCRIPTOR_DIR
-              input.asset.descriptor.path=$ENV_VR_DESCRIPTOR_PATH
-              input.security.policy.dir=$ENV_SECURITY_POLICY_DIR/cert-report" "
+              input.asset.descriptor.path=$ENV_VR_DESCRIPTOR_PATH" "
               output.document.file=$OUTPUT_CR_FILE
               output.computed.inventory.path=$OUTPUT_COMPUTED_INVENTORY_DIR"
 
@@ -350,17 +349,19 @@ generate_cert_report() {
 }
 
 generate_vulnerability_assessment_dashboard() {
-  log_info "Running processor generate_vulnerability_assessment_dashboard process."
+  log_info "Running generate_vulnerability_assessment_dashboard process."
 
   OUTPUT_DASHBOARD_FILE="$ADVISED_DIR/dashboards/sample-product-dashboard.html"
   CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/advise/advise_create-dashboard.xml" process-resources)
   CMD+=("-Dinput.inventory.file=$ADVISED_INVENTORY_FILE")
-  CMD+=("-Dinput.security.policy.file=$ENV_SECURITY_POLICY_FILE")
+  CMD+=("-Dinput.security.policy.file=$PARAM_SECURITY_POLICY_FILE")
+  # FIXME-RTU: consider where to set these active Ids
+  CMD+=("-Dparam.security.policy.active.ids=assessment_enrichment_configuration")
   CMD+=("-Doutput.dashboard.file=$OUTPUT_DASHBOARD_FILE")
   CMD+=("-Denv.vulnerability.mirror.dir=$EXTERNAL_VULNERABILITY_MIRROR_DIR/.database")
 
   log_config "input.inventory.file=$ADVISED_INVENTORY_FILE
-              input.security.policy.file=$ENV_SECURITY_POLICY_FILE" "
+              input.security.policy.file=$PARAM_SECURITY_POLICY_FILE" "
               output.dashboard.file=$OUTPUT_DASHBOARD_FILE"
 
   log_mvn "${CMD[*]}"

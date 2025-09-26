@@ -29,7 +29,9 @@ transformations:
       enrichmentOutputInventory: "${filtered-enriched-inventory.file}"
       advisoryProviders: '[{"name":"${overview.advisors}"}]'
       inputDatabase: "${input.database}"
-      input.security.policy.file: "${policy.basedir}/security-policy-02.json"
+      securityPolicyFile: "${param.security.policy.file}"
+      # FIXME-RTU: consider where to set these active Ids
+      securityPolicyActiveIds: "cert_extended_configuration"
     maven:
       pom: "${workbench.processors.dir}/util/util_merge-filter-enrich-advisors.xml"
       workingDir: "."
@@ -43,8 +45,9 @@ documents:
       "vulnerability-report":
         type: VULNERABILITY_REPORT
         params:
-          generateOverviewTablesForAdvisories: "${overview.advisors}"
-          securityPolicyFile: "${policy.basedir}/security-policy-02.json"
+          securityPolicyFile: "${param.security.policy.file}"
+          # FIXME-RTU: consider where to set these active Ids
+          securityPolicyActiveIds: "cert_extended_configuration"
         inventories:
           - inventoryRef: "filtered-inventory"
 
@@ -55,20 +58,21 @@ documents:
       "statistics-report":
         type: VULNERABILITY_STATISTICS_REPORT
         params:
-          generateOverviewTablesForAdvisories: "${overview.advisors}"
-          securityPolicyFile: "${policy.basedir}/security-policy-03.json"
+          securityPolicyFile: "${param.security.policy.file}"
+          # FIXME-RTU: consider where to set these active Ids
+          securityPolicyActiveIds: "cert_configuration"
         inventories:
           - inventoryRef: "filtered-enriched-inventory"
 
             # these fields are used as overwrites if not all artifacts are contained in a primary asset, remove to enable dynamic asset detection
             assetName: "${asset.name}"
             assetVersion: "${asset.version}"
-
       "summary-report":
         type: VULNERABILITY_SUMMARY_REPORT
         params:
-          generateOverviewTablesForAdvisories: "${overview.advisors}"
-          securityPolicyFile: "${policy.basedir}/security-policy-02.json"
+          securityPolicyFile: "${param.security.policy.file}"
+          # FIXME-RTU: consider where to set these active Ids
+          securityPolicyActiveIds: "cert_extended_configuration"
         inventories:
           - inventoryRef: "filtered-enriched-inventory"
 
