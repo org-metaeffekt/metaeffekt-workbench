@@ -21,7 +21,7 @@ Unlike the tests in [metaeffekt-kontinuum](https://github.com/org-metaeffekt/met
 in this repository contain all necessary parameters and Maven calls for specific processors directly within the scripts
 rather than in sub-scripts. This design aims to improve readability and simplifies customization.
 
-Additionally this repository requires a local instance of the [metaeffekt-kontinuum](https://github.com/org-metaeffekt/metaeffekt-kontinuum)
+Additionally, this repository requires a local instance of the [metaeffekt-kontinuum](https://github.com/org-metaeffekt/metaeffekt-kontinuum)
 repository on branch 0.135.x.
 
 ## Prerequisites
@@ -48,8 +48,6 @@ pipeline scripts should be necessary if the external.rc file has been set correc
 - [`sample-product-pipeline_en.sh`](tests/scripts/pipelines/sample-product-pipeline_en.sh)
 
 ## Running single Processors
-
-
 
 **Note:** Scripts can be executed from any directory. All required resources for processor execution are included
 in this repository. The only additional requirement is a local instance of our vulnerability mirror
