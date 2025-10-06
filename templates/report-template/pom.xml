@@ -15,8 +15,8 @@
     </scm>
 
     <properties>
-        <ae.core.version>0.144.0</ae.core.version>
-        <ae.artifact.analysis.version>0.147.0</ae.artifact.analysis.version>
+        <ae.core.version>0.145.0</ae.core.version>
+        <ae.artifact.analysis.version>0.147.3</ae.artifact.analysis.version>
 
 
         <version.ae.universe>1.16.0</version.ae.universe>
