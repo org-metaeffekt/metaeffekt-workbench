@@ -29,7 +29,7 @@ transformations:
       enrichmentOutputInventory: "${filtered-enriched-inventory.file}"
       advisoryProviders: '[{"name":"${overview.advisors}"}]'
       inputDatabase: "${input.database}"
-      securityPolicyFile: "${param.security.policy.file}"
+      securityPolicyFile: "${security.policy.file}"
       # FIXME-RTU: consider where to set these active Ids
       securityPolicyActiveIds: "cert_extended_configuration"
     maven:
@@ -45,7 +45,7 @@ documents:
       "vulnerability-report":
         type: VULNERABILITY_REPORT
         params:
-          securityPolicyFile: "${param.security.policy.file}"
+          securityPolicyFile: "${security.policy.file}"
           # FIXME-RTU: consider where to set these active Ids
           securityPolicyActiveIds: "cert_extended_configuration"
         inventories:
@@ -58,7 +58,7 @@ documents:
       "statistics-report":
         type: VULNERABILITY_STATISTICS_REPORT
         params:
-          securityPolicyFile: "${param.security.policy.file}"
+          securityPolicyFile: "${security.policy.file}"
           # FIXME-RTU: consider where to set these active Ids
           securityPolicyActiveIds: "cert_configuration"
         inventories:
@@ -70,7 +70,7 @@ documents:
       "summary-report":
         type: VULNERABILITY_SUMMARY_REPORT
         params:
-          securityPolicyFile: "${param.security.policy.file}"
+          securityPolicyFile: "${security.policy.file}"
           # FIXME-RTU: consider where to set these active Ids
           securityPolicyActiveIds: "cert_extended_configuration"
         inventories:

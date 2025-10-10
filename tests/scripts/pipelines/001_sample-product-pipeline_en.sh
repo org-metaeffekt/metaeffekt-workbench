@@ -174,7 +174,7 @@ enrich_inventory() {
   log_info "Running enrich_inventory process."
 
   ADVISED_INVENTORY_FILE="$ADVISED_DIR/sample-product-asset-inventory.xlsx"
-  ASSESSMENT_DIR="$WORKBENCH_DIR/assessments/example-001"
+  ASSESSMENT_DIR="$WORKBENCH_DIR/assessments/assessment-001/sample-product"
   CONTEXT_DIR="$WORKBENCH_DIR/contexts/example-001"
   CORRELATION_DIR="$WORKBENCH_DIR/correlations/shared"
   ADVISED_INVENTORY_FILE="$ADVISED_DIR/sample-product-advised-inventory.xlsx"

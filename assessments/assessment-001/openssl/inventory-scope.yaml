@@ -1,0 +1,11 @@
+scope: inventory
+
+history:
+  - rationale: "Users are not able to access the components in the network without authenticating."
+
+cvssV2:
+  lower: Au:S
+cvssV3:
+  lower: MPR:L
+cvssV4:
+  lower: MPR:L

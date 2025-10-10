@@ -140,7 +140,7 @@
                                 <cvssVulnerabilityCountLimit>400</cvssVulnerabilityCountLimit>
                                 <securityPolicy>
                                     <files>
-                                        <file>${param.security.policy.file}</file>
+                                        <file>${security.policy.file}</file>
                                     </files>
                                     <!-- FIXME-RTU: consider where to set these active Ids -->
                                     <activeIds>cert_extended_configuration</activeIds>
@@ -168,7 +168,7 @@
 
                                 <securityPolicy>
                                     <files>
-                                        <file>${param.security.policy.file}</file>
+                                        <file>${security.policy.file}</file>
                                     </files>
                                     <!-- FIXME-RTU: consider where to set these active Ids -->
                                     <activeIds>cert_configuration</activeIds>
@@ -287,8 +287,8 @@
                         <configuration>
                             <rules>
                                 <requireProperty>
-                                    <property>param.security.policy.file</property>
-                                    <message>You must set the parameter 'param.security.policy.file' to specify the location of the security policy file.</message>
+                                    <property>security.policy.file</property>
+                                    <message>You must set the parameter 'security.policy.file' to specify the location of the security policy file.</message>
                                 </requireProperty>
                                 <requireProperty>
                                     <property>overview.advisors</property>
