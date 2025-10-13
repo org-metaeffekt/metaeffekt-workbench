@@ -10,7 +10,7 @@ The different properties are sorted into three different groups.
 | Parameter                       | Required | Description                                                                |
 |---------------------------------|----------|----------------------------------------------------------------------------|
 | input.reference.inventories.dir | yes      | The directory containing all inventories which will be merged and filtered |
-| input.security.policy.file      | yes      | The security policy file needed to filter the inventory.                   |
+| param.security.policy.file      | yes      | The security policy file needed to filter the inventory.                   |
 | output.filtered.inventory.file  | yes      | The output inventory file                                                  |
 
 ### Parameters

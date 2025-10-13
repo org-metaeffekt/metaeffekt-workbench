@@ -21,7 +21,7 @@ set_global_variables() {
   readonly KONTINUUM_PROCESSORS_DIR="$EXTERNAL_KONTINUUM_DIR/processors"
 
   LOG_DIR="$WORKBENCH_DIR/.logs"
-  LOG_LEVEL="CONFIG"
+  LOG_LEVEL="ALL"
 
   readonly TARGET_BASE_DIR="$WORKSPACE_DIR/sample-product-1.0.0"
   readonly ANALYZED_DIR="$TARGET_BASE_DIR/02_analyzed"
@@ -56,7 +56,7 @@ update_mirror() {
   MIRROR_TARGET_DIR="$EXTERNAL_VULNERABILITY_MIRROR_DIR"
   MIRROR_ARCHIVE_URL="$EXTERNAL_VULNERABILITY_MIRROR_URL"
   MIRROR_ARCHIVE_NAME="$EXTERNAL_VULNERABILITY_MIRROR_NAME"
-  CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/util/util_update-mirror.xml" compile -P withoutProxy)
+  CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/mirror/mirror_download-index.xml" compile -P withoutProxy)
   CMD+=("-Doutput.vulnerability.mirror.dir=$MIRROR_TARGET_DIR")
   CMD+=("-Dparam.mirror.archive.url=$MIRROR_ARCHIVE_URL")
   CMD+=("-Dparam.mirror.archive.name=$MIRROR_ARCHIVE_NAME")
@@ -182,23 +182,19 @@ enrich_inventory() {
 
   CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/advise/advise_enrich-inventory.xml" process-resources)
   CMD+=("-Dinput.inventory.file=$CURATED_INVENTORY_DIR/$CURATED_INVENTORY_PATH")
-  CMD+=("-Dinput.security.policy.file=$PARAM_SECURITY_POLICY_FILE")
-  # FIXME-RTU: consider where to set these active Ids
-  CMD+=("-Dparam.security.policy.active.ids=assessment_enrichment_configuration")
-
-  # these are params
-  CMD+=("-Dinput.assessment.dir=$ASSESSMENT_DIR")
-  CMD+=("-Dinput.correlation.dir=$CORRELATION_DIR")
-  CMD+=("-Dinput.context.dir=$CONTEXT_DIR")
-
-  # these are envs
-
   CMD+=("-Doutput.inventory.file=$ADVISED_INVENTORY_FILE")
   CMD+=("-Doutput.tmp.dir=$PROCESSOR_TMP_DIR")
+
+  CMD+=("-Dparam.security.policy.file=$PARAM_SECURITY_POLICY_FILE")
+  CMD+=("-Dparam.security.policy.active.ids=assessment_enrichment_configuration")
+  CMD+=("-Dparam.assessment.dir=$ASSESSMENT_DIR")
+  CMD+=("-Dparam.correlation.dir=$CORRELATION_DIR")
+  CMD+=("-Dparam.context.dir=$CONTEXT_DIR")
+
   CMD+=("-Denv.vulnerability.mirror.dir=$EXTERNAL_VULNERABILITY_MIRROR_DIR/.database")
 
   log_config "input.inventory.file=$CURATED_INVENTORY_DIR/$CURATED_INVENTORY_PATH
-              input.security.policy.file=$PARAM_SECURITY_POLICY_FILE" "
+              param.security.policy.file=$PARAM_SECURITY_POLICY_FILE" "
               output.inventory.file=$ADVISED_INVENTORY_FILE
               output.tmp.dir=$PROCESSOR_TMP_DIR"
 
@@ -354,14 +350,13 @@ generate_vulnerability_assessment_dashboard() {
   OUTPUT_DASHBOARD_FILE="$ADVISED_DIR/dashboards/sample-product-dashboard.html"
   CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/advise/advise_create-dashboard.xml" process-resources)
   CMD+=("-Dinput.inventory.file=$ADVISED_INVENTORY_FILE")
-  CMD+=("-Dinput.security.policy.file=$PARAM_SECURITY_POLICY_FILE")
-  # FIXME-RTU: consider where to set these active Ids
-  CMD+=("-Dparam.security.policy.active.ids=assessment_enrichment_configuration")
   CMD+=("-Doutput.dashboard.file=$OUTPUT_DASHBOARD_FILE")
+  CMD+=("-Dparam.security.policy.file=$PARAM_SECURITY_POLICY_FILE")
+  CMD+=("-Dparam.security.policy.active.ids=assessment_enrichment_configuration")
   CMD+=("-Denv.vulnerability.mirror.dir=$EXTERNAL_VULNERABILITY_MIRROR_DIR/.database")
 
   log_config "input.inventory.file=$ADVISED_INVENTORY_FILE
-              input.security.policy.file=$PARAM_SECURITY_POLICY_FILE" "
+              param.security.policy.file=$PARAM_SECURITY_POLICY_FILE" "
               output.dashboard.file=$OUTPUT_DASHBOARD_FILE"
 
   log_mvn "${CMD[*]}"

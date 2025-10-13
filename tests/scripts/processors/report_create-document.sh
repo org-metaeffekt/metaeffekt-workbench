@@ -35,7 +35,7 @@ run_maven_command() {
   CMD+=("-Dinput.reference.inventory.file=$INPUT_REFERENCE_INVENTORY_FILE")
   CMD+=("-Dinput.reference.license.dir=$INPUT_REFERENCE_LICENSE_DIR")
   CMD+=("-Dinput.reference.component.dir=$INPUT_REFERENCE_COMPONENT_DIR")
-  CMD+=("-Dinput.security.policy.dir=$INPUT_SECURITY_POLICY_DIR")
+  CMD+=("-Dparam.security.policydir=$INPUT_SECURITY_POLICY_DIR")
   CMD+=("-Doutput.document.file=$OUTPUT_DOCUMENT_FILE")
   CMD+=("-Doutput.computed.inventory.path=$OUTPUT_COMPUTED_INVENTORY_DIR")
   CMD+=("-Dparam.document.type=$PARAM_DOCUMENT_TYPE")
@@ -61,7 +61,7 @@ run_maven_command() {
               input.reference.inventory.file=$INPUT_REFERENCE_INVENTORY_FILE
               input.reference.license.dir=$INPUT_REFERENCE_LICENSE_DIR
               input.reference.component.dir=$INPUT_REFERENCE_COMPONENT_DIR
-              input.security.policy.dir=$INPUT_SECURITY_POLICY_DIR" "
+              param.security.policydir=$INPUT_SECURITY_POLICY_DIR" "
               output.document.file=$OUTPUT_DOCUMENT_FILE
               output.computed.inventory.path=$OUTPUT_COMPUTED_INVENTORY_DIR"
 

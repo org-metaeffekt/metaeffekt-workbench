@@ -57,22 +57,18 @@ DASHBOARD_SUBJECT="OpenSSL 3.3.1"
 
 CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/advise/advise_enrich-inventory.xml" process-resources)
 CMD+=("-Dinput.inventory.file=$ANALYZED_INVENTORY_FILE")
-CMD+=("-Dinput.security.policy.file=$PARAM_SECURITY_POLICY_FILE")
-# FIXME-RTU: consider where to set these active Ids
+CMD+=("-Doutput.inventory.file=$ADVISED_INVENTORY_FILE")
+CMD+=("-Doutput.tmp.dir=$PROCESSOR_TMP_DIR")
+
+CMD+=("-Dparam.security.policy.file=$PARAM_SECURITY_POLICY_FILE")
 CMD+=("-Dparam.security.policy.active.ids=assessment_enrichment_configuration")
 CMD+=("-Dparam.dashboard.title=OpenSSL 3.3.1 Assessment")
 CMD+=("-Dparam.dashboard.subtitle=")
 CMD+=("-Dparam.dashboard.footer=OpenSSL 3.3.1")
+CMD+=("-Dparam.assessment.dir=$ASSESSMENT_DIR")
+CMD+=("-Dparam.correlation.dir=$CORRELATION_DIR")
+CMD+=("-Dparam.context.dir=$CONTEXT_DIR")
 
-# these are params
-CMD+=("-Dinput.assessment.dir=$ASSESSMENT_DIR")
-CMD+=("-Dinput.correlation.dir=$CORRELATION_DIR")
-CMD+=("-Dinput.context.dir=$CONTEXT_DIR")
-
-# these are envs
-
-CMD+=("-Doutput.inventory.file=$ADVISED_INVENTORY_FILE")
-CMD+=("-Doutput.tmp.dir=$PROCESSOR_TMP_DIR")
 CMD+=("-Denv.vulnerability.mirror.dir=$EXTERNAL_VULNERABILITY_MIRROR_DIR/.database")
 
 log_mvn "${CMD[*]}"
@@ -88,14 +84,14 @@ log_info "Running generate_vulnerability_assessment_dashboard process."
 OUTPUT_DASHBOARD_FILE="$ADVISED_DIR/dashboards/openssl-3.3.1-dashboard.html"
 CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/advise/advise_create-dashboard.xml" process-resources)
 CMD+=("-Dinput.inventory.file=$ADVISED_INVENTORY_FILE")
-CMD+=("-Dinput.security.policy.file=$PARAM_SECURITY_POLICY_FILE")
+CMD+=("-Dparam.security.policy.file=$PARAM_SECURITY_POLICY_FILE")
 # FIXME-RTU: consider where to set these active Ids
 CMD+=("-Dparam.security.policy.active.ids=assessment_enrichment_configuration")
 CMD+=("-Doutput.dashboard.file=$OUTPUT_DASHBOARD_FILE")
 CMD+=("-Denv.vulnerability.mirror.dir=$EXTERNAL_VULNERABILITY_MIRROR_DIR/.database")
 
 log_config "input.inventory.file=$ADVISED_INVENTORY_FILE
-            input.security.policy.file=$PARAM_SECURITY_POLICY_FILE" "
+            param.security.policy.file=$PARAM_SECURITY_POLICY_FILE" "
             output.dashboard.file=$OUTPUT_DASHBOARD_FILE"
 
 log_mvn "${CMD[*]}"
