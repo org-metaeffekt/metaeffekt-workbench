@@ -95,7 +95,7 @@ pipeline {
             }
         }
 
-        stage('Run workspace-001 tests - sample-product_de') {
+        stage('Run workspace-001 tests - sample-product_en') {
             steps {
                 withMaven(maven: 'maven-3.9.6') {
                     sh './tests/scripts/pipelines/001_sample-product-pipeline_en.sh'
