@@ -1,0 +1,108 @@
+#!/usr/bin/env groovy
+pipeline {
+    agent {
+        // bound to astronaut as various pre-conditions are required:
+        // - docker required
+        label 'metaeffekt-astronaut'
+    }
+
+    stages {
+        stage('Checkout metaeffekt-kontinuum') {
+            steps {
+                script {
+                    sh 'mkdir -p .metaeffekt-kontinuum'
+                    dir ('.metaeffekt-kontinuum') {
+                        withCredentials([usernamePassword(credentialsId: 'JenkinsGithubAccess', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                            git url: 'https://github.com/org-metaeffekt/metaeffekt-kontinuum.git', branch: 'main', credentialsId: 'JenkinsGithubAccess'
+                        }
+                    }
+                }
+            }
+        }
+
+        /*
+        stage('Checkout metaeffekt-core') {
+            steps {
+                script {
+                    sh 'mkdir -p .metaeffekt-core'
+                    dir ('.metaeffekt-core') {
+                        withCredentials([usernamePassword(credentialsId: 'JenkinsGithubAccess', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                            git url: 'https://github.com/org-metaeffekt/metaeffekt-core.git', branch: 'master', credentialsId: 'JenkinsGithubAccess'
+                        }
+                    }
+                }
+            }
+        }
+        stage('Build metaeffekt-core (skipping tests and javadoc)') {
+            steps {
+                dir ('.metaeffekt-core') {
+                    withMaven(jdk: 'ZULU8_mac_mini', maven: 'maven-3.9.6') {
+                        sh 'mvn -B clean install -DskipTests -Dmaven.javadoc.skip=true'
+                    }
+                }
+            }
+        }
+
+        stage('Checkout metaeffekt-artifact-analysis') {
+            steps {
+                script {
+                    sh 'mkdir -p .metaeffekt-artifact-analysis'
+                    dir ('.metaeffekt-artifact-analysis') {
+                        withCredentials([usernamePassword(credentialsId: 'JenkinsGithubAccess', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                            git url: 'https://github.com/org-metaeffekt/metaeffekt-artifact-analysis.git', branch: 'main', credentialsId: 'JenkinsGithubAccess'
+                        }
+                    }
+                }
+            }
+        }
+        stage('Build metaeffekt-artifact-analysis (skipping tests)') {
+            steps {
+                dir ('.metaeffekt-artifact-analysis') {
+                    withMaven(jdk: 'ZULU8_mac_mini', maven: 'maven-3.9.6') {
+                        sh 'mvn -B clean install -DskipTests  -Dmaven.javadoc.skip=true'
+                    }
+                }
+            }
+        }
+        */
+
+        stage('Configure metaeffekt-workbench') {
+            steps {
+                sh 'echo "EXTERNAL_KONTINUUM_DIR=\"$(pwd)/.metaeffekt-kontinuum\"" > external.rc'
+
+                // this is effectively workspace/.vulnerability-mirror; so next to the jobs workspace; reconsider as shared
+                sh 'echo "EXTERNAL_VULNERABILITY_MIRROR_DIR=\"$(dirname $(pwd))/.vulnerability-mirror\"" >> external.rc'
+
+                // specify mirror source
+                sh 'echo "EXTERNAL_VULNERABILITY_MIRROR_URL=\"http://ae-scanner/mirror/index/ae-mirror-index_gen4.tar.gz\"" >> external.rc'
+                sh 'echo "EXTERNAL_VULNERABILITY_MIRROR_NAME=\"ae-mirror-index_gen4.tar.gz\"" >> external.rc'
+            }
+        }
+
+        stage('Run workspace-001 tests - openssl_en') {
+            steps {
+                withMaven(maven: 'maven-3.9.6') {
+                    sh './tests/scripts/pipelines/001_openssl-pipeline_en.sh'
+                }
+            }
+        }
+
+        stage('Run workspace-001 tests - sample-product_de') {
+            steps {
+                withMaven(maven: 'maven-3.9.6') {
+                    sh './tests/scripts/pipelines/001_sample-product-pipeline_de.sh'
+                }
+            }
+        }
+
+        stage('Run workspace-001 tests - sample-product_en') {
+            steps {
+                withMaven(maven: 'maven-3.9.6') {
+                    sh './tests/scripts/pipelines/001_sample-product-pipeline_en.sh'
+                }
+            }
+        }
+
+    }
+
+}
