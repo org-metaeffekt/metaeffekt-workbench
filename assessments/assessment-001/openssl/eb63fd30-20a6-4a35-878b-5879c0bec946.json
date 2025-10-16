@@ -1,0 +1,24 @@
+{
+  "uid": "b9a510f5-1f80-4eca-bf6b-e485dcd5d50e",
+  "active": true,
+  "isAutoAppendedForDisplay": false,
+  "discardOnSubsequentEvents": false,
+  "discardPriorEvents": false,
+  "discardEventsUntilBaseline": false,
+  "scope": "INVENTORY",
+  "priority": 0,
+  "reviewedAdvisories": [],
+  "author": "DonQuixote",
+  "authorId": "don_quixote",
+  "createdForContext": "AID-OpenSSL",
+  "cvssV3P1": {
+    "lowerMetric": [
+      {
+        "metrics": "MPR:L",
+        "rationale": "Priv"
+      }
+    ]
+  },
+  "date": 1759841103093,
+  "rationale": "Privileges required."
+}

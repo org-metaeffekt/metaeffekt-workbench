@@ -45,6 +45,30 @@ if ! mkdir -p "$ANALYZED_DIR" "$ADVISED_DIR" "$REPORTED_DIR" "$TMP_DIR" ; then
     exit 1
 fi
 
+log_info "Running update_mirror process."
+
+MIRROR_TARGET_DIR="$EXTERNAL_VULNERABILITY_MIRROR_DIR"
+MIRROR_ARCHIVE_URL="$EXTERNAL_VULNERABILITY_MIRROR_URL"
+MIRROR_ARCHIVE_NAME="$EXTERNAL_VULNERABILITY_MIRROR_NAME"
+CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/mirror/mirror_download-index.xml" compile)
+CMD+=("-Denv.vulnerability.mirror.dir=$MIRROR_TARGET_DIR")
+CMD+=("-Dparam.mirror.archive.url=$MIRROR_ARCHIVE_URL")
+CMD+=("-Dparam.mirror.archive.name=$MIRROR_ARCHIVE_NAME")
+
+log_config "" "env.vulnerability.mirror.dir=$MIRROR_TARGET_DIR"
+
+log_mvn "${CMD[*]}"
+
+if "${CMD[@]}" 2>&1 | while IFS= read -r line; do log_mvn "$line"; done; then
+    log_info "Successfully ran update_mirror process."
+else
+    log_error "Failed to run update_mirror process because the maven execution was unsuccessful."
+    return 1
+fi
+
+
+
+
 log_info "Running enrich_inventory process."
 
 ANALYZED_INVENTORY_FILE="$ANALYZED_DIR/openssl-inventory.xls"
@@ -57,6 +81,8 @@ DASHBOARD_SUBJECT="OpenSSL 3.3.1"
 
 CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/advise/advise_enrich-inventory.xml" process-resources)
 CMD+=("-Dinput.inventory.file=$ANALYZED_INVENTORY_FILE")
+CMD+=("-Dparam.security.policy.file=$PARAM_SECURITY_POLICY_FILE")
+# FIXME-RTU: consider where to set these active Ids
 CMD+=("-Doutput.inventory.file=$ADVISED_INVENTORY_FILE")
 CMD+=("-Doutput.tmp.dir=$PROCESSOR_TMP_DIR")
 
@@ -65,6 +91,8 @@ CMD+=("-Dparam.security.policy.active.ids=assessment_enrichment_configuration")
 CMD+=("-Dparam.dashboard.title=OpenSSL 3.3.1 Assessment")
 CMD+=("-Dparam.dashboard.subtitle=")
 CMD+=("-Dparam.dashboard.footer=OpenSSL 3.3.1")
+
+# these are params
 CMD+=("-Dparam.assessment.dir=$ASSESSMENT_DIR")
 CMD+=("-Dparam.correlation.dir=$CORRELATION_DIR")
 CMD+=("-Dparam.context.dir=$CONTEXT_DIR")
@@ -125,12 +153,15 @@ CMD+=("-Dinput.reference.inventory.file=$ENV_REFERENCE_INVENTORY_DIR/artifact-in
 CMD+=("-Dinput.reference.license.dir=$ENV_REFERENCE_LICENSES_DIR")
 CMD+=("-Dinput.reference.component.dir=$ENV_REFERENCE_COMPONENTS_DIR")
 
+  # FIXME: rather params
 CMD+=("-Dinput.asset.descriptor.dir=$ENV_DESCRIPTOR_DIR")
 CMD+=("-Dinput.asset.descriptor.path=$ENV_VR_DESCRIPTOR_PATH")
+
 CMD+=("-Dparam.security.policy.file=$PARAM_SECURITY_POLICY_FILE")
 
 CMD+=("-Doutput.document.file=$OUTPUT_VR_FILE")
 
+ # do not change parameter name, needed by asset descriptor
 CMD+=("-Doutput.computed.inventory.path=$OUTPUT_COMPUTED_INVENTORY_DIR") # Do not change parameter name, needed by asset descriptor
 
 CMD+=("-Dparam.asset.id=$PARAM_ASSET_ID")
