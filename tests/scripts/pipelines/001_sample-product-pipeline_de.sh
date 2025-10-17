@@ -56,12 +56,12 @@ update_mirror() {
   MIRROR_TARGET_DIR="$EXTERNAL_VULNERABILITY_MIRROR_DIR"
   MIRROR_ARCHIVE_URL="$EXTERNAL_VULNERABILITY_MIRROR_URL"
   MIRROR_ARCHIVE_NAME="$EXTERNAL_VULNERABILITY_MIRROR_NAME"
-  CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/mirror/mirror_download-index.xml" compile -P withoutProxy)
-  CMD+=("-Doutput.vulnerability.mirror.dir=$MIRROR_TARGET_DIR")
+  CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/mirror/mirror_download-index.xml" compile)
+  CMD+=("-Denv.vulnerability.mirror.dir=$MIRROR_TARGET_DIR")
   CMD+=("-Dparam.mirror.archive.url=$MIRROR_ARCHIVE_URL")
   CMD+=("-Dparam.mirror.archive.name=$MIRROR_ARCHIVE_NAME")
 
-  log_config "" "output.vulnerability.mirror.dir=$MIRROR_TARGET_DIR"
+  log_config "" "env.vulnerability.mirror.dir=$MIRROR_TARGET_DIR"
 
   log_mvn "${CMD[*]}"
 
