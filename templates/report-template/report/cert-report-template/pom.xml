@@ -140,8 +140,10 @@
                                 <cvssVulnerabilityCountLimit>400</cvssVulnerabilityCountLimit>
                                 <securityPolicy>
                                     <files>
-                                        <file>${policy.basedir}/security-policy-02.json</file>
+                                        <file>${security.policy.file}</file>
                                     </files>
+                                    <!-- FIXME-RTU: consider where to set these active Ids -->
+                                    <activeIds>cert_extended_configuration</activeIds>
                                 </securityPolicy>
                             </configuration>
                         </execution>
@@ -166,8 +168,10 @@
 
                                 <securityPolicy>
                                     <files>
-                                        <file>${policy.basedir}/security-policy-03.json</file>
+                                        <file>${security.policy.file}</file>
                                     </files>
+                                    <!-- FIXME-RTU: consider where to set these active Ids -->
+                                    <activeIds>cert_configuration</activeIds>
                                 </securityPolicy>
                             </configuration>
                         </execution>
@@ -283,8 +287,8 @@
                         <configuration>
                             <rules>
                                 <requireProperty>
-                                    <property>policy.basedir</property>
-                                    <message>You must set the parameter 'policy.basedir' to specify the directory containing the security policy files.</message>
+                                    <property>security.policy.file</property>
+                                    <message>You must set the parameter 'security.policy.file' to specify the location of the security policy file.</message>
                                 </requireProperty>
                                 <requireProperty>
                                     <property>overview.advisors</property>

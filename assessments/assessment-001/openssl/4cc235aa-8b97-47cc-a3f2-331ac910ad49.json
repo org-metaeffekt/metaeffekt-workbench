@@ -1,0 +1,31 @@
+{
+  "uid": "e4e9e6ef-f6cc-4ea0-a258-b1975abf5d46",
+  "active": true,
+  "isAutoAppendedForDisplay": false,
+  "discardOnSubsequentEvents": false,
+  "discardPriorEvents": false,
+  "discardEventsUntilBaseline": false,
+  "scope": "VULNERABILITY",
+  "priority": 0,
+  "reviewedAdvisories": [],
+  "author": "DonQuixote",
+  "authorId": "don_quixote",
+  "rationale": "APN is not used.",
+  "measures": "Configuration review is a permanent task. The procesure was extended to very APN is not used.",
+  "risk": "There is the remaining risk that an attacker may reconfigure the services. In case this is possible already other controls have failed.",
+  "createdForContext": "AID-OpenSSL",
+  "status": "not applicable",
+  "date": 1759814135699,
+  "affects": {
+    "affectedVulnerabilities": [
+      "CVE-2024-5535"
+    ],
+    "affectedCpe": [],
+    "affectedCwe": [],
+    "affectedConditions": [],
+    "cachedAffectedConditions": [],
+    "labelsIncludes": [],
+    "labelsExcludes": []
+  },
+  "createdForVulnerability": "CVE-2024-5535"
+}
