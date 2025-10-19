@@ -39,8 +39,9 @@ set_global_variables() {
 
   ENV_DESCRIPTOR_DIR="$WORKBENCH_DIR/descriptors"
   ENV_SDA_DESCRIPTOR_PATH="asset-descriptor_GENERIC-software-distribution-annex.yaml"
-  ENV_VR_DESCRIPTOR_PATH="asset-descriptor_GENERIC-vulnerability-report.yaml"
   ENV_CR_DESCRIPTOR_PATH="asset-descriptor_GENERIC-cert-report.yaml"
+  ENV_VR_DESCRIPTOR_PATH="asset-descriptor_GENERIC-vulnerability-report.yaml"
+  ENV_VSR_DESCRIPTOR_PATH="asset-descriptor_GENERIC-vulnerability-summary-report.yaml"
 }
 
 create_target_directories() {
@@ -208,6 +209,75 @@ enrich_inventory() {
   fi
 }
 
+generate_vulnerability_summary_report() {
+  log_info "Running generate_vulnerability_summary_report process."
+
+    OUTPUT_VSR_FILE="$REPORTED_DIR/vulnerability-summary-report-en.pdf"
+    OUTPUT_COMPUTED_INVENTORY_DIR="$TMP_DIR/report"
+
+    PARAM_DOCUMENT_TYPE="VSR"
+    PARAM_DOCUMENT_LANGUAGE="en"
+    PARAM_ASSET_ID="Sample Product"
+    PARAM_ASSET_NAME="SampleProduct"
+    PARAM_ASSET_VERSION="1.0.0"
+    PARAM_PRODUCT_NAME="Sample Product"
+    PARAM_PRODUCT_VERSION="1.0.0"
+    PARAM_PRODUCT_WATERMARK="Sample"
+    PARAM_OVERVIEW_ADVISORS="" # leave empty as merging the advisors does not require this parameter for vsr
+
+    CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/report/report_create-document.xml" verify -X)
+    # CMD+=("-Dinput.inventory.file=$ADVISED_INVENTORY_FILE") original command for pipeline
+    CMD+=("-Dinput.inventory.file=$ENV_REFERENCE_INVENTORY_DIR")
+
+    CMD+=("-Dinput.reference.inventory.file=$ENV_REFERENCE_INVENTORY_DIR/artifact-inventory.xls")
+    CMD+=("-Dinput.reference.license.dir=$ENV_REFERENCE_LICENSES_DIR")
+    CMD+=("-Dinput.reference.component.dir=$ENV_REFERENCE_COMPONENTS_DIR")
+
+    CMD+=("-Dinput.asset.descriptor.dir=$ENV_DESCRIPTOR_DIR")
+    CMD+=("-Dinput.asset.descriptor.path=$ENV_VSR_DESCRIPTOR_PATH")
+    CMD+=("-Dparam.security.policy.file=$PARAM_SECURITY_POLICY_FILE")
+
+    CMD+=("-Doutput.document.file=$OUTPUT_VSR_FILE")
+
+    CMD+=("-Doutput.computed.inventory.path=$OUTPUT_COMPUTED_INVENTORY_DIR") # Do not change parameter name, needed by asset descriptor
+
+    CMD+=("-Dparam.asset.id=$PARAM_ASSET_ID")
+    CMD+=("-Dparam.asset.name=$PARAM_ASSET_NAME")
+    CMD+=("-Dparam.asset.version=$PARAM_ASSET_VERSION")
+    CMD+=("-Dparam.product.version=$PARAM_PRODUCT_VERSION")
+    CMD+=("-Dparam.product.name=$PARAM_PRODUCT_NAME")
+    CMD+=("-Dparam.product.watermark=$PARAM_PRODUCT_WATERMARK")
+    CMD+=("-Dparam.document.type=$PARAM_DOCUMENT_TYPE")
+    CMD+=("-Dparam.document.language=$PARAM_DOCUMENT_LANGUAGE")
+    CMD+=("-Dparam.overview.advisors=$PARAM_OVERVIEW_ADVISORS")
+
+    CMD+=("-Dparam.template.dir=$ENV_REPORT_TEMPLATE_DIR")
+
+    CMD+=("-Dparam.property.selector.organization=metaeffekt")
+
+    CMD+=("-Denv.vulnerability.mirror.dir=$EXTERNAL_VULNERABILITY_MIRROR_DIR/.database")
+    CMD+=("-Denv.workbench.processors.dir=$PROCESSORS_DIR")
+    CMD+=("-Denv.kontinuum.processors.dir=$KONTINUUM_PROCESSORS_DIR")
+
+    log_config "input.inventory.file=$ADVISED_INVENTORY_FILE
+                input.reference.inventory.file=$ENV_REFERENCE_INVENTORY_DIR/artifact-inventory.xls
+                input.reference.license.dir=$ENV_REFERENCE_LICENSES_DIR
+                input.reference.component.dir=$ENV_REFERENCE_COMPONENTS_DIR
+                input.asset.descriptor.dir=$ENV_DESCRIPTOR_DIR
+                input.asset.descriptor.path=$ENV_VR_DESCRIPTOR_PATH" "
+                output.document.file=$OUTPUT_VSR_FILE
+                output.computed.inventory.path=$OUTPUT_COMPUTED_INVENTORY_DIR"
+
+    log_mvn "${CMD[*]}"
+
+    if "${CMD[@]}" 2>&1 | while IFS= read -r line; do log_mvn "$line"; done; then
+        log_info "Successfully ran generate_vulnerability_summary_report"
+    else
+        log_error "Failed to run generate_vulnerability_summary_report because the maven execution was unsuccessful"
+        return 1
+    fi
+}
+
 generate_vulnerability_report() {
   log_info "Running generate_vulnerability_report process."
 
@@ -300,7 +370,7 @@ generate_cert_report() {
   CMD+=("-Dinput.reference.component.dir=$ENV_REFERENCE_COMPONENTS_DIR")
 
   CMD+=("-Dinput.asset.descriptor.dir=$ENV_DESCRIPTOR_DIR")
-  CMD+=("-Dinput.asset.descriptor.path=$ENV_CR_DESCRIPTOR_PATH")
+  CMD+=("-Dinput.asset.descriptor.path=$ENV_VSR_DESCRIPTOR_PATH")
   CMD+=("-Dparam.security.policy.file=$PARAM_SECURITY_POLICY_FILE")
 
   CMD+=("-Doutput.document.file=$OUTPUT_CR_FILE")
@@ -378,13 +448,14 @@ main() {
   logger_init "$LOG_LEVEL" "$LOG_FILE" true
   create_target_directories
 
-  update_mirror
+  #update_mirror
   enrich_inventory_with_reference
-  create_annex
+  #create_annex
   enrich_inventory
-  generate_vulnerability_report
-  generate_cert_report
-  generate_vulnerability_assessment_dashboard
+  generate_vulnerability_summary_report
+  #generate_vulnerability_report
+  #generate_cert_report
+  #generate_vulnerability_assessment_dashboard
 }
 
 main "$@"

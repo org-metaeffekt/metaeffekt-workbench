@@ -120,5 +120,15 @@
     "configuration": {
       "includeVulnerabilitiesWithAdvisoryReviewStatus": ["new", "in review", "reviewed"]
     }
+  },
+  {
+    "id": "summary-report-overall",
+    "configuration": {
+      "vulnerabilityStatusDisplayMapperName": "default",
+      "includeAdvisoryTypes": [
+        "alert",
+        "news"
+      ]
+    }
   }
 ]
