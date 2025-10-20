@@ -25,8 +25,8 @@
     <packaging>pom</packaging>
 
     <properties>
-        <ae.core.version>0.143.0</ae.core.version>
-        <ae.artifact.analysis.version>0.146.0</ae.artifact.analysis.version>
+        <ae.core.version>HEAD-SNAPSHOT</ae.core.version>
+        <ae.artifact.analysis.version>HEAD-SNAPSHOT</ae.artifact.analysis.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>

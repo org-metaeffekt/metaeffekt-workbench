@@ -51,6 +51,8 @@ MIRROR_TARGET_DIR="$EXTERNAL_VULNERABILITY_MIRROR_DIR"
 MIRROR_ARCHIVE_URL="$EXTERNAL_VULNERABILITY_MIRROR_URL"
 MIRROR_ARCHIVE_NAME="$EXTERNAL_VULNERABILITY_MIRROR_NAME"
 CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/mirror/mirror_download-index.xml" compile)
+[ -n "${AE_CORE_VERSION:-}" ] && CMD+=("-Dae.core.version=$AE_CORE_VERSION")
+[ -n "${AE_ARTIFACT_ANALYSIS_VERSION:-}" ] && CMD+=("-Dae.artifact.analysis.version=$AE_ARTIFACT_ANALYSIS_VERSION")
 CMD+=("-Denv.vulnerability.mirror.dir=$MIRROR_TARGET_DIR")
 CMD+=("-Dparam.mirror.archive.url=$MIRROR_ARCHIVE_URL")
 CMD+=("-Dparam.mirror.archive.name=$MIRROR_ARCHIVE_NAME")
@@ -80,6 +82,8 @@ PROCESSOR_TMP_DIR="$TMP_DIR/processor"
 DASHBOARD_SUBJECT="OpenSSL 3.3.1"
 
 CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/advise/advise_enrich-inventory.xml" process-resources)
+[ -n "${AE_CORE_VERSION:-}" ] && CMD+=("-Dae.core.version=$AE_CORE_VERSION")
+[ -n "${AE_ARTIFACT_ANALYSIS_VERSION:-}" ] && CMD+=("-Dae.artifact.analysis.version=$AE_ARTIFACT_ANALYSIS_VERSION")
 CMD+=("-Dinput.inventory.file=$ANALYZED_INVENTORY_FILE")
 CMD+=("-Dparam.security.policy.file=$PARAM_SECURITY_POLICY_FILE")
 # FIXME-RTU: consider where to set these active Ids
@@ -111,6 +115,8 @@ log_info "Running generate_vulnerability_assessment_dashboard process."
 
 OUTPUT_DASHBOARD_FILE="$ADVISED_DIR/dashboards/openssl-3.3.1-dashboard.html"
 CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/advise/advise_create-dashboard.xml" process-resources)
+[ -n "${AE_CORE_VERSION:-}" ] && CMD+=("-Dae.core.version=$AE_CORE_VERSION")
+[ -n "${AE_ARTIFACT_ANALYSIS_VERSION:-}" ] && CMD+=("-Dae.artifact.analysis.version=$AE_ARTIFACT_ANALYSIS_VERSION")
 CMD+=("-Dinput.inventory.file=$ADVISED_INVENTORY_FILE")
 CMD+=("-Dparam.security.policy.file=$PARAM_SECURITY_POLICY_FILE")
 # FIXME-RTU: consider where to set these active Ids
@@ -147,6 +153,8 @@ PARAM_PRODUCT_WATERMARK="OpenSSL"
 PARAM_OVERVIEW_ADVISORS="CERT_FR"
 
 CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/report/report_create-document.xml" verify)
+[ -n "${AE_CORE_VERSION:-}" ] && CMD+=("-Dae.core.version=$AE_CORE_VERSION")
+[ -n "${AE_ARTIFACT_ANALYSIS_VERSION:-}" ] && CMD+=("-Dae.artifact.analysis.version=$AE_ARTIFACT_ANALYSIS_VERSION")
 CMD+=("-Dinput.inventory.file=$ADVISED_INVENTORY_FILE")
 
 CMD+=("-Dinput.reference.inventory.file=$ENV_REFERENCE_INVENTORY_DIR/artifact-inventory.xls")
