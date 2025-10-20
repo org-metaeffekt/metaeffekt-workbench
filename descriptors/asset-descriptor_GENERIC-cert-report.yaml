@@ -68,7 +68,7 @@ documents:
             assetName: "${asset.name}"
             assetVersion: "${asset.version}"
       "summary-report":
-        type: VULNERABILITY_SUMMARY_PART
+        type: VULNERABILITY_SUMMARY_REPORT
         params:
           securityPolicyFile: "${security.policy.file}"
           # FIXME-RTU: consider where to set these active Ids
