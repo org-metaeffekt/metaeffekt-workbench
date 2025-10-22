@@ -63,7 +63,7 @@ update_mirror() {
   CMD+=("-Dparam.mirror.archive.url=$MIRROR_ARCHIVE_URL")
   CMD+=("-Dparam.mirror.archive.name=$MIRROR_ARCHIVE_NAME")
 
-  log_config "" "env.vulnerability.mirror.dir=$MIRROR_TARGET_DIR"
+  log_config "" ""
 
   log_mvn "${CMD[*]}"
 
@@ -203,8 +203,7 @@ enrich_inventory() {
 
   CMD+=("-Denv.vulnerability.mirror.dir=$EXTERNAL_VULNERABILITY_MIRROR_DIR/.database")
 
-  log_config "input.inventory.file=$CURATED_INVENTORY_DIR/$CURATED_INVENTORY_PATH
-              param.security.policy.file=$PARAM_SECURITY_POLICY_FILE" "
+  log_config "input.inventory.file=$CURATED_INVENTORY_DIR/$CURATED_INVENTORY_PATH" "
               output.inventory.file=$ADVISED_INVENTORY_FILE
               output.tmp.dir=$PROCESSOR_TMP_DIR"
 

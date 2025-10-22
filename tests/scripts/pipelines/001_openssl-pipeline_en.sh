@@ -7,7 +7,6 @@ readonly SELF_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 if [ -f "$SELF_DIR/../preload.sh" ];then
   source "$SELF_DIR/../preload.sh"
-  echo "Successfully sourced preload.sh file"
 else
   echo "Terminating: preload.sh script not found."
   exit 1
@@ -57,7 +56,7 @@ CMD+=("-Denv.vulnerability.mirror.dir=$MIRROR_TARGET_DIR")
 CMD+=("-Dparam.mirror.archive.url=$MIRROR_ARCHIVE_URL")
 CMD+=("-Dparam.mirror.archive.name=$MIRROR_ARCHIVE_NAME")
 
-log_config "" "env.vulnerability.mirror.dir=$MIRROR_TARGET_DIR"
+log_config "" ""
 
 log_mvn "${CMD[*]}"
 
@@ -124,9 +123,7 @@ CMD+=("-Dparam.security.policy.active.ids=assessment_enrichment_configuration")
 CMD+=("-Doutput.dashboard.file=$OUTPUT_DASHBOARD_FILE")
 CMD+=("-Denv.vulnerability.mirror.dir=$EXTERNAL_VULNERABILITY_MIRROR_DIR/.database")
 
-log_config "input.inventory.file=$ADVISED_INVENTORY_FILE
-            param.security.policy.file=$PARAM_SECURITY_POLICY_FILE" "
-            output.dashboard.file=$OUTPUT_DASHBOARD_FILE"
+log_config "input.inventory.file=$ADVISED_INVENTORY_FILE" "output.dashboard.file=$OUTPUT_DASHBOARD_FILE"
 
 log_mvn "${CMD[*]}"
 
