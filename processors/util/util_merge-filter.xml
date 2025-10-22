@@ -51,9 +51,9 @@
                             <!-- THIS IS CORRECT: Transformations do not use the 0.135.x branch so we need the new policy. -->
                             <securityPolicy>
                                 <files>
-                                    <file>${securityPolicyFile}</file>
+                                    <file>${param.security.policy.file}</file>
                                 </files>
-                                <activeIds>${securityPolicyActiveIds}</activeIds>
+                                <activeIds>${param.security.policy.active.ids}</activeIds>
                             </securityPolicy>
                         </configuration>
                     </execution>
@@ -87,6 +87,12 @@
                                     <property>param.vulnerability.advisory.filter</property>
                                     <message>
                                         You must set the parameter 'param.vulnerability.advisory.filter' to specify the advisor to filter the inventory by.
+                                    </message>
+                                </requireProperty>
+                                <requireProperty>
+                                    <property>param.security.policy.file</property>
+                                    <message>
+                                        You must set the parameter 'param.security.policy.file' to specify the location of the security policy file.
                                     </message>
                                 </requireProperty>
                             </rules>
