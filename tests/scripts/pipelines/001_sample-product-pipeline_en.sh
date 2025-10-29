@@ -227,7 +227,7 @@ generate_vulnerability_summary_report() {
 
     CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/report/report_create-document.xml" verify -X)
     # CMD+=("-Dinput.inventory.file=$ADVISED_INVENTORY_FILE") original command for pipeline
-    CMD+=("-Dinput.inventory.file=$ENV_REFERENCE_INVENTORY_DIR")
+    CMD+=("-D/Users/romeo/metaeffekt/Repositories/metaeffekt-workbench/tests/resources/workspace-001/sample-product-1.0.0/99_tmp/report/SampleProduct-vulnerability-report-inventory.xlsx")
 
     CMD+=("-Dinput.reference.inventory.file=$ENV_REFERENCE_INVENTORY_DIR/artifact-inventory.xls")
     CMD+=("-Dinput.reference.license.dir=$ENV_REFERENCE_LICENSES_DIR")
@@ -370,7 +370,7 @@ generate_cert_report() {
   CMD+=("-Dinput.reference.component.dir=$ENV_REFERENCE_COMPONENTS_DIR")
 
   CMD+=("-Dinput.asset.descriptor.dir=$ENV_DESCRIPTOR_DIR")
-  CMD+=("-Dinput.asset.descriptor.path=$ENV_VSR_DESCRIPTOR_PATH")
+  CMD+=("-Dinput.asset.descriptor.path=$ENV_CR_DESCRIPTOR_PATH")
   CMD+=("-Dparam.security.policy.file=$PARAM_SECURITY_POLICY_FILE")
 
   CMD+=("-Doutput.document.file=$OUTPUT_CR_FILE")

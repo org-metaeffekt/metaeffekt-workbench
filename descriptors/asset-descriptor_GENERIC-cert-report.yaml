@@ -30,7 +30,6 @@ transformations:
       advisoryProviders: '[{"name":"${overview.advisors}"}]'
       inputDatabase: "${input.database}"
       securityPolicyFile: "${security.policy.file}"
-      # FIXME-RTU: consider where to set these active Ids
       securityPolicyActiveIds: "cert_extended_configuration"
     maven:
       pom: "${workbench.processors.dir}/util/util_merge-filter-enrich-advisors.xml"
