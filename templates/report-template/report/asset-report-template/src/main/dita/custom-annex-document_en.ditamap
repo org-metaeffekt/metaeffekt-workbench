@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE bookmap PUBLIC "-//OASIS//DTD DITA BookMap//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/bookmap.dtd">
+<bookmap id="map_custom-annex-document_de" xml:lang="en">
+    <title>
+        <ph>${product.name} ${product.version}</ph>
+    </title>
+    <bookmeta>
+        <category>${product.name} - Bill of Materials</category>
+        <bookid>
+            <bookpartno>${document.id}</bookpartno>
+        </bookid>
+        <bookrights>
+            <copyrlast>
+                <year>${document.copyright.year}</year>
+            </copyrlast>
+            <bookowner>
+                <organization>${organization.name}</organization>
+            </bookowner>
+        </bookrights>
+    </bookmeta>
+
+    <frontmatter>
+        <topicref href="asset-report/gen/imprint/tpc_imprint.dita" />
+        <topicref href="asset-report/en/tpc_notice.dita" />
+        <booklists>
+            <toc/>
+        </booklists>
+    </frontmatter>
+
+    <chapter href="ae-common-content/bill-of-materials/en/tpc_open-source-based-bom.dita">
+        <topicref href="asset-report/gen/inventory/tpc_asset-report.dita" />
+        <topicref href="asset-report/gen/inventory/tpc_asset-licenses.dita" />
+        <topicref href="asset-report/gen/inventory/tpc_asset-no-license.dita" />
+    </chapter>
+
+    <chapter href="ae-common-content/bill-of-materials/en/tpc_open-source-based-bom.dita">
+        <topicref href="ae-common-content/components/en/tpc_provider-proprietary-components.dita" />
+        <topicref href="ae-common-content/components/en/tpc_proprietary-components.dita" />
+        <topicref href="ae-common-content/components/en/tpc_oss-components.dita" />
+        <topicref href="ae-common-content/components/en/tpc_public-domain-components.dita" />
+        <topicref href="asset-report/en/tpc_import-export-information.dita" />
+    </chapter>
+
+    <topicref format="ditamap" href="asset-report/gen/parts/map_software-distribution-annex-annex.ditamap" />
+
+    <backmatter>
+        <booklists>
+            <glossarylist>
+                <topicref format="ditamap" href="glossary/gen/glossary/en/gmap_glossary.ditamap" />
+            </glossarylist>
+        </booklists>
+        <topicref href="asset-report/en/tpc_report-history.dita" />
+    </backmatter>
+
+</bookmap>

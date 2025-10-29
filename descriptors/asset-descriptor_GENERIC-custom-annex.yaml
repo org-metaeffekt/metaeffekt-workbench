@@ -1,0 +1,35 @@
+inventories:
+  - "inventory":
+      file: "${inventory.path}"
+      type: INPUT
+  - "reference-inventory":
+      file: "${reference.inventory.path}"
+      type: INPUT
+      licensePath: "${reference.license.path}"
+      componentPath: "${reference.component.path}"
+
+documents:
+  "custom-annex-document":
+    type: ANNEX
+    language: "${document.language}"
+    parts:
+      "initial-license-documentation":
+        type: INITIAL_LICENSE_DOCUMENTATION
+        params:
+          targetComponentDir: "${target.component.dir}"
+          targetLicensesDir: "${target.licenses.dir}"
+        inventories:
+          - inventoryRef: "inventory"
+            referenceInventory: "reference-inventory"
+            assetName: "${product.name}"
+            assetVersion: "${product.version}"
+      "software-distribution-annex":
+        type: ANNEX
+        params:
+          targetComponentDir: "${target.component.dir}"
+          targetLicensesDir: "${target.licenses.dir}"
+        inventories:
+          - inventoryRef: "inventory"
+            referenceInventory: "reference-inventory"
+           # assetName: "${asset.name}"
+           # assetVersion: "${asset.version}"
