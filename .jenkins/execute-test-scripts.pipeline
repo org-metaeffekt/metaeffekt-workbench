@@ -103,6 +103,14 @@ pipeline {
             }
         }
 
+        stage('Run workspace-001 tests - windows11_en') {
+            steps {
+                withMaven(maven: 'maven-3.9.6') {
+                    sh './tests/scripts/pipelines/001_windows11-pipeline_en.sh'
+                }
+            }
+        }
+
         stage('Run workspace-001 tests - sample-product_de') {
             steps {
                 withMaven(maven: 'maven-3.9.6') {
@@ -119,9 +127,14 @@ pipeline {
             }
         }
 
-        stage('Publish OpenSSL Dashboard') {
+        stage('Publish Dashboards') {
             steps {
                 sh 'curl -T "tests/resources/workspace-001/openssl-3.3.1/04_advised/dashboards/openssl-3.3.1-dashboard.html" "ftp://$FTP_HOST/html/metaeffekt/dashboards/openssl-3.3.1-dashboard.html" --user $FTP_USER:$FTP_PASS'
+                sh 'curl -T "tests/resources/workspace-001/windows11/04_advised/dashboards/windows11-dashboard_patched.html" "ftp://$FTP_HOST/html/metaeffekt/dashboards/windows11-dashboard_patched.html" --user $FTP_USER:$FTP_PASS'
+                sh 'curl -T "tests/resources/workspace-001/windows11/04_advised/dashboards/windows11-dashboard_unpatched.html" "ftp://$FTP_HOST/html/metaeffekt/dashboards/windows11-dashboard_unpatched.html" --user $FTP_USER:$FTP_PASS'
+
+                // additional version (old link shared)
+                sh 'curl -T "tests/resources/workspace-001/windows11/04_advised/dashboards/windows11-dashboard_unpatched.html" "ftp://$FTP_HOST/html/metaeffekt/dashboards/windows11-dashboard.html" --user $FTP_USER:$FTP_PASS'
             }
         }
 
