@@ -138,7 +138,7 @@ ANALYZED_INVENTORY_FILE="$ANALYZED_DIR/windows11-inventory_unpatched.xlsx"
 ASSESSMENT_DIR="$WORKBENCH_DIR/assessments/assessment-001/windows11"
 CONTEXT_DIR="$WORKBENCH_DIR/contexts/example-001"
 CORRELATION_DIR="$WORKBENCH_DIR/correlations/shared"
-ADVISED_INVENTORY_FILE_UNPATCHED="$ADVISED_DIR/windows11-advised-inventory_unpatched.xlsx"
+ADVISED_INVENTORY_FILE="$ADVISED_DIR/windows11-advised-inventory_unpatched.xlsx"
 PROCESSOR_TMP_DIR="$TMP_DIR/processor"
 DASHBOARD_SUBJECT="Windows 11"
 
