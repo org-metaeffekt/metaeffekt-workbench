@@ -38,7 +38,7 @@ EOF
 
 source_case_file() {
     local case_file="$1"
-    if [[ -f "$CASES_DIR/$case_file" ]]; then
+    if [[ -f "$CASES_DIR/$case_file" ]]; then>
         source "$CASES_DIR/$case_file"
         log_info "Successfully sourced case file $(realpath "$CASES_DIR/$case_file")"
     elif [[ -f "$case_file" ]]; then
