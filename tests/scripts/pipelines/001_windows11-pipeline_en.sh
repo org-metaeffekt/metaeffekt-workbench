@@ -12,14 +12,6 @@ else
   exit 1
 fi
 
-if [ -f "$SELF_DIR/../shared.sh" ]; then
-  source "$SELF_DIR/../shared.sh"
-  echo "Successfully sourced shared.sh file."
-else
-  echo "Terminating: shared.sh script not found."
-  exit 1
-fi
-
 readonly WORKBENCH_DIR="$(realpath "$SELF_DIR/../../..")"
 readonly WORKSPACE_DIR="$WORKBENCH_DIR/tests/resources/workspace-001"
 readonly PROCESSORS_DIR="$WORKBENCH_DIR/processors"
@@ -64,7 +56,16 @@ CMD+=("-Denv.vulnerability.mirror.dir=$MIRROR_TARGET_DIR")
 CMD+=("-Dparam.mirror.archive.url=$MIRROR_ARCHIVE_URL")
 CMD+=("-Dparam.mirror.archive.name=$MIRROR_ARCHIVE_NAME")
 
-pass_command_info_to_logger "update_mirror"
+log_config "" ""
+
+log_mvn "${CMD[*]}"
+
+if "${CMD[@]}" 2>&1 | while IFS= read -r line; do log_mvn "$line"; done; then
+    log_info "Successfully ran update_mirror process."
+else
+    log_error "Failed to run update_mirror process because the maven execution was unsuccessful."
+    return 1
+fi
 
 
 # PATCHED
@@ -102,8 +103,12 @@ CMD+=("-Dparam.context.dir=$CONTEXT_DIR")
 
 CMD+=("-Denv.vulnerability.mirror.dir=$EXTERNAL_VULNERABILITY_MIRROR_DIR/.database")
 
-pass_command_info_to_logger "advise_enrich-inventory"
-
+log_mvn "${CMD[*]}"
+if "${CMD[@]}" 2>&1 | while IFS= read -r line; do log_mvn "$line"; done; then
+    log_info "Successfully ran enrich_inventory"
+else
+    log_error "Failed to run enrich_inventory because the maven execution was unsuccessful"
+fi
 log_info "Running generate_vulnerability_assessment_dashboard process."
 
 OUTPUT_DASHBOARD_FILE="$ADVISED_DIR/dashboards/windows11-dashboard_patched.html"
@@ -117,7 +122,13 @@ CMD+=("-Dparam.security.policy.active.ids=assessment_enrichment_configuration")
 CMD+=("-Doutput.dashboard.file=$OUTPUT_DASHBOARD_FILE")
 CMD+=("-Denv.vulnerability.mirror.dir=$EXTERNAL_VULNERABILITY_MIRROR_DIR/.database")
 
-pass_command_info_to_logger "generate_vulnerability_assessment_dashboard"
+log_mvn "${CMD[*]}"
+if "${CMD[@]}" 2>&1 | while IFS= read -r line; do log_mvn "$line"; done; then
+    log_info "Successfully ran generate_vulnerability_assessment_dashboard"
+else
+    log_error "Failed to run generate_vulnerability_assessment_dashboard because the maven execution was unsuccessful"
+    exit 1
+fi
 
 
 # UNPATCHED
@@ -155,8 +166,12 @@ CMD+=("-Dparam.context.dir=$CONTEXT_DIR")
 
 CMD+=("-Denv.vulnerability.mirror.dir=$EXTERNAL_VULNERABILITY_MIRROR_DIR/.database")
 
-pass_command_info_to_logger "advise_enrich-inventory"
-
+log_mvn "${CMD[*]}"
+if "${CMD[@]}" 2>&1 | while IFS= read -r line; do log_mvn "$line"; done; then
+    log_info "Successfully ran enrich_inventory"
+else
+    log_error "Failed to run enrich_inventory because the maven execution was unsuccessful"
+fi
 log_info "Running generate_vulnerability_assessment_dashboard process."
 
 OUTPUT_DASHBOARD_FILE="$ADVISED_DIR/dashboards/windows11-dashboard_unpatched.html"
@@ -170,4 +185,10 @@ CMD+=("-Dparam.security.policy.active.ids=assessment_enrichment_configuration")
 CMD+=("-Doutput.dashboard.file=$OUTPUT_DASHBOARD_FILE")
 CMD+=("-Denv.vulnerability.mirror.dir=$EXTERNAL_VULNERABILITY_MIRROR_DIR/.database")
 
-pass_command_info_to_logger "windows11-dashboard_unpatched"
+log_mvn "${CMD[*]}"
+if "${CMD[@]}" 2>&1 | while IFS= read -r line; do log_mvn "$line"; done; then
+    log_info "Successfully ran generate_vulnerability_assessment_dashboard"
+else
+    log_error "Failed to run generate_vulnerability_assessment_dashboard because the maven execution was unsuccessful"
+    exit 1
+fi
