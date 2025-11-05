@@ -374,7 +374,7 @@ generate_vulnerability_assessment_dashboard() {
 
   log_config "input.inventory.file=$ADVISED_INVENTORY_FILE
               param.security.policy.file=$PARAM_SECURITY_POLICY_FILE
-              param.security.policy.active.ids=$SECURITY_POLICY_ACTIVE_ID" "
+              param.security.policy.active.ids=$SECURITY_POLICY_ACTIVE_IDs" "
               output.dashboard.file=$OUTPUT_DASHBOARD_FILE"
 
   log_mvn "${CMD[*]}"
