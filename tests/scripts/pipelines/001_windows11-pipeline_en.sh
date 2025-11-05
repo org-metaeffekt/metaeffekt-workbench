@@ -26,7 +26,7 @@ readonly PROCESSORS_DIR="$WORKBENCH_DIR/processors"
 readonly KONTINUUM_PROCESSORS_DIR="$EXTERNAL_KONTINUUM_DIR/processors"
 
 LOG_DIR="$WORKBENCH_DIR/.logs"
-LOG_LEVEL="ALL"
+logger_init "$LOG_DIR/001_windows11-pipeline_en.sh"
 
 readonly TARGET_BASE_DIR="$WORKSPACE_DIR/windows11"
 readonly ANALYZED_DIR="$TARGET_BASE_DIR/02_analyzed"

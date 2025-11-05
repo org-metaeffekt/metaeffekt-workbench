@@ -30,6 +30,7 @@ set_global_variables() {
   readonly KONTINUUM_PROCESSORS_DIR="$EXTERNAL_KONTINUUM_DIR/processors"
 
   LOG_DIR="$WORKBENCH_DIR/.logs"
+  logger_init "$LOG_DIR/001_openssl-pipeline_en.log"
 
   readonly TARGET_BASE_DIR="$WORKSPACE_DIR/openssl-3.3.1"
   readonly ANALYZED_DIR="$TARGET_BASE_DIR/02_analyzed"
