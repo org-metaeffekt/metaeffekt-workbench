@@ -176,7 +176,6 @@ create_custom-annex-document() {
   CMD+=("-Doutput.document.file=$OUTPUT_ANNEX_FILE")
 
   CMD+=("-Doutput.computed.inventory.path=$OUTPUT_COMPUTED_INVENTORY_DIR") # Do not change parameter name, needed by asset descriptor
-  CMD+=("-Dp")
 
   CMD+=("-Dparam.asset.id=$PARAM_ASSET_ID")
   CMD+=("-Dparam.asset.name=$PARAM_ASSET_NAME")
@@ -196,22 +195,7 @@ create_custom-annex-document() {
   CMD+=("-Denv.workbench.processors.dir=$PROCESSORS_DIR")
   CMD+=("-Denv.kontinuum.processors.dir=$KONTINUUM_PROCESSORS_DIR")
 
-  log_config "input.inventory.file=$CURATED_INVENTORY_DIR/$CURATED_INVENTORY_PATH
-              input.reference.inventory.file=$ENV_REFERENCE_INVENTORY_DIR/artifact-inventory.xls
-              input.reference.license.dir=$ENV_REFERENCE_LICENSES_DIR
-              input.reference.component.dir=$ENV_REFERENCE_COMPONENTS_DIR
-              input.asset.descriptor.dir=$ENV_DESCRIPTOR_DIR
-              input.asset.descriptor.path=$ENV_CAD_DESCRIPTOR_PATH" "
-              output.document.file=$OUTPUT_ANNEX_FILE"
-
-  log_mvn "${CMD[*]}"
-
-  if "${CMD[@]}" 2>&1 | while IFS= read -r line; do log_mvn "$line"; done; then
-      log_info "Successfully ran create_custom-annex-document"
-  else
-      log_error "Failed to run create_custom-annex-document because the maven execution was unsuccessful"
-      return 1
-  fi
+  pass_command_info_to_logger "create_custom_annex"
 }
 
 enrich_inventory() {
@@ -369,13 +353,13 @@ main() {
   SCRIPT_NAME=$(basename "$(readlink -f "$0")")
   create_target_directories
 
-  #update_mirror
+  update_mirror
   enrich_inventory_with_reference
-  #create_annex
+  create_annex
   enrich_inventory
-  #generate_vulnerability_report
-  #generate_cert_report
-  #generate_vulnerability_assessment_dashboard
+  generate_vulnerability_report
+  generate_cert_report
+  generate_vulnerability_assessment_dashboard
   create_custom-annex-document
 }
 
