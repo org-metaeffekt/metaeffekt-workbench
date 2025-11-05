@@ -75,6 +75,32 @@
         </profile>
 
         <profile>
+            <id>ILD_en</id>
+            <modules>
+                <module>asset-report-template</module>
+            </modules>
+            <properties>
+                <document.name>${asset.id} ILD-REPORT</document.name>
+                <document.qualifier>${asset.id}_${asset.version}_ILD-REPORT</document.qualifier>
+                <asset.report.type>ANNEX</asset.report.type>
+                <document.language>en</document.language>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>ILD_de</id>
+            <modules>
+                <module>asset-report-template</module>
+            </modules>
+            <properties>
+                <document.name>${asset.id} ILD-REPORT</document.name>
+                <document.qualifier>${asset.id}_${asset.version}_ILD-REPORT</document.qualifier>
+                <asset.report.type>ANNEX</asset.report.type>
+                <document.language>de</document.language>
+            </properties>
+        </profile>
+
+        <profile>
             <id>CAD_en</id>
             <modules>
                 <module>asset-report-template</module>
