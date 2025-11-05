@@ -7,7 +7,7 @@ readonly SELF_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source_preload() {
     if [ -f "$SELF_DIR/../preload.sh" ];then
       source "$SELF_DIR/../preload.sh"
-      echo "Successfully sourced preload.sh file"
+      echo "Successfully sourced preload.sh file."
     else
       echo "Terminating: preload.sh script not found."
       exit 1
@@ -65,6 +65,7 @@ update_mirror() {
   MIRROR_TARGET_DIR="$EXTERNAL_VULNERABILITY_MIRROR_DIR"
   MIRROR_ARCHIVE_URL="$EXTERNAL_VULNERABILITY_MIRROR_URL"
   MIRROR_ARCHIVE_NAME="$EXTERNAL_VULNERABILITY_MIRROR_NAME"
+
   CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/mirror/mirror_download-index.xml" compile)
   [ -n "${AE_CORE_VERSION:-}" ] && CMD+=("-Dae.core.version=$AE_CORE_VERSION")
   [ -n "${AE_ARTIFACT_ANALYSIS_VERSION:-}" ] && CMD+=("-Dae.artifact.analysis.version=$AE_ARTIFACT_ANALYSIS_VERSION")
@@ -223,6 +224,7 @@ enrich_inventory() {
   CMD+=("-Dparam.assessment.dir=$ASSESSMENT_DIR")
   CMD+=("-Dparam.correlation.dir=$CORRELATION_DIR")
   CMD+=("-Dparam.context.dir=$CONTEXT_DIR")
+  CMD+=("-Dparam.activate.msrc=false")
 
   CMD+=("-Denv.vulnerability.mirror.dir=$EXTERNAL_VULNERABILITY_MIRROR_DIR/.database")
 
