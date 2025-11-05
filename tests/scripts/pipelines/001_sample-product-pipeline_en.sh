@@ -152,6 +152,7 @@ enrich_inventory() {
   CORRELATION_DIR="$WORKBENCH_DIR/correlations/shared"
   ADVISED_INVENTORY_FILE="$ADVISED_DIR/sample-product-advised-inventory.xlsx"
   PROCESSOR_TMP_DIR="$TMP_DIR/processor"
+  SECURITY_POLICY_ACTIVE_IDS="assessment_enrichment_configuration"
 
   CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/advise/advise_enrich-inventory.xml" process-resources)
   [ -n "${AE_CORE_VERSION:-}" ] && CMD+=("-Dae.core.version=$AE_CORE_VERSION")
@@ -162,7 +163,7 @@ enrich_inventory() {
   CMD+=("-Doutput.tmp.dir=$PROCESSOR_TMP_DIR")
 
   CMD+=("-Dparam.security.policy.file=$PARAM_SECURITY_POLICY_FILE")
-  CMD+=("-Dparam.security.policy.active.ids=assessment_enrichment_configuration")
+  CMD+=("-Dparam.security.policy.active.ids=$SECURITY_POLICY_ACTIVE_IDS")
   CMD+=("-Dparam.assessment.dir=$ASSESSMENT_DIR")
   CMD+=("-Dparam.correlation.dir=$CORRELATION_DIR")
   CMD+=("-Dparam.context.dir=$CONTEXT_DIR")
@@ -274,6 +275,8 @@ generate_vulnerability_assessment_dashboard() {
   log_info "Running generate_vulnerability_assessment_dashboard process."
 
   OUTPUT_DASHBOARD_FILE="$ADVISED_DIR/dashboards/sample-product-dashboard.html"
+  SECURITY_POLICY_ACTIVE_IDS="assessment_enrichment_configuration"
+
   CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/advise/advise_create-dashboard.xml" process-resources)
   [ -n "${AE_CORE_VERSION:-}" ] && CMD+=("-Dae.core.version=$AE_CORE_VERSION")
   [ -n "${AE_ARTIFACT_ANALYSIS_VERSION:-}" ] && CMD+=("-Dae.artifact.analysis.version=$AE_ARTIFACT_ANALYSIS_VERSION")
@@ -282,8 +285,8 @@ generate_vulnerability_assessment_dashboard() {
   CMD+=("-Doutput.dashboard.file=$OUTPUT_DASHBOARD_FILE")
 
   CMD+=("-Dparam.security.policy.file=$PARAM_SECURITY_POLICY_FILE")
-  CMD+=("-Dparam.security.policy.active.ids=assessment_enrichment_configuration") # FIXME-RTU: consider where to set these active Ids
-
+  CMD+=("-Dparam.security.policy.active.ids=$SECURITY_POLICY_ACTIVE_IDS")
+  CMD+=("-Doutput.dashboard.file=$OUTPUT_DASHBOARD_FILE")
   CMD+=("-Denv.vulnerability.mirror.dir=$EXTERNAL_VULNERABILITY_MIRROR_DIR/.database")
 
   pass_command_info_to_logger "generate_vulnerability_assessment_dashboard"
