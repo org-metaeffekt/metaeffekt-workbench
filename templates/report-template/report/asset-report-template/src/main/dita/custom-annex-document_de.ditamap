@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE bookmap PUBLIC "-//OASIS//DTD DITA BookMap//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/bookmap.dtd">
-<bookmap id="map_custom-annex-document_en" xml:lang="en">
+<bookmap id="map_custom-annex-document_de" xml:lang="en">
     <title>
         <ph>${product.name} ${product.version}</ph>
     </title>
@@ -27,7 +27,11 @@
         </booklists>
     </frontmatter>
 
-    <topicref format="ditamap" href="asset-report/gen/map_initial-license-documentation-document.ditamap" />
+    <chapter href="ae-common-content/bill-of-materials/de/tpc_open-source-based-bom.dita">
+        <topicref href="asset-report/gen/inventory/tpc_asset-report.dita" />
+        <topicref href="asset-report/gen/inventory/tpc_asset-licenses.dita" />
+        <topicref href="asset-report/gen/inventory/tpc_asset-no-license.dita" />
+    </chapter>
 
     <chapter href="ae-common-content/bill-of-materials/de/tpc_open-source-based-bom.dita">
         <topicref href="ae-common-content/components/de/tpc_provider-proprietary-components.dita" />
@@ -37,7 +41,7 @@
         <topicref href="asset-report/de/tpc_import-export-information.dita" />
     </chapter>
 
-    <topicref format="ditamap" href="asset-report/gen/map_software-distribution-annex-document.ditamap" />
+    <topicref format="ditamap" href="asset-report/gen/parts/map_software-distribution-annex-annex.ditamap" />
 
     <backmatter>
         <booklists>
