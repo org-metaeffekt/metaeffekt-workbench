@@ -63,6 +63,20 @@
                 <document.ditamap>initial-license-documentation_de.ditamap</document.ditamap>
             </properties>
         </profile>
+
+        <profile>
+            <id>CAD_en</id>
+            <properties>
+                <document.ditamap>custom-annex-document_en.ditamap</document.ditamap>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>CAD_de</id>
+            <properties>
+                <document.ditamap>custom-annex-document_en.ditamap</document.ditamap>
+            </properties>
+        </profile>
     </profiles>
 
     <build>
