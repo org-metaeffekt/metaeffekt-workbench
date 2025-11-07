@@ -209,11 +209,9 @@
                             <rules>
                                 <requireProperty>
                                     <property>asset.descriptor.basedir</property>
-                                    <message>You must set the parameter 'asset.descriptor.basedir' to specify the resource dir of the asset descriptor to use.</message>
                                 </requireProperty>
                                 <requireProperty>
                                     <property>asset.descriptor.path</property>
-                                    <message>You must set the parameter 'asset.descriptor.path' to specify the asset descriptor in asset descriptor resource dir.</message>
                                 </requireProperty>
                             </rules>
                             <fail>true</fail>

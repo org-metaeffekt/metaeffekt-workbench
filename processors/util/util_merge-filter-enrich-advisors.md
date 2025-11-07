@@ -18,7 +18,7 @@ The different properties are sorted into three different groups.
 |-------------------------------------|----------|---------------------------------------------------------------------------|
 | param.vulnerability.advisory.filter | yes      | The advisor by which to filter the input inventories.                     |
 | param.filtered.inventory.file       | yes      | The file of the intermediate inventory which is then used for enrichment. |
-| param.input.database                | yes      | The location of the vulnerability database used for inventory enrichment. |
+| env.vulnerability.mirror.dir        | yes      | The location of the vulnerability database used for inventory enrichment. |
 | param.security.policy.file          | yes      | The security policy file needed to filter the inventory.                  |
 | param.security.policy.active.ids    | no       | The activeIds of the security policy configuration.                       |
 

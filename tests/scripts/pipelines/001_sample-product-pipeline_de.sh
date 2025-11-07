@@ -124,7 +124,7 @@ create_annex() {
   CMD+=("-Dinput.asset.descriptor.path=$ENV_SDA_DESCRIPTOR_PATH")
 
   CMD+=("-Doutput.document.file=$OUTPUT_ANNEX_FILE")
-  CMD+=("-Doutput.computed.inventory.path=$OUTPUT_COMPUTED_INVENTORY_DIR") # Do not change parameter name, needed by asset descriptor
+  CMD+=("-Doutput.computed.inventory.dir=$OUTPUT_COMPUTED_INVENTORY_DIR") # Do not change parameter name, needed by asset descriptor
 
   CMD+=("-Dparam.security.policy.file=$PARAM_SECURITY_POLICY_FILE")
   CMD+=("-Dparam.asset.id=$PARAM_ASSET_ID")
@@ -177,7 +177,7 @@ create_custom-annex-document() {
 
   CMD+=("-Doutput.document.file=$OUTPUT_ANNEX_FILE")
 
-  CMD+=("-Doutput.computed.inventory.path=$OUTPUT_COMPUTED_INVENTORY_DIR") # Do not change parameter name, needed by asset descriptor
+  CMD+=("-Doutput.computed.inventory.dir=$OUTPUT_COMPUTED_INVENTORY_DIR")
 
   CMD+=("-Dparam.asset.id=$PARAM_ASSET_ID")
   CMD+=("-Dparam.asset.name=$PARAM_ASSET_NAME")
@@ -258,7 +258,7 @@ generate_vulnerability_report() {
   CMD+=("-Dinput.asset.descriptor.path=$ENV_VR_DESCRIPTOR_PATH")
 
   CMD+=("-Doutput.document.file=$OUTPUT_VR_FILE")
-  CMD+=("-Doutput.computed.inventory.path=$OUTPUT_COMPUTED_INVENTORY_DIR") # Do not change parameter name, needed by asset descriptor
+  CMD+=("-Doutput.computed.inventory.dir=$OUTPUT_COMPUTED_INVENTORY_DIR")
 
   CMD+=("-Dparam.security.policy.file=$PARAM_SECURITY_POLICY_FILE")
   CMD+=("-Dparam.asset.id=$PARAM_ASSET_ID")
@@ -307,7 +307,7 @@ generate_cert_report() {
   CMD+=("-Dinput.asset.descriptor.path=$ENV_CR_DESCRIPTOR_PATH")
 
   CMD+=("-Doutput.document.file=$OUTPUT_CR_FILE")
-  CMD+=("-Doutput.computed.inventory.path=$OUTPUT_COMPUTED_INVENTORY_DIR") # Do not change parameter name, needed by asset descriptor
+  CMD+=("-Doutput.computed.inventory.dir=$OUTPUT_COMPUTED_INVENTORY_DIR")
 
   CMD+=("-Dparam.security.policy.file=$PARAM_SECURITY_POLICY_FILE")
   CMD+=("-Dparam.asset.id=$PARAM_ASSET_ID")

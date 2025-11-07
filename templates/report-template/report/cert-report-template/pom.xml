@@ -128,7 +128,7 @@
                             <phase>generate-sources</phase>
                             <configuration>
                                 <inventoryInputFile>
-                                    ${computed.inventory.path}/${asset.name}-vulnerability-report-inventory.xlsx
+                                    ${output.computed.inventory.dir}/${asset.name}-vulnerability-report-inventory.xlsx
                                 </inventoryInputFile>
                                 <outputDirectory>
                                     ${project.basedir}/src/main/dita/cert-report/gen/resources/svg
@@ -158,7 +158,7 @@
                             <configuration>
                                 <active>true</active>
 
-                                <inventoryInputFile>${computed.inventory.path}/${asset.name}-statistics-report-inventory.xlsx</inventoryInputFile>
+                                <inventoryInputFile>${output.computed.inventory.dir}/${asset.name}-statistics-report-inventory.xlsx</inventoryInputFile>
                                 <outputDirectory>${project.basedir}/src/main/dita/cert-report-overall/gen/resources/svg</outputDirectory>
 
                                 <overviewActive>true</overviewActive>
@@ -288,15 +288,12 @@
                             <rules>
                                 <requireProperty>
                                     <property>security.policy.file</property>
-                                    <message>You must set the parameter 'security.policy.file' to specify the location of the security policy file.</message>
                                 </requireProperty>
                                 <requireProperty>
                                     <property>overview.advisors</property>
-                                    <message>You must set the parameter 'overview.advisors' to specify the list of advisors for the overview.</message>
                                 </requireProperty>
                                 <requireProperty>
-                                    <property>input.database</property>
-                                    <message>You must set the parameter 'input.database' to specify the location of the vulnerability database.</message>
+                                    <property>env.vulnerability.mirror.dir</property>
                                 </requireProperty>
                             </rules>
                             <fail>true</fail>
