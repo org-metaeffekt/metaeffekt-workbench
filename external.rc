@@ -1,4 +1,0 @@
-EXTERNAL_KONTINUUM_DIR="/Users/romeo/metaeffekt/Repositories/metaeffekt-kontinuum"
-EXTERNAL_VULNERABILITY_MIRROR_DIR="/Users/romeo/metaeffekt/Repositories/metaeffekt-kontinuum/.mirror"
-EXTERNAL_VULNERABILITY_MIRROR_URL="http://ae-scanner/mirror/index/index-database.zip"
-EXTERNAL_VULNERABILITY_MIRROR_NAME="index-database.zip"
