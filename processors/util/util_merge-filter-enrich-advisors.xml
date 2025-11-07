@@ -121,16 +121,16 @@
                                     <property>output.enrichment.inventory</property>
                                 </requireProperty>
                                 <requireProperty>
-                                    <property>param.filtered.inventory.file</property>
-                                </requireProperty>
-                                <requireProperty>
                                     <property>param.vulnerabilities.advisory.filter</property>
                                 </requireProperty>
                                 <requireProperty>
-                                    <property>param.security.policy.file</property>
+                                    <property>param.filtered.inventory.file</property>
                                 </requireProperty>
                                 <requireProperty>
                                     <property>env.vulnerability.mirror.dir</property>
+                                </requireProperty>
+                                <requireProperty>
+                                    <property>param.security.policy.file</property>
                                 </requireProperty>
                             </rules>
                             <fail>true</fail>
