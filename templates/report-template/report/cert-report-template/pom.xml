@@ -128,7 +128,7 @@
                             <phase>generate-sources</phase>
                             <configuration>
                                 <inventoryInputFile>
-                                    ${output.computed.inventory.dir}/${asset.name}-vulnerability-report-inventory.xlsx
+                                    ${param.computed.inventory.dir}/${asset.name}-vulnerability-report-inventory.xlsx
                                 </inventoryInputFile>
                                 <outputDirectory>
                                     ${project.basedir}/src/main/dita/cert-report/gen/resources/svg
@@ -158,7 +158,7 @@
                             <configuration>
                                 <active>true</active>
 
-                                <inventoryInputFile>${output.computed.inventory.dir}/${asset.name}-statistics-report-inventory.xlsx</inventoryInputFile>
+                                <inventoryInputFile>${param.computed.inventory.dir}/${asset.name}-statistics-report-inventory.xlsx</inventoryInputFile>
                                 <outputDirectory>${project.basedir}/src/main/dita/cert-report-overall/gen/resources/svg</outputDirectory>
 
                                 <overviewActive>true</overviewActive>

@@ -9,10 +9,10 @@ inventories:
       componentPath: "${reference.component.path}"
 
   - "filtered-inventory":
-      file: "${output.computed.inventory.dir}/${asset.name}-vulnerability-report-inventory.xlsx"
+      file: "${param.computed.inventory.dir}/${asset.name}-vulnerability-report-inventory.xlsx"
       type: COMPUTED
   - "filtered-enriched-inventory":
-      file: "${output.computed.inventory.dir}/${asset.name}-statistics-report-inventory.xlsx"
+      file: "${param.computed.inventory.dir}/${asset.name}-statistics-report-inventory.xlsx"
       type: COMPUTED
 
 transformations:
