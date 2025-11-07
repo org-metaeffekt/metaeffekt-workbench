@@ -88,6 +88,7 @@ enrich_inventory() {
   ADVISED_INVENTORY_FILE="$ADVISED_DIR/openssl-advised-inventory.xlsx"
   PROCESSOR_TMP_DIR="$TMP_DIR/processor"
   DASHBOARD_SUBJECT="OpenSSL 3.3.1"
+  SECURITY_POLICY_ACTIVE_IDS="assessment_enrichment_configuration"
 
   CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/advise/advise_enrich-inventory.xml" process-resources)
   [ -n "${AE_CORE_VERSION:-}" ] && CMD+=("-Dae.core.version=$AE_CORE_VERSION")
@@ -99,7 +100,7 @@ enrich_inventory() {
 
   CMD+=("-Dparam.security.policy.file=$PARAM_SECURITY_POLICY_FILE")
   CMD+=("-Dparam.security.policy.file=$PARAM_SECURITY_POLICY_FILE")
-  CMD+=("-Dparam.security.policy.active.ids=assessment_enrichment_configuration") # FIXME-RTU: consider where to set these active Ids
+  CMD+=("-Dparam.security.policy.active.ids=$SECURITY_POLICY_ACTIVE_IDS")
   CMD+=("-Dparam.dashboard.title=OpenSSL 3.3.1 Assessment")
   CMD+=("-Dparam.dashboard.subtitle=")
   CMD+=("-Dparam.dashboard.footer=OpenSSL 3.3.1")
@@ -116,6 +117,8 @@ generate_vulnerability_assessment_dashboard() {
   log_info "Running generate_vulnerability_assessment_dashboard process."
 
   OUTPUT_DASHBOARD_FILE="$ADVISED_DIR/dashboards/openssl-3.3.1-dashboard.html"
+  SECURITY_POLICY_ACTIVE_IDS="assessment_enrichment_configuration"
+
   CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/advise/advise_create-dashboard.xml" process-resources)
   [ -n "${AE_CORE_VERSION:-}" ] && CMD+=("-Dae.core.version=$AE_CORE_VERSION")
   [ -n "${AE_ARTIFACT_ANALYSIS_VERSION:-}" ] && CMD+=("-Dae.artifact.analysis.version=$AE_ARTIFACT_ANALYSIS_VERSION")
@@ -124,7 +127,7 @@ generate_vulnerability_assessment_dashboard() {
   CMD+=("-Doutput.dashboard.file=$OUTPUT_DASHBOARD_FILE")
 
   CMD+=("-Dparam.security.policy.file=$PARAM_SECURITY_POLICY_FILE")
-  CMD+=("-Dparam.security.policy.active.ids=assessment_enrichment_configuration") # FIXME-RTU: consider where to set these active Ids
+  CMD+=("-Dparam.security.policy.active.ids=$SECURITY_POLICY_ACTIVE_IDS")
 
   CMD+=("-Denv.vulnerability.mirror.dir=$EXTERNAL_VULNERABILITY_MIRROR_DIR/.database")
 
@@ -138,7 +141,6 @@ generate_vulnerability_report() {
   OUTPUT_COMPUTED_INVENTORY_DIR="$TMP_DIR/report"
 
   PARAM_DOCUMENT_TYPE="VR"
-  PARAM_DOCUMENT_LANGUAGE="en"
   PARAM_ASSET_ID="OpenSSL"
   PARAM_ASSET_NAME="OpenSSL"
   PARAM_ASSET_VERSION="3.3.1"
@@ -152,15 +154,11 @@ generate_vulnerability_report() {
   [ -n "${AE_ARTIFACT_ANALYSIS_VERSION:-}" ] && CMD+=("-Dae.artifact.analysis.version=$AE_ARTIFACT_ANALYSIS_VERSION")
   CMD+=("-Dinput.inventory.file=$ADVISED_INVENTORY_FILE")
   CMD+=("-Dinput.reference.inventory.file=$ENV_REFERENCE_INVENTORY_DIR/artifact-inventory.xls")
-  CMD+=("-Dinput.reference.license.dir=$ENV_REFERENCE_LICENSES_DIR")
-  CMD+=("-Dinput.reference.component.dir=$ENV_REFERENCE_COMPONENTS_DIR")
-  CMD+=("-Dinput.asset.descriptor.dir=$ENV_DESCRIPTOR_DIR")
   CMD+=("-Dinput.asset.descriptor.path=$ENV_VR_DESCRIPTOR_PATH")
 
   CMD+=("-Doutput.document.file=$OUTPUT_VR_FILE")
-  CMD+=("-Doutput.computed.inventory.dir=$OUTPUT_COMPUTED_INVENTORY_DIR")
 
-  CMD+=("-Dparam.security.policy.file=$PARAM_SECURITY_POLICY_FILE")
+  CMD+=("-Dparam.reference.inventory.dir=$ENV_REFERENCE_INVENTORY_DIR")
   CMD+=("-Dparam.asset.id=$PARAM_ASSET_ID")
   CMD+=("-Dparam.asset.name=$PARAM_ASSET_NAME")
   CMD+=("-Dparam.asset.version=$PARAM_ASSET_VERSION")
@@ -168,15 +166,12 @@ generate_vulnerability_report() {
   CMD+=("-Dparam.product.name=$PARAM_PRODUCT_NAME")
   CMD+=("-Dparam.product.watermark=$PARAM_PRODUCT_WATERMARK")
   CMD+=("-Dparam.document.type=$PARAM_DOCUMENT_TYPE")
-  CMD+=("-Dparam.document.language=$PARAM_DOCUMENT_LANGUAGE")
   CMD+=("-Dparam.overview.advisors=$PARAM_OVERVIEW_ADVISORS")
-  CMD+=("-Dparam.template.dir=$ENV_REPORT_TEMPLATE_DIR")
   CMD+=("-Dparam.property.selector.organization=metaeffekt")
-  CMD+=("-Dparam.security.policy.file=$PARAM_SECURITY_POLICY_FILE")
 
   CMD+=("-Denv.vulnerability.mirror.dir=$EXTERNAL_VULNERABILITY_MIRROR_DIR/.database")
-  CMD+=("-Denv.workbench.processors.dir=$PROCESSORS_DIR")
-  CMD+=("-Denv.kontinuum.processors.dir=$KONTINUUM_PROCESSORS_DIR")
+  CMD+=("-Denv.workbench.dir=$WORKBENCH_DIR")
+  CMD+=("-Denv.kontinuum.dir=$EXTERNAL_KONTINUUM_DIR")
 
   pass_command_info_to_logger "generate_vulnerability-report"
 }
