@@ -68,7 +68,7 @@
                         <configuration>
                             <inventoryInputFile>${param.filtered.inventory.file}</inventoryInputFile>
                             <intermediateInventoriesDirectory>${project.build.directory}/intermediate-inventories</intermediateInventoriesDirectory>
-                            <mirrorDirectory>${param.input.database}</mirrorDirectory>
+                            <mirrorDirectory>${env.vulnerability.mirror.dir}</mirrorDirectory>
                             <advisorPeriodicEnrichment>
                                 <active>true</active>
                                 <changedSince>1 week</changedSince>
@@ -116,39 +116,21 @@
                             <rules>
                                 <requireProperty>
                                     <property>input.inventory.file</property>
-                                    <message>
-                                        You must set the parameter 'input.inventory.file' to specify the input inventory for the enrichment process.
-                                    </message>
                                 </requireProperty>                                
                                 <requireProperty>
                                     <property>output.enrichment.inventory</property>
-                                    <message>
-                                        You must set the parameter 'output.enrichment.inventory' to specify the output directory of the advisory enrichment.
-                                    </message>
-                                </requireProperty>
-                                <requireProperty>
-                                    <property>param.filtered.inventory.file</property>
-                                    <message>
-                                        You must set the parameter 'param.filtered.inventory.file' to specify the file of the filtered inventory.
-                                    </message>
                                 </requireProperty>
                                 <requireProperty>
                                     <property>param.vulnerabilities.advisory.filter</property>
-                                    <message>
-                                        You must set the parameter 'param.vulnerabilities.advisory.filter' to specify the advisor to filter the inventory by.
-                                    </message>
+                                </requireProperty>
+                                <requireProperty>
+                                    <property>param.filtered.inventory.file</property>
+                                </requireProperty>
+                                <requireProperty>
+                                    <property>env.vulnerability.mirror.dir</property>
                                 </requireProperty>
                                 <requireProperty>
                                     <property>param.security.policy.file</property>
-                                    <message>
-                                        You must set the parameter 'param.security.policy.file' to specify the location of the security policy file.
-                                    </message>
-                                </requireProperty>
-                                <requireProperty>
-                                    <property>param.input.database</property>
-                                    <message>
-                                        You must set the parameter 'param.input.database' to specify the location of the vulnerability database used for enrichment.
-                                    </message>
                                 </requireProperty>
                             </rules>
                             <fail>true</fail>

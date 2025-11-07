@@ -9,10 +9,10 @@ inventories:
       componentPath: "${reference.component.path}"
 
   - "filtered-inventory":
-      file: "${computed.inventory.path}/${asset.name}-vulnerability-report-inventory.xlsx"
+      file: "${param.computed.inventory.dir}/${asset.name}-vulnerability-report-inventory.xlsx"
       type: COMPUTED
   - "filtered-enriched-inventory":
-      file: "${computed.inventory.path}/${asset.name}-statistics-report-inventory.xlsx"
+      file: "${param.computed.inventory.dir}/${asset.name}-statistics-report-inventory.xlsx"
       type: COMPUTED
 
 transformations:
@@ -28,7 +28,7 @@ transformations:
       param.filtered.inventory.file: "${filtered-inventory.file}"
       output.enrichment.inventory: "${filtered-enriched-inventory.file}"
       advisoryProviders: '[{"name":"${overview.advisors}"}]'
-      param.input.database: "${input.database}"
+      env.vulnerability.mirror.dir: "${env.vulnerability.mirror.dir}"
       param.security.policy.file: "${security.policy.file}"
       param.security.policy.active.ids: "cert_extended_configuration"
     maven:

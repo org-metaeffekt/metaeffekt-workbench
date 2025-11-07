@@ -73,27 +73,15 @@
                             <rules>
                                 <requireProperty>
                                     <property>input.reference.inventories.dir</property>
-                                    <message>
-                                        You must set the parameter 'input.reference.inventories.dir' to specify the file of the filtered inventory.
-                                    </message>
                                 </requireProperty>
                                 <requireProperty>
                                     <property>output.filtered.inventory.file</property>
-                                    <message>
-                                        You must set the parameter 'output.filtered.inventory.file' to specify the file of the filtered inventory.
-                                    </message>
                                 </requireProperty>
                                 <requireProperty>
                                     <property>param.vulnerability.advisory.filter</property>
-                                    <message>
-                                        You must set the parameter 'param.vulnerability.advisory.filter' to specify the advisor to filter the inventory by.
-                                    </message>
                                 </requireProperty>
                                 <requireProperty>
                                     <property>param.security.policy.file</property>
-                                    <message>
-                                        You must set the parameter 'param.security.policy.file' to specify the location of the security policy file.
-                                    </message>
                                 </requireProperty>
                             </rules>
                             <fail>true</fail>

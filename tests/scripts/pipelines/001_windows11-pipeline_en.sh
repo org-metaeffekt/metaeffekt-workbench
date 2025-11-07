@@ -46,6 +46,7 @@ ENV_DESCRIPTOR_DIR="$WORKBENCH_DIR/descriptors"
 ENV_SDA_DESCRIPTOR_PATH="asset-descriptor_GENERIC-software-distribution-annex.yaml"
 ENV_VR_DESCRIPTOR_PATH="asset-descriptor_GENERIC-vulnerability-report.yaml"
 ENV_CR_DESCRIPTOR_PATH="asset-descriptor_GENERIC-cert-report.yaml"
+SECURITY_POLICY_ACTIVE_IDS="assessment_enrichment_configuration"
 
 if ! mkdir -p "$ANALYZED_DIR" "$ADVISED_DIR" "$REPORTED_DIR" "$TMP_DIR" ; then
     log_error "Failed to create target directories"
@@ -85,12 +86,11 @@ CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/advise/advise_enrich-inventory.xml" proce
 [ -n "${AE_ARTIFACT_ANALYSIS_VERSION:-}" ] && CMD+=("-Dae.artifact.analysis.version=$AE_ARTIFACT_ANALYSIS_VERSION")
 CMD+=("-Dinput.inventory.file=$ANALYZED_INVENTORY_FILE")
 CMD+=("-Dparam.security.policy.file=$PARAM_SECURITY_POLICY_FILE")
-# FIXME-RTU: consider where to set these active Ids
 CMD+=("-Doutput.inventory.file=$ADVISED_INVENTORY_FILE")
 CMD+=("-Doutput.tmp.dir=$PROCESSOR_TMP_DIR")
 
 CMD+=("-Dparam.security.policy.file=$PARAM_SECURITY_POLICY_FILE")
-CMD+=("-Dparam.security.policy.active.ids=assessment_enrichment_configuration")
+CMD+=("-Dparam.security.policy.active.ids=$SECURITY_POLICY_ACTIVE_IDS")
 CMD+=("-Dparam.dashboard.title=Windows 11 Assessment")
 CMD+=("-Dparam.dashboard.subtitle=")
 CMD+=("-Dparam.dashboard.footer=Windows 11")
@@ -112,7 +112,6 @@ CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/advise/advise_create-dashboard.xml" proce
 [ -n "${AE_ARTIFACT_ANALYSIS_VERSION:-}" ] && CMD+=("-Dae.artifact.analysis.version=$AE_ARTIFACT_ANALYSIS_VERSION")
 CMD+=("-Dinput.inventory.file=$ADVISED_INVENTORY_FILE")
 CMD+=("-Dparam.security.policy.file=$PARAM_SECURITY_POLICY_FILE")
-# FIXME-RTU: consider where to set these active Ids
 CMD+=("-Dparam.security.policy.active.ids=assessment_enrichment_configuration")
 CMD+=("-Doutput.dashboard.file=$OUTPUT_DASHBOARD_FILE")
 CMD+=("-Denv.vulnerability.mirror.dir=$EXTERNAL_VULNERABILITY_MIRROR_DIR/.database")
@@ -138,12 +137,11 @@ CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/advise/advise_enrich-inventory.xml" proce
 [ -n "${AE_ARTIFACT_ANALYSIS_VERSION:-}" ] && CMD+=("-Dae.artifact.analysis.version=$AE_ARTIFACT_ANALYSIS_VERSION")
 CMD+=("-Dinput.inventory.file=$ANALYZED_INVENTORY_FILE")
 CMD+=("-Dparam.security.policy.file=$PARAM_SECURITY_POLICY_FILE")
-# FIXME-RTU: consider where to set these active Ids
 CMD+=("-Doutput.inventory.file=$ADVISED_INVENTORY_FILE")
 CMD+=("-Doutput.tmp.dir=$PROCESSOR_TMP_DIR")
 
 CMD+=("-Dparam.security.policy.file=$PARAM_SECURITY_POLICY_FILE")
-CMD+=("-Dparam.security.policy.active.ids=assessment_enrichment_configuration")
+CMD+=("-Dparam.security.policy.active.ids=$SECURITY_POLICY_ACTIVE_IDS")
 CMD+=("-Dparam.dashboard.title=Windows 11 Assessment")
 CMD+=("-Dparam.dashboard.subtitle=")
 CMD+=("-Dparam.dashboard.footer=Windows 11")
@@ -165,8 +163,7 @@ CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/advise/advise_create-dashboard.xml" proce
 [ -n "${AE_ARTIFACT_ANALYSIS_VERSION:-}" ] && CMD+=("-Dae.artifact.analysis.version=$AE_ARTIFACT_ANALYSIS_VERSION")
 CMD+=("-Dinput.inventory.file=$ADVISED_INVENTORY_FILE")
 CMD+=("-Dparam.security.policy.file=$PARAM_SECURITY_POLICY_FILE")
-# FIXME-RTU: consider where to set these active Ids
-CMD+=("-Dparam.security.policy.active.ids=assessment_enrichment_configuration")
+CMD+=("-Dparam.security.policy.active.ids=$SECURITY_POLICY_ACTIVE_IDS")
 CMD+=("-Doutput.dashboard.file=$OUTPUT_DASHBOARD_FILE")
 CMD+=("-Denv.vulnerability.mirror.dir=$EXTERNAL_VULNERABILITY_MIRROR_DIR/.database")
 

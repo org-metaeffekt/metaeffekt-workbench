@@ -29,7 +29,7 @@ set_global_variables() {
   readonly KONTINUUM_PROCESSORS_DIR="$EXTERNAL_KONTINUUM_DIR/processors"
 
   LOG_DIR="$WORKBENCH_DIR/.logs"
-  logger_init "$LOG_DIR/001_sample-product-pipeline_en.sh"
+  logger_init "$LOG_DIR/001_sample-product-pipeline_en.log"
 
   readonly TARGET_BASE_DIR="$WORKSPACE_DIR/sample-product-1.0.0"
   readonly ANALYZED_DIR="$TARGET_BASE_DIR/02_analyzed"
@@ -104,7 +104,6 @@ create_annex() {
   OUTPUT_COMPUTED_INVENTORY_DIR="$TMP_DIR/report"
 
   PARAM_DOCUMENT_TYPE="SDA"
-  PARAM_DOCUMENT_LANGUAGE="en"
   PARAM_ASSET_ID="Sample Product"
   PARAM_ASSET_NAME="SampleProduct"
   PARAM_ASSET_VERSION="1.0.0"
@@ -118,15 +117,11 @@ create_annex() {
   [ -n "${AE_ARTIFACT_ANALYSIS_VERSION:-}" ] && CMD+=("-Dae.artifact.analysis.version=$AE_ARTIFACT_ANALYSIS_VERSION")
   CMD+=("-Dinput.inventory.file=$CURATED_INVENTORY_DIR/$CURATED_INVENTORY_PATH")
   CMD+=("-Dinput.reference.inventory.file=$ENV_REFERENCE_INVENTORY_DIR/artifact-inventory.xls")
-  CMD+=("-Dinput.reference.license.dir=$ENV_REFERENCE_LICENSES_DIR")
-  CMD+=("-Dinput.reference.component.dir=$ENV_REFERENCE_COMPONENTS_DIR")
-  CMD+=("-Dinput.asset.descriptor.dir=$ENV_DESCRIPTOR_DIR")
   CMD+=("-Dinput.asset.descriptor.path=$ENV_SDA_DESCRIPTOR_PATH")
 
   CMD+=("-Doutput.document.file=$OUTPUT_ANNEX_FILE")
-  CMD+=("-Doutput.computed.inventory.path=$OUTPUT_COMPUTED_INVENTORY_DIR") # Do not change parameter name, needed by asset descriptor
 
-  CMD+=("-Dparam.security.policy.file=$PARAM_SECURITY_POLICY_FILE")
+  CMD+=("-Dparam.reference.inventory.dir=$ENV_REFERENCE_INVENTORY_DIR")
   CMD+=("-Dparam.asset.id=$PARAM_ASSET_ID")
   CMD+=("-Dparam.asset.name=$PARAM_ASSET_NAME")
   CMD+=("-Dparam.asset.version=$PARAM_ASSET_VERSION")
@@ -134,14 +129,12 @@ create_annex() {
   CMD+=("-Dparam.product.name=$PARAM_PRODUCT_NAME")
   CMD+=("-Dparam.product.watermark=$PARAM_PRODUCT_WATERMARK")
   CMD+=("-Dparam.document.type=$PARAM_DOCUMENT_TYPE")
-  CMD+=("-Dparam.document.language=$PARAM_DOCUMENT_LANGUAGE")
   CMD+=("-Dparam.overview.advisors=$PARAM_OVERVIEW_ADVISORS")
-  CMD+=("-Dparam.template.dir=$ENV_REPORT_TEMPLATE_DIR")
   CMD+=("-Dparam.property.selector.organization=metaeffekt")
 
   CMD+=("-Denv.vulnerability.mirror.dir=$EXTERNAL_VULNERABILITY_MIRROR_DIR/.database")
-  CMD+=("-Denv.workbench.processors.dir=$PROCESSORS_DIR")
-  CMD+=("-Denv.kontinuum.processors.dir=$KONTINUUM_PROCESSORS_DIR")
+  CMD+=("-Denv.workbench.dir=$WORKBENCH_DIR")
+  CMD+=("-Denv.kontinuum.dir=$EXTERNAL_KONTINUUM_DIR")
 
   pass_command_info_to_logger "create_annex"
 }
@@ -153,7 +146,6 @@ create_custom-annex-document() {
   OUTPUT_COMPUTED_INVENTORY_DIR="$TMP_DIR/report"
 
   PARAM_DOCUMENT_TYPE="CAD"
-  PARAM_DOCUMENT_LANGUAGE="en"
   PARAM_ASSET_ID="Sample Product"
   PARAM_ASSET_NAME="SampleProduct"
   PARAM_ASSET_VERSION="1.0.0"
@@ -166,19 +158,12 @@ create_custom-annex-document() {
   [ -n "${AE_CORE_VERSION:-}" ] && CMD+=("-Dae.core.version=$AE_CORE_VERSION")
   [ -n "${AE_ARTIFACT_ANALYSIS_VERSION:-}" ] && CMD+=("-Dae.artifact.analysis.version=$AE_ARTIFACT_ANALYSIS_VERSION")
   CMD+=("-Dinput.inventory.file=$CURATED_INVENTORY_DIR/$CURATED_INVENTORY_PATH")
-
   CMD+=("-Dinput.reference.inventory.file=$ENV_REFERENCE_INVENTORY_DIR/artifact-inventory.xls")
-  CMD+=("-Dinput.reference.license.dir=$ENV_REFERENCE_LICENSES_DIR")
-  CMD+=("-Dinput.reference.component.dir=$ENV_REFERENCE_COMPONENTS_DIR")
-
-  CMD+=("-Dinput.asset.descriptor.dir=$ENV_DESCRIPTOR_DIR")
   CMD+=("-Dinput.asset.descriptor.path=$ENV_CAD_DESCRIPTOR_PATH")
-  CMD+=("-Dparam.security.policy.file=$PARAM_SECURITY_POLICY_FILE")
 
   CMD+=("-Doutput.document.file=$OUTPUT_ANNEX_FILE")
 
-  CMD+=("-Doutput.computed.inventory.path=$OUTPUT_COMPUTED_INVENTORY_DIR") # Do not change parameter name, needed by asset descriptor
-
+  CMD+=("-Dparam.reference.inventory.dir=$ENV_REFERENCE_INVENTORY_DIR")
   CMD+=("-Dparam.asset.id=$PARAM_ASSET_ID")
   CMD+=("-Dparam.asset.name=$PARAM_ASSET_NAME")
   CMD+=("-Dparam.asset.version=$PARAM_ASSET_VERSION")
@@ -186,16 +171,12 @@ create_custom-annex-document() {
   CMD+=("-Dparam.product.name=$PARAM_PRODUCT_NAME")
   CMD+=("-Dparam.product.watermark=$PARAM_PRODUCT_WATERMARK")
   CMD+=("-Dparam.document.type=$PARAM_DOCUMENT_TYPE")
-  CMD+=("-Dparam.document.language=$PARAM_DOCUMENT_LANGUAGE")
   CMD+=("-Dparam.overview.advisors=$PARAM_OVERVIEW_ADVISORS")
-
-  CMD+=("-Dparam.template.dir=$ENV_REPORT_TEMPLATE_DIR")
-
   CMD+=("-Dparam.property.selector.organization=metaeffekt")
 
   CMD+=("-Denv.vulnerability.mirror.dir=$EXTERNAL_VULNERABILITY_MIRROR_DIR/.database")
-  CMD+=("-Denv.workbench.processors.dir=$PROCESSORS_DIR")
-  CMD+=("-Denv.kontinuum.processors.dir=$KONTINUUM_PROCESSORS_DIR")
+  CMD+=("-Denv.workbench.dir=$WORKBENCH_DIR")
+  CMD+=("-Denv.kontinuum.dir=$EXTERNAL_KONTINUUM_DIR")
 
   pass_command_info_to_logger "create_custom_annex"
 }
@@ -238,7 +219,6 @@ generate_vulnerability_report() {
   OUTPUT_COMPUTED_INVENTORY_DIR="$TMP_DIR/report"
 
   PARAM_DOCUMENT_TYPE="VR"
-  PARAM_DOCUMENT_LANGUAGE="en"
   PARAM_ASSET_ID="Sample Product"
   PARAM_ASSET_NAME="SampleProduct"
   PARAM_ASSET_VERSION="1.0.0"
@@ -252,15 +232,11 @@ generate_vulnerability_report() {
   [ -n "${AE_ARTIFACT_ANALYSIS_VERSION:-}" ] && CMD+=("-Dae.artifact.analysis.version=$AE_ARTIFACT_ANALYSIS_VERSION")
   CMD+=("-Dinput.inventory.file=$ADVISED_INVENTORY_FILE")
   CMD+=("-Dinput.reference.inventory.file=$ENV_REFERENCE_INVENTORY_DIR/artifact-inventory.xls")
-  CMD+=("-Dinput.reference.license.dir=$ENV_REFERENCE_LICENSES_DIR")
-  CMD+=("-Dinput.reference.component.dir=$ENV_REFERENCE_COMPONENTS_DIR")
-  CMD+=("-Dinput.asset.descriptor.dir=$ENV_DESCRIPTOR_DIR")
   CMD+=("-Dinput.asset.descriptor.path=$ENV_VR_DESCRIPTOR_PATH")
 
   CMD+=("-Doutput.document.file=$OUTPUT_VR_FILE")
-  CMD+=("-Doutput.computed.inventory.path=$OUTPUT_COMPUTED_INVENTORY_DIR") # Do not change parameter name, needed by asset descriptor
 
-  CMD+=("-Dparam.security.policy.file=$PARAM_SECURITY_POLICY_FILE")
+  CMD+=("-Dparam.reference.inventory.dir=$ENV_REFERENCE_INVENTORY_DIR")
   CMD+=("-Dparam.asset.id=$PARAM_ASSET_ID")
   CMD+=("-Dparam.asset.name=$PARAM_ASSET_NAME")
   CMD+=("-Dparam.asset.version=$PARAM_ASSET_VERSION")
@@ -268,14 +244,12 @@ generate_vulnerability_report() {
   CMD+=("-Dparam.product.name=$PARAM_PRODUCT_NAME")
   CMD+=("-Dparam.product.watermark=$PARAM_PRODUCT_WATERMARK")
   CMD+=("-Dparam.document.type=$PARAM_DOCUMENT_TYPE")
-  CMD+=("-Dparam.document.language=$PARAM_DOCUMENT_LANGUAGE")
   CMD+=("-Dparam.overview.advisors=$PARAM_OVERVIEW_ADVISORS")
-  CMD+=("-Dparam.template.dir=$ENV_REPORT_TEMPLATE_DIR")
   CMD+=("-Dparam.property.selector.organization=metaeffekt")
 
   CMD+=("-Denv.vulnerability.mirror.dir=$EXTERNAL_VULNERABILITY_MIRROR_DIR/.database")
-  CMD+=("-Denv.workbench.processors.dir=$PROCESSORS_DIR")
-  CMD+=("-Denv.kontinuum.processors.dir=$KONTINUUM_PROCESSORS_DIR")
+  CMD+=("-Denv.workbench.dir=$WORKBENCH_DIR")
+  CMD+=("-Denv.kontinuum.dir=$EXTERNAL_KONTINUUM_DIR")
 
   pass_command_info_to_logger "generate_vulnerability-report"
 }
@@ -287,7 +261,6 @@ generate_cert_report() {
   OUTPUT_COMPUTED_INVENTORY_DIR="$TMP_DIR/report"
 
   PARAM_DOCUMENT_TYPE="CR"
-  PARAM_DOCUMENT_LANGUAGE="en"
   PARAM_ASSET_ID="Sample Product"
   PARAM_ASSET_NAME="SampleProduct"
   PARAM_ASSET_VERSION="1.0.0"
@@ -301,15 +274,11 @@ generate_cert_report() {
   [ -n "${AE_ARTIFACT_ANALYSIS_VERSION:-}" ] && CMD+=("-Dae.artifact.analysis.version=$AE_ARTIFACT_ANALYSIS_VERSION")
   CMD+=("-Dinput.inventory.file=$ADVISED_INVENTORY_FILE")
   CMD+=("-Dinput.reference.inventory.file=$ENV_REFERENCE_INVENTORY_DIR/artifact-inventory.xls")
-  CMD+=("-Dinput.reference.license.dir=$ENV_REFERENCE_LICENSES_DIR")
-  CMD+=("-Dinput.reference.component.dir=$ENV_REFERENCE_COMPONENTS_DIR")
-  CMD+=("-Dinput.asset.descriptor.dir=$ENV_DESCRIPTOR_DIR")
   CMD+=("-Dinput.asset.descriptor.path=$ENV_CR_DESCRIPTOR_PATH")
 
   CMD+=("-Doutput.document.file=$OUTPUT_CR_FILE")
-  CMD+=("-Doutput.computed.inventory.path=$OUTPUT_COMPUTED_INVENTORY_DIR") # Do not change parameter name, needed by asset descriptor
 
-  CMD+=("-Dparam.security.policy.file=$PARAM_SECURITY_POLICY_FILE")
+  CMD+=("-Dparam.reference.inventory.dir=$ENV_REFERENCE_INVENTORY_DIR")
   CMD+=("-Dparam.asset.id=$PARAM_ASSET_ID")
   CMD+=("-Dparam.asset.name=$PARAM_ASSET_NAME")
   CMD+=("-Dparam.asset.version=$PARAM_ASSET_VERSION")
@@ -317,14 +286,12 @@ generate_cert_report() {
   CMD+=("-Dparam.product.name=$PARAM_PRODUCT_NAME")
   CMD+=("-Dparam.product.watermark=$PARAM_PRODUCT_WATERMARK")
   CMD+=("-Dparam.document.type=$PARAM_DOCUMENT_TYPE")
-  CMD+=("-Dparam.document.language=$PARAM_DOCUMENT_LANGUAGE")
   CMD+=("-Dparam.overview.advisors=$PARAM_OVERVIEW_ADVISORS")
-  CMD+=("-Dparam.template.dir=$ENV_REPORT_TEMPLATE_DIR")
   CMD+=("-Dparam.property.selector.organization=metaeffekt")
 
   CMD+=("-Denv.vulnerability.mirror.dir=$EXTERNAL_VULNERABILITY_MIRROR_DIR/.database")
-  CMD+=("-Denv.workbench.processors.dir=$PROCESSORS_DIR")
-  CMD+=("-Denv.kontinuum.processors.dir=$KONTINUUM_PROCESSORS_DIR")
+  CMD+=("-Denv.workbench.dir=$WORKBENCH_DIR")
+  CMD+=("-Denv.kontinuum.dir=$EXTERNAL_KONTINUUM_DIR")
 
   pass_command_info_to_logger "generate_cert_report"
 }
