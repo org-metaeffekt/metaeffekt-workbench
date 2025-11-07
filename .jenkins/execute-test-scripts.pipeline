@@ -19,7 +19,7 @@ pipeline {
                     sh 'mkdir -p .metaeffekt-kontinuum'
                     dir ('.metaeffekt-kontinuum') {
                         withCredentials([usernamePassword(credentialsId: 'JenkinsGithubAccess', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                            git url: 'https://github.com/org-metaeffekt/metaeffekt-kontinuum.git', branch: 'main', credentialsId: 'JenkinsGithubAccess'
+                            git url: 'https://github.com/org-metaeffekt/metaeffekt-kontinuum.git', branch: 'AE-1455-revise-enforcers', credentialsId: 'JenkinsGithubAccess'
                         }
                     }
                 }
