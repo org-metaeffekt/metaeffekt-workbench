@@ -6,6 +6,12 @@ pipeline {
         label 'metaeffekt-astronaut'
     }
 
+    environment {
+        FTP_HOST = 'web39.alfahosting-server.de'
+        FTP_PASS = credentials('ftp-credential')
+        FTP_USER = 'h201174_automation'
+    }
+
     stages {
         stage('Checkout metaeffekt-kontinuum') {
             steps {
@@ -20,7 +26,6 @@ pipeline {
             }
         }
 
-        /*
         stage('Checkout metaeffekt-core') {
             steps {
                 script {
@@ -64,7 +69,6 @@ pipeline {
                 }
             }
         }
-        */
 
         stage('Configure metaeffekt-workbench') {
             steps {
@@ -79,10 +83,30 @@ pipeline {
             }
         }
 
+        stage('Checkout metaeffekt-vulnerability-correlation') {
+            steps {
+                script {
+                    sh 'mkdir -p .metaeffekt-vulnerability-correlation'
+                    dir ('.metaeffekt-vulnerability-correlation') {
+                        git url: "http://ae-server:7990/scm/ae/metaeffekt-vulnerability-correlation.git", branch: 'master', credentialsId: 'bitbucket-credentials'
+                    }
+                    sh 'cp -rf .metaeffekt-vulnerability-correlation/correlation correlations/shared/common'
+                }
+            }
+        }
+
         stage('Run workspace-001 tests - openssl_en') {
             steps {
                 withMaven(maven: 'maven-3.9.6') {
                     sh './tests/scripts/pipelines/001_openssl-pipeline_en.sh'
+                }
+            }
+        }
+
+        stage('Run workspace-001 tests - windows11_en') {
+            steps {
+                withMaven(maven: 'maven-3.9.6') {
+                    sh './tests/scripts/pipelines/001_windows11-pipeline_en.sh'
                 }
             }
         }
@@ -100,6 +124,17 @@ pipeline {
                 withMaven(maven: 'maven-3.9.6') {
                     sh './tests/scripts/pipelines/001_sample-product-pipeline_en.sh'
                 }
+            }
+        }
+
+        stage('Publish Dashboards') {
+            steps {
+                sh 'curl -T "tests/resources/workspace-001/openssl-3.3.1/04_advised/dashboards/openssl-3.3.1-dashboard.html" "ftp://$FTP_HOST/html/metaeffekt/dashboards/openssl-3.3.1-dashboard.html" --user $FTP_USER:$FTP_PASS'
+                sh 'curl -T "tests/resources/workspace-001/windows11/04_advised/dashboards/windows11-dashboard_patched.html" "ftp://$FTP_HOST/html/metaeffekt/dashboards/windows11-dashboard_patched.html" --user $FTP_USER:$FTP_PASS'
+                sh 'curl -T "tests/resources/workspace-001/windows11/04_advised/dashboards/windows11-dashboard_unpatched.html" "ftp://$FTP_HOST/html/metaeffekt/dashboards/windows11-dashboard_unpatched.html" --user $FTP_USER:$FTP_PASS'
+
+                // additional version (old link shared)
+                sh 'curl -T "tests/resources/workspace-001/windows11/04_advised/dashboards/windows11-dashboard_unpatched.html" "ftp://$FTP_HOST/html/metaeffekt/dashboards/windows11-dashboard.html" --user $FTP_USER:$FTP_PASS'
             }
         }
 

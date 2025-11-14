@@ -23,23 +23,35 @@ else
   exit 1
 fi
 
-if [ -n "${EXTERNAL_VULNERABILITY_MIRROR_DIR:-}" ];then
-    echo "EXTERNAL_VULNERABILITY_MIRROR_DIR was set in external.rc file."
+if [ -n "${EXTERNAL_VULNERABILITY_MIRROR_DIR:-}" ]; then
+  log_info "Found external mirror at $EXTERNAL_VULNERABILITY_MIRROR_DIR"
 else
-  echo "Terminating: EXTERNAL_VULNERABILITY_MIRROR_DIR in external.rc is not set."
-  exit 1
+  log_info "No EXTERNAL_VULNERABILITY_MIRROR_DIR specified in external.rc, this might result in scripts failing."
 fi
 
-if [ -n "${EXTERNAL_VULNERABILITY_MIRROR_URL:-}" ];then
-    echo "EXTERNAL_VULNERABILITY_MIRROR_URL was set in external.rc file."
+
+if [ -n "${EXTERNAL_VULNERABILITY_MIRROR_URL:-}" ]; then
+  log_info "External mirror URL specified: $EXTERNAL_VULNERABILITY_MIRROR_URL"
 else
-  echo "EXTERNAL_VULNERABILITY_MIRROR_URL in external.rc is not set."
+  log_info "No EXTERNAL_VULNERABILITY_MIRROR_URL specified in external.rc, this might result in scripts failing."
 fi
 
-if [ -n "${EXTERNAL_VULNERABILITY_MIRROR_NAME:-}" ];then
-    echo "EXTERNAL_VULNERABILITY_MIRROR_NAME was set in external.rc file."
+if [ -n "${EXTERNAL_VULNERABILITY_MIRROR_NAME:-}" ]; then
+  log_info "External mirror name specified: $EXTERNAL_VULNERABILITY_MIRROR_NAME"
 else
-  echo "EXTERNAL_VULNERABILITY_MIRROR_NAME in external.rc is not set."
+  log_info "No EXTERNAL_VULNERABILITY_MIRROR_NAME specified in external.rc, this might result in scripts failing."
+fi
+
+if [ -n "${AE_CORE_VERSION:-}" ]; then
+  log_info "Core version specified: $AE_CORE_VERSION"
+else
+  log_info "No AE_CORE_VERSION specified in external.rc file, using HEAD-SNAPSHOT."
+fi
+
+if [ -n "${AE_ARTIFACT_ANALYSIS_VERSION:-}" ]; then
+  log_info "Artifact analysis version specified: $AE_ARTIFACT_ANALYSIS_VERSION"
+else
+  log_info "No AE_ARTIFACT_ANALYSIS_VERSION specified in external.rc file, using HEAD-SNAPSHOT"
 fi
 
 

@@ -51,9 +51,9 @@
                             <!-- THIS IS CORRECT: Transformations do not use the 0.135.x branch so we need the new policy. -->
                             <securityPolicy>
                                 <files>
-                                    <file>${securityPolicyFile}</file>
+                                    <file>${param.security.policy.file}</file>
                                 </files>
-                                <activeIds>${securityPolicyActiveIds}</activeIds>
+                                <activeIds>${param.security.policy.active.ids}</activeIds>
                             </securityPolicy>
                         </configuration>
                     </execution>
@@ -73,21 +73,15 @@
                             <rules>
                                 <requireProperty>
                                     <property>input.reference.inventories.dir</property>
-                                    <message>
-                                        You must set the parameter 'input.reference.inventories.dir' to specify the file of the filtered inventory.
-                                    </message>
                                 </requireProperty>
                                 <requireProperty>
                                     <property>output.filtered.inventory.file</property>
-                                    <message>
-                                        You must set the parameter 'output.filtered.inventory.file' to specify the file of the filtered inventory.
-                                    </message>
                                 </requireProperty>
                                 <requireProperty>
                                     <property>param.vulnerability.advisory.filter</property>
-                                    <message>
-                                        You must set the parameter 'param.vulnerability.advisory.filter' to specify the advisor to filter the inventory by.
-                                    </message>
+                                </requireProperty>
+                                <requireProperty>
+                                    <property>param.security.policy.file</property>
                                 </requireProperty>
                             </rules>
                             <fail>true</fail>
