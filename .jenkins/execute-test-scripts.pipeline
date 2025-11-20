@@ -26,6 +26,17 @@ pipeline {
             }
         }
 
+        stage('Checkout metaeffekt-workbench') {
+            steps {
+                script {
+                    // after celarWs we have to re-checkout the workbench (is there a better way to do this?)
+                    withCredentials([usernamePassword(credentialsId: 'JenkinsGithubAccess', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                        git url: 'https://github.com/org-metaeffekt/metaeffekt-workbench.git', branch: 'main', credentialsId: 'JenkinsGithubAccess'
+                    }
+                }
+            }
+        }
+
         stage('Checkout metaeffekt-kontinuum') {
             steps {
                 script {
