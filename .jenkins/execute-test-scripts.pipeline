@@ -13,6 +13,19 @@ pipeline {
     }
 
     stages {
+
+        stage('Cleanup') {
+            steps {
+                script {
+                    // clear the full workspace to start from scratch (except vulnerability mirror data and other indexes)
+                    cleanWs()
+
+                    // additionally clean the vulnerability mirror if update should be forced
+                    // sh 'rm -rf ../.vulnerability-mirror'
+                }
+            }
+        }
+
         stage('Checkout metaeffekt-kontinuum') {
             steps {
                 script {
