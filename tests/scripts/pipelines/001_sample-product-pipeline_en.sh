@@ -225,11 +225,9 @@ generate_vulnerability_summary_report() {
   PARAM_PRODUCT_NAME="Sample Product"
   PARAM_PRODUCT_VERSION="1.0.0"
   PARAM_PRODUCT_WATERMARK="Sample"
-  PARAM_OVERVIEW_ADVISORS="" # leave empty as merging the advisors does not require this parameter for vsr
 
   CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/report/report_create-document.xml" verify)
-  # CMD+=("-Dinput.inventory.file=$ADVISED_INVENTORY_FILE") original command for pipeline
-  CMD+=("-Dinput.inventory.file=/Users/romeo/metaeffekt/Repositories/metaeffekt-workbench/tests/resources/workspace-001/sample-product-1.0.0/99_tmp/report/SampleProduct-vulnerability-report-inventory.xlsx")
+  CMD+=("-Dinput.inventory.file=$WORKBENCH_DIR/tests/resources/summary")
   CMD+=("-Dinput.reference.inventory.file=$ENV_REFERENCE_INVENTORY_DIR/artifact-inventory.xls")
   CMD+=("-Dinput.asset.descriptor.path=$ENV_VSR_DESCRIPTOR_PATH")
 
@@ -243,12 +241,11 @@ generate_vulnerability_summary_report() {
   CMD+=("-Dparam.product.name=$PARAM_PRODUCT_NAME")
   CMD+=("-Dparam.product.watermark=$PARAM_PRODUCT_WATERMARK")
   CMD+=("-Dparam.document.type=$PARAM_DOCUMENT_TYPE")
-  CMD+=("-Dparam.overview.advisors=$PARAM_OVERVIEW_ADVISORS")
   CMD+=("-Dparam.property.selector.organization=metaeffekt")
 
   CMD+=("-Denv.vulnerability.mirror.dir=$EXTERNAL_VULNERABILITY_MIRROR_DIR/.database")
-  CMD+=("-Denv.workbench.dir=$PROCESSORS_DIR")
-  CMD+=("-Denv.kontinuum.dir=$KONTINUUM_PROCESSORS_DIR")
+  CMD+=("-Denv.workbench.dir=$WORKBENCH_DIR")
+  CMD+=("-Denv.kontinuum.dir=$EXTERNAL_KONTINUUM_DIR")
 
   pass_command_info_to_logger "generate_vulnerability-summary-report"
 }
@@ -366,11 +363,12 @@ main() {
   update_mirror
   enrich_inventory_with_reference
   create_annex
+  create_custom-annex-document
   enrich_inventory
   generate_vulnerability_report
+  generate_vulnerability_summary_report
   generate_cert_report
   generate_vulnerability_assessment_dashboard
-  create_custom-annex-document
 }
 
 main "$@"

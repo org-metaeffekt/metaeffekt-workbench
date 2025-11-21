@@ -66,15 +66,9 @@
                             <rules>
                                 <requireProperty>
                                     <property>input.inventories.dir</property>
-                                    <message>
-                                        You must set the parameter 'input.inventories.dir'.
-                                    </message>
                                 </requireProperty>
                                 <requireProperty>
                                     <property>output.merged.inventory.file</property>
-                                    <message>
-                                        You must set the parameter 'output.merged.inventory.file'.
-                                    </message>
                                 </requireProperty>
                             </rules>
                             <fail>true</fail>
