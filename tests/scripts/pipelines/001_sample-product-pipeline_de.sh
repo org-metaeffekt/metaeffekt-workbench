@@ -371,15 +371,15 @@ main() {
   SCRIPT_NAME=$(basename "$(readlink -f "$0")")
   create_target_directories
 
-  update_mirror
+  # update_mirror
   enrich_inventory_with_reference
-  create_annex
-  create_custom-annex-document
+  # create_annex
+  # create_custom-annex-document
   enrich_inventory
-  generate_vulnerability_report
-  generate_vulnerability_summary_report
+  # generate_vulnerability_report
+  # generate_vulnerability_summary_report
   generate_cert_report
-  generate_vulnerability_assessment_dashboard
+  # generate_vulnerability_assessment_dashboard
 }
 
 main "$@"
