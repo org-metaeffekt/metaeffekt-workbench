@@ -159,10 +159,9 @@
                     <!-- add restrictions here -->
                 </tspan>
                 <tspan x="375.185" y="1035.75">
-                    written permission of ${organization.name}.
                 </tspan>
                 <tspan x="375.185" y="1045.75">
-                    &#169; ${document.copyright.year} ${organization.name} - All rights reserved
+                    &#169; ${document.copyright.year} ${organization.name}. All rights reserved.
                 </tspan>
             </text>
         </g>
