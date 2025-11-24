@@ -20,11 +20,6 @@ on:
         default: main
         required: false
         type: string
-      trigger-workbench-release:
-        description: 'Triggers the release pipeline in the metaeffekt-workbench repository, preparing a release with the same version as defined in the "version" input.'
-        default: false
-        required: false
-        type: boolean
 
 permissions:
   contents: write
