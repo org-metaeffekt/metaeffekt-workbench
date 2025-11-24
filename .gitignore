@@ -3,6 +3,7 @@
 
 **/.idea
 **/.vulnerability-mirror
+**/.mirror
 **/.logs
 
 # excluded to not convey any of the internal correlation data by accident

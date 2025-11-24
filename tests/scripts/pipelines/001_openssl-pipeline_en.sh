@@ -89,6 +89,7 @@ enrich_inventory() {
   PROCESSOR_TMP_DIR="$TMP_DIR/processor"
   DASHBOARD_SUBJECT="OpenSSL 3.3.1"
   SECURITY_POLICY_ACTIVE_IDS="assessment_enrichment_configuration"
+  ACTIVATE_MSRC="false"
 
   CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/advise/advise_enrich-inventory.xml" process-resources)
   [ -n "${AE_CORE_VERSION:-}" ] && CMD+=("-Dae.core.version=$AE_CORE_VERSION")
@@ -107,6 +108,8 @@ enrich_inventory() {
   CMD+=("-Dparam.assessment.dir=$ASSESSMENT_DIR")
   CMD+=("-Dparam.correlation.dir=$CORRELATION_DIR")
   CMD+=("-Dparam.context.dir=$CONTEXT_DIR")
+  CMD+=("-Dparam.activate.msrc=$ACTIVATE_MSRC")
+
 
   CMD+=("-Denv.vulnerability.mirror.dir=$EXTERNAL_VULNERABILITY_MIRROR_DIR/.database")
 

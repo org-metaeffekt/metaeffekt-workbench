@@ -1,0 +1,141 @@
+name: Create Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release version. Must be valid semantic versioning.'
+        required: true
+        type: string
+      ae-core-version:
+        description: 'Metaeffekt Core version to use for this release.'
+        required: true
+        type: string
+      ae-artifact-analysis-version:
+        description: 'Metaeffekt Artifact Analysis version to use for this release.'
+        required: true
+        type: string
+      ae-kontinuum-version:
+        description: 'Metaeffekt Kontinuum version tag or branch to utilize for testing.'
+        default: main
+        required: false
+        type: string
+      trigger-workbench-release:
+        description: 'Triggers the release pipeline in the metaeffekt-workbench repository, preparing a release with the same version as defined in the "version" input.'
+        default: false
+        required: false
+        type: boolean
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Create release branch
+        shell: bash
+        run: |
+          git config --local user.email "github-actions[bot]@metaeffekt.com"
+          git config --local user.name "github-actions[bot]"
+          git checkout -b release/${{ inputs.version }}
+
+      - name: Install Maven
+        run: |
+          MVN_VER=3.9.11
+          wget -q https://downloads.apache.org/maven/maven-3/${MVN_VER}/binaries/apache-maven-${MVN_VER}-bin.tar.gz
+          sudo tar -xzf apache-maven-${MVN_VER}-bin.tar.gz -C /opt/
+          sudo mv /opt/apache-maven-${MVN_VER} /opt/maven
+          echo "/opt/maven/bin" >> "$GITHUB_PATH"
+          pwd
+
+      - name: Replace versions in parent processors
+        run: |
+          sed -i 's|<ae.core.version>HEAD-SNAPSHOT</ae.core.version>|<ae.core.version>${{ inputs.ae-core-version }}</ae.core.version>|' templates/report-template/pom.xml
+          sed -i 's|<ae.artifact.analysis.version>HEAD-SNAPSHOT</ae.artifact.analysis.version>|<ae.artifact.analysis.version>${{ inputs.ae-artifact-analysis-version }}</ae.artifact.analysis.version>|' templates/report-template/pom.xml
+          
+          sed -i 's|<ae.core.version>HEAD-SNAPSHOT</ae.core.version>|<ae.core.version>${{ inputs.ae-core-version }}</ae.core.version>|' processors/workbench-parent.xml
+          sed -i 's|<ae.artifact.analysis.version>HEAD-SNAPSHOT</ae.artifact.analysis.version>|<ae.artifact.analysis.version>${{ inputs.ae-artifact-analysis-version }}</ae.artifact.analysis.version>|' processors/workbench-parent.xml
+
+      - name: Checkout metaeffekt-kontinuum
+        run: |
+          git clone https://github.com/org-metaeffekt/metaeffekt-kontinuum.git ${{ github.workspace }}/.metaeffekt-kontinuum
+          cd ${{ github.workspace }}/.metaeffekt-kontinuum
+          git checkout ${{ inputs.metaeffekt-kontinuum-version }}
+
+      - name: Create external.rc file
+        run: |
+          touch ${{ github.workspace }}/external.rc
+          echo "EXTERNAL_KONTINUUM_DIR=${{ github.workspace }}/.metaeffekt-kontinuum" >> ${{ github.workspace }}/external.rc
+          echo "EXTERNAL_VULNERABILITY_MIRROR_DIR=${{ github.workspace }}/.mirror" >> ${{ github.workspace }}/external.rc
+          echo "EXTERNAL_VULNERABILITY_MIRROR_URL=https://metaeffekt.com/mirror/ae-vulnerability-mirror/ae-mirror-index_gen4-external.tar.gz" >> ${{ github.workspace }}/external.rc
+          echo "EXTERNAL_VULNERABILITY_MIRROR_NAME=ae-mirror-index_gen4-external.tar.gz" >> ${{ github.workspace }}/external.rc
+          echo "AE_CORE_VERSION=${{ inputs.ae-core-version }}" >> ${{ github.workspace }}/external.rc
+          echo "AE_ARTIFACT_ANALYSIS_VERSION=${{ inputs.ae-artifact-analysis-version }}" >> ${{ github.workspace }}/external.rc
+
+      - name: Restore vulnerability mirror and maven index cache
+        uses: actions/cache/restore@v4
+        with:
+          key: key-${{ inputs.ae-core-version }}-${{ inputs.ae-artifact-analysis-version }}
+          path: |
+            .mirror
+            .maven-index
+
+      - name: Run test pipelines
+        shell: bash
+        env:
+          AE_CORE_VERSION: ${{ inputs.ae-core-version }}
+          AE_ARTIFACT_ANALYSIS_VERSION: ${{ inputs.ae-artifact-analysis-version }}
+        run: |
+          ./tests/scripts/pipelines/001_sample-product-pipeline_de.sh
+          ./tests/scripts/pipelines/001_sample-product-pipeline_en.sh
+
+      - name: Save vulnerability mirror and maven index cache
+        uses: actions/cache/save@v4
+        if: ${{ always() }}
+        with:
+          key: key-${{ inputs.ae-core-version }}-${{ inputs.ae-artifact-analysis-version }}
+          path: |
+            .mirror
+            .maven-index
+
+      - uses: actions/upload-artifact@v4
+        if: ${{ always() }}
+        with:
+          name: logs
+          path: .logs
+
+      - name: Dump last 100 lines of log file
+        if: always()
+        shell: bash
+        run: |
+          shopt -s nullglob
+          for f in .metaeffekt-kontinuum/.logs/*; do
+            echo "- $f -"
+            tail -n 100 "$f"
+          done
+
+      - name: Commit changes
+        if: ${{ !env.ACT }}
+        run: |
+          git add templates/report-template/pom.xml processors/workbench-parent.xml
+          git commit -m "Release ${{ inputs.version }}" || echo "No changes to commit"
+
+      - name: Push changes
+        if: ${{ !env.ACT }}
+        run: git push --set-upstream origin "release/${{ inputs.version }}"
+
+      - name: Create Release
+        if: ${{ !env.ACT }}
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ inputs.version }}
+          target_commitish: "release/${{ inputs.version }}"
+          name: ${{ inputs.version }}
+          draft: false
+          prerelease: false
