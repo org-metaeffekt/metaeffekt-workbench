@@ -30,7 +30,7 @@ set_global_variables() {
   readonly KONTINUUM_PROCESSORS_DIR="$EXTERNAL_KONTINUUM_DIR/processors"
 
   LOG_DIR="$WORKBENCH_DIR/.logs"
-  logger_init "$LOG_DIR/keycloak-pipeline_en.log"
+  logger_init "$LOG_DIR/001_keycloak-pipeline_en.log"
 
   readonly TARGET_BASE_DIR="$WORKSPACE_DIR/keycloak-25.0.4"
   readonly ANALYZED_DIR="$TARGET_BASE_DIR/02_analyzed"
@@ -81,7 +81,7 @@ update_mirror() {
 enrich_inventory() {
   log_info "Running enrich_inventory process."
 
-  ANALYZED_INVENTORY_FILE="$ANALYZED_DIR/keycloak-inventory.xls"
+  ANALYZED_INVENTORY_FILE="$ANALYZED_DIR/keycloak-inventory.xlsx"
   ASSESSMENT_DIR="$WORKBENCH_DIR/assessments/assessment-001/keycloak"
   CONTEXT_DIR="$WORKBENCH_DIR/contexts/example-001"
   CORRELATION_DIR="$WORKBENCH_DIR/correlations/shared"
@@ -102,9 +102,9 @@ enrich_inventory() {
   CMD+=("-Dparam.security.policy.file=$PARAM_SECURITY_POLICY_FILE")
   CMD+=("-Dparam.security.policy.file=$PARAM_SECURITY_POLICY_FILE")
   CMD+=("-Dparam.security.policy.active.ids=$SECURITY_POLICY_ACTIVE_IDS")
-  CMD+=("-Dparam.dashboard.title=OpenSSL 25.0.4 Assessment")
+  CMD+=("-Dparam.dashboard.title=Keycloak 25.0.4 Assessment")
   CMD+=("-Dparam.dashboard.subtitle=")
-  CMD+=("-Dparam.dashboard.footer=OpenSSL 25.0.4")
+  CMD+=("-Dparam.dashboard.footer=Keycloak 25.0.4")
   CMD+=("-Dparam.assessment.dir=$ASSESSMENT_DIR")
   CMD+=("-Dparam.correlation.dir=$CORRELATION_DIR")
   CMD+=("-Dparam.context.dir=$CONTEXT_DIR")
