@@ -151,6 +151,12 @@ pipeline {
             }
         }
 
+        stage('Publish Inventories internally') {
+            steps {
+                sh 'export AE_TIMESTAMP=`date +"%Y-%m-%d@%Hh%Mm"` && curl --create-dirs -T "tests/resources/workspace-001/openssl-3.3.1/04_advised/openssl-advised-inventory.xlsx" http://ae-scanner/upload/inventory-index/openssl-3.1.1/openssl-advised-inventory-$AE_TIMESTAMP.xlsx'
+            }
+        }
+
         stage('Publish Dashboards') {
             steps {
                 sh 'curl -T "tests/resources/workspace-001/openssl-3.3.1/04_advised/dashboards/openssl-3.3.1-dashboard.html" "ftp://$FTP_HOST/html/metaeffekt/dashboards/openssl-3.3.1-dashboard.html" --user $FTP_USER:$FTP_PASS'
