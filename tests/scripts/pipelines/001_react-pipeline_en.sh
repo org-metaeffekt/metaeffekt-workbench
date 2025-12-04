@@ -32,7 +32,7 @@ set_global_variables() {
   LOG_DIR="$WORKBENCH_DIR/.logs"
   logger_init "$LOG_DIR/001_react-pipeline_en.log"
 
-  readonly TARGET_BASE_DIR="$WORKSPACE_DIR/react-19.2.1"
+  readonly TARGET_BASE_DIR="$WORKSPACE_DIR/react-19.2.0"
   readonly ANALYZED_DIR="$TARGET_BASE_DIR/02_analyzed"
   readonly CURATED_DIR="$TARGET_BASE_DIR/03_curated"
   readonly ADVISED_DIR="$TARGET_BASE_DIR/04_advised"
@@ -104,7 +104,7 @@ enrich_inventory() {
   CMD+=("-Dparam.security.policy.active.ids=$SECURITY_POLICY_ACTIVE_IDS")
   CMD+=("-Dparam.dashboard.title=React Server Components 3.3.1 Assessment")
   CMD+=("-Dparam.dashboard.subtitle=")
-  CMD+=("-Dparam.dashboard.footer=React Server Components 19.2.1")
+  CMD+=("-Dparam.dashboard.footer=React Server Components 19.2.0")
   CMD+=("-Dparam.assessment.dir=$ASSESSMENT_DIR")
   CMD+=("-Dparam.correlation.dir=$CORRELATION_DIR")
   CMD+=("-Dparam.context.dir=$CONTEXT_DIR")
@@ -119,7 +119,7 @@ enrich_inventory() {
 generate_vulnerability_assessment_dashboard() {
   log_info "Running generate_vulnerability_assessment_dashboard process."
 
-  OUTPUT_DASHBOARD_FILE="$ADVISED_DIR/dashboards/react-19.2.1-dashboard.html"
+  OUTPUT_DASHBOARD_FILE="$ADVISED_DIR/dashboards/react-19.2.0-dashboard.html"
   SECURITY_POLICY_ACTIVE_IDS="assessment_enrichment_configuration"
 
   CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/advise/advise_create-dashboard.xml" process-resources)
@@ -146,9 +146,9 @@ generate_vulnerability_report() {
   PARAM_DOCUMENT_TYPE="VR"
   PARAM_ASSET_ID="React Server Components"
   PARAM_ASSET_NAME="React Server Components"
-  PARAM_ASSET_VERSION="19.2.1"
+  PARAM_ASSET_VERSION="19.2.0"
   PARAM_PRODUCT_NAME="React Server Components"
-  PARAM_PRODUCT_VERSION="19.2.1"
+  PARAM_PRODUCT_VERSION="19.2.0"
   PARAM_PRODUCT_WATERMARK="React Server Components"
   PARAM_OVERVIEW_ADVISORS="CERT_FR"
 
