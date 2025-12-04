@@ -151,6 +151,15 @@ pipeline {
             }
         }
 
+
+        stage('Run workspace-001 tests - react_en') {
+            steps {
+                withMaven(maven: 'maven-3.9.6') {
+                    sh './tests/scripts/pipelines/001_react-pipeline_en.sh'
+                }
+            }
+        }
+
         stage('Publish Inventories internally') {
             steps {
                 // openssl
@@ -162,6 +171,12 @@ pipeline {
 
                 // sample-product
                 sh 'export AE_TIMESTAMP=`date +"%Y-%m-%d@%Hh%Mm"` && curl --create-dirs -T "tests/resources/workspace-001/sample-product-1.0.0/04_advised/sample-product-advised-inventory.xlsx" http://ae-scanner/upload/inventory-index/sample-product-1.0.0/sample-product-advised-inventory-$AE_TIMESTAMP.xlsx'
+
+                // react
+                sh 'export AE_TIMESTAMP=`date +"%Y-%m-%d@%Hh%Mm"` && curl --create-dirs -T "tests/resources/workspace-001/react-19.2.0/04_advised/react-advised-inventory.xlsx" http://ae-scanner/upload/inventory-index/react-19.2.0/react-advised-inventory-$AE_TIMESTAMP.xlsx'
+
+                // keycloak; activate when integrated
+                // sh 'export AE_TIMESTAMP=`date +"%Y-%m-%d@%Hh%Mm"` && curl --create-dirs -T "tests/resources/workspace-001/keycloak-25.0.4/04_advised/keycloak-advised-inventory.xlsx" http://ae-scanner/upload/inventory-index/keycloak-25.0.4/keycloak-advised-inventory-$AE_TIMESTAMP.xlsx'
             }
         }
 
@@ -171,8 +186,12 @@ pipeline {
                 sh 'curl -T "tests/resources/workspace-001/windows11/04_advised/dashboards/windows11-dashboard_patched.html" "ftp://$FTP_HOST/html/metaeffekt/dashboards/windows11-dashboard_patched.html" --user $FTP_USER:$FTP_PASS'
                 sh 'curl -T "tests/resources/workspace-001/windows11/04_advised/dashboards/windows11-dashboard_unpatched.html" "ftp://$FTP_HOST/html/metaeffekt/dashboards/windows11-dashboard_unpatched.html" --user $FTP_USER:$FTP_PASS'
 
+                // react
+                sh 'curl -T "tests/resources/workspace-001/react-19.2.0/04_advised/dashboards/react-19.2.0-dashboard.html" "ftp://$FTP_HOST/html/metaeffekt/dashboards/react-19.2.0-dashboard.html" --user $FTP_USER:$FTP_PASS'
+
                 // additional version (old link shared)
                 sh 'curl -T "tests/resources/workspace-001/windows11/04_advised/dashboards/windows11-dashboard_unpatched.html" "ftp://$FTP_HOST/html/metaeffekt/dashboards/windows11-dashboard.html" --user $FTP_USER:$FTP_PASS'
+
             }
         }
 
