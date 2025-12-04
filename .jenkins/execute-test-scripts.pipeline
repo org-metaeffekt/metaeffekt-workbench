@@ -153,7 +153,15 @@ pipeline {
 
         stage('Publish Inventories internally') {
             steps {
+                // openssl
                 sh 'export AE_TIMESTAMP=`date +"%Y-%m-%d@%Hh%Mm"` && curl --create-dirs -T "tests/resources/workspace-001/openssl-3.3.1/04_advised/openssl-advised-inventory.xlsx" http://ae-scanner/upload/inventory-index/openssl-3.1.1/openssl-advised-inventory-$AE_TIMESTAMP.xlsx'
+
+                // windows11 (patched and unpatched)
+                sh 'export AE_TIMESTAMP=`date +"%Y-%m-%d@%Hh%Mm"` && curl --create-dirs -T "tests/resources/workspace-001/windows11/04_advised/windows11-advised-inventory_unpatched.xlsx" http://ae-scanner/upload/inventory-index/windows-11_unpatched/windows11-advised-inventory_unpatched-$AE_TIMESTAMP.xlsx'
+                sh 'export AE_TIMESTAMP=`date +"%Y-%m-%d@%Hh%Mm"` && curl --create-dirs -T "tests/resources/workspace-001/windows11/04_advised/windows11-advised-inventory_patched.xlsx" http://ae-scanner/upload/inventory-index/windows-11_patched/windows11-advised-inventory_patched-$AE_TIMESTAMP.xlsx'
+
+                // sample-product
+                sh 'export AE_TIMESTAMP=`date +"%Y-%m-%d@%Hh%Mm"` && curl --create-dirs -T "tests/resources/workspace-001/sample-product-1.0.0/04_advised/sample-product-advised-inventory.xlsx" http://ae-scanner/upload/inventory-index/sample-product-1.0.0/sample-product-advised-inventory-$AE_TIMESTAMP.xlsx'
             }
         }
 
