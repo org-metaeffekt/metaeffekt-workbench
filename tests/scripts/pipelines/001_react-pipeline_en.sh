@@ -87,7 +87,7 @@ enrich_inventory() {
   CORRELATION_DIR="$WORKBENCH_DIR/correlations/shared"
   ADVISED_INVENTORY_FILE="$ADVISED_DIR/react-advised-inventory.xlsx"
   PROCESSOR_TMP_DIR="$TMP_DIR/processor"
-  DASHBOARD_SUBJECT="React Server Components 3.3.1"
+  DASHBOARD_SUBJECT="React Server Components 19.2.0"
   SECURITY_POLICY_ACTIVE_IDS="assessment_enrichment_configuration"
   ACTIVATE_MSRC="false"
 
@@ -102,7 +102,7 @@ enrich_inventory() {
   CMD+=("-Dparam.security.policy.file=$PARAM_SECURITY_POLICY_FILE")
   CMD+=("-Dparam.security.policy.file=$PARAM_SECURITY_POLICY_FILE")
   CMD+=("-Dparam.security.policy.active.ids=$SECURITY_POLICY_ACTIVE_IDS")
-  CMD+=("-Dparam.dashboard.title=React Server Components 3.3.1 Assessment")
+  CMD+=("-Dparam.dashboard.title=React Server Components 19.2.0 Assessment")
   CMD+=("-Dparam.dashboard.subtitle=")
   CMD+=("-Dparam.dashboard.footer=React Server Components 19.2.0")
   CMD+=("-Dparam.assessment.dir=$ASSESSMENT_DIR")
