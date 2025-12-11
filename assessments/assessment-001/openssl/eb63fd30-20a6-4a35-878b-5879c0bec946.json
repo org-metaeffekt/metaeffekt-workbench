@@ -14,8 +14,8 @@
   "cvssV3P1": {
     "lowerMetric": [
       {
-        "metrics": "MPR:A",
-        "rationale": "Private network. Access from unstrusted networks is not possible."
+        "metrics": "MPR:L",
+        "rationale": "Some form of low level authentication is required"
       }
     ]
   },
