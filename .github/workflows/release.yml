@@ -1,8 +1,6 @@
 name: Create Release
 
 on:
-  repository_dispatch:
-    types: [kontinuum-trigger]
   workflow_dispatch:
     inputs:
       version:
@@ -22,6 +20,9 @@ on:
         default: main
         required: false
         type: string
+env:
+  MIRROR_URL: "https://metaeffekt.com/mirror/ae-vulnerability-mirror/ae-mirror-index_gen5-external.tar.gz"
+  MIRROR_NAME: "ae-mirror-index_gen5-external.tar.gz"
 
 permissions:
   contents: write
@@ -70,8 +71,8 @@ jobs:
           touch ${{ github.workspace }}/external.rc
           echo "EXTERNAL_KONTINUUM_DIR=${{ github.workspace }}/.metaeffekt-kontinuum" >> ${{ github.workspace }}/external.rc
           echo "EXTERNAL_VULNERABILITY_MIRROR_DIR=${{ github.workspace }}/.mirror" >> ${{ github.workspace }}/external.rc
-          echo "EXTERNAL_VULNERABILITY_MIRROR_URL=https://metaeffekt.com/mirror/ae-vulnerability-mirror/ae-mirror-index_gen4-external.tar.gz" >> ${{ github.workspace }}/external.rc
-          echo "EXTERNAL_VULNERABILITY_MIRROR_NAME=ae-mirror-index_gen4-external.tar.gz" >> ${{ github.workspace }}/external.rc
+          echo "EXTERNAL_VULNERABILITY_MIRROR_URL=${{ env.MIRROR_URL }}" >> ${{ github.workspace }}/external.rc
+          echo "EXTERNAL_VULNERABILITY_MIRROR_NAME=${{ env.MIRROR_NAME }}" >> ${{ github.workspace }}/external.rc
           echo "AE_CORE_VERSION=${{ inputs.ae-core-version }}" >> ${{ github.workspace }}/external.rc
           echo "AE_ARTIFACT_ANALYSIS_VERSION=${{ inputs.ae-artifact-analysis-version }}" >> ${{ github.workspace }}/external.rc
 
@@ -123,9 +124,10 @@ jobs:
           git add templates/report-template/pom.xml processors/workbench-parent.xml
           git commit -m "Release ${{ inputs.version }}" || echo "No changes to commit"
 
+      # We need to use --force here as previous failed pipeline might have pushed to the branch already.
       - name: Push changes
         if: ${{ !env.ACT }}
-        run: git push --set-upstream origin "release/${{ inputs.version }}"
+        run: git push --set-upstream origin "release/${{ inputs.version }} --force"
 
       - name: Create Release
         if: ${{ !env.ACT }}
