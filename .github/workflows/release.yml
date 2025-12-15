@@ -1,6 +1,8 @@
 name: Create Release
 
 on:
+  repository_dispatch:
+    types: [kontinuum-trigger]
   workflow_dispatch:
     inputs:
       version:
