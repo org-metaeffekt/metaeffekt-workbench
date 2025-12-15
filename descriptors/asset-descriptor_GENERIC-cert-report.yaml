@@ -27,7 +27,6 @@ transformations:
       param.vulnerabilities.advisory.filter: '[{"name":"${overview.advisors}"}]'
       param.filtered.inventory.file: "${filtered-inventory.file}"
       output.enrichment.inventory: "${filtered-enriched-inventory.file}"
-      advisoryProviders: '[{"name":"${overview.advisors}"}]'
       env.vulnerability.mirror.dir: "${env.vulnerability.mirror.dir}"
       param.security.policy.file: "${security.policy.file}"
       param.security.policy.active.ids: "cert_extended_configuration"

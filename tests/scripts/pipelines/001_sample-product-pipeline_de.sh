@@ -89,7 +89,7 @@ enrich_inventory_with_reference() {
   [ -n "${AE_CORE_VERSION:-}" ] && CMD+=("-Dae.core.version=$AE_CORE_VERSION")
   [ -n "${AE_ARTIFACT_ANALYSIS_VERSION:-}" ] && CMD+=("-Dae.artifact.analysis.version=$AE_ARTIFACT_ANALYSIS_VERSION")
   CMD+=("-Dinput.inventory.file=$ANALYZED_INVENTORY_FILE")
-  CMD+=("-Dinput.reference.inventory.dir=$ENV_REFERENCE_INVENTORY_DIR")
+  CMD+=("-Dparam.reference.inventory.dir=$ENV_REFERENCE_INVENTORY_DIR")
 
   CMD+=("-Doutput.inventory.dir=$CURATED_INVENTORY_DIR")
   CMD+=("-Doutput.inventory.path=$CURATED_INVENTORY_PATH")
@@ -117,8 +117,8 @@ create_annex() {
   [ -n "${AE_CORE_VERSION:-}" ] && CMD+=("-Dae.core.version=$AE_CORE_VERSION")
   [ -n "${AE_ARTIFACT_ANALYSIS_VERSION:-}" ] && CMD+=("-Dae.artifact.analysis.version=$AE_ARTIFACT_ANALYSIS_VERSION")
   CMD+=("-Dinput.inventory.file=$CURATED_INVENTORY_DIR/$CURATED_INVENTORY_PATH")
-  CMD+=("-Dinput.reference.inventory.file=$ENV_REFERENCE_INVENTORY_DIR/artifact-inventory.xls")
-  CMD+=("-Dinput.asset.descriptor.path=$ENV_SDA_DESCRIPTOR_PATH")
+  CMD+=("-Dparam.reference.inventory.file=$ENV_REFERENCE_INVENTORY_DIR/artifact-inventory.xls")
+  CMD+=("-Dparam.asset.descriptor.path=$ENV_SDA_DESCRIPTOR_PATH")
 
   CMD+=("-Doutput.document.file=$OUTPUT_ANNEX_FILE")
 
@@ -161,8 +161,8 @@ create_custom-annex-document() {
   [ -n "${AE_CORE_VERSION:-}" ] && CMD+=("-Dae.core.version=$AE_CORE_VERSION")
   [ -n "${AE_ARTIFACT_ANALYSIS_VERSION:-}" ] && CMD+=("-Dae.artifact.analysis.version=$AE_ARTIFACT_ANALYSIS_VERSION")
   CMD+=("-Dinput.inventory.file=$CURATED_INVENTORY_DIR/$CURATED_INVENTORY_PATH")
-  CMD+=("-Dinput.reference.inventory.file=$ENV_REFERENCE_INVENTORY_DIR/artifact-inventory.xls")
-  CMD+=("-Dinput.asset.descriptor.path=$ENV_CAD_DESCRIPTOR_PATH")
+  CMD+=("-Dparam.reference.inventory.file=$ENV_REFERENCE_INVENTORY_DIR/artifact-inventory.xls")
+  CMD+=("-Dparam.asset.descriptor.path=$ENV_CAD_DESCRIPTOR_PATH")
 
   CMD+=("-Doutput.document.file=$OUTPUT_ANNEX_FILE")
 
@@ -238,8 +238,8 @@ generate_vulnerability_report() {
   [ -n "${AE_CORE_VERSION:-}" ] && CMD+=("-Dae.core.version=$AE_CORE_VERSION")
   [ -n "${AE_ARTIFACT_ANALYSIS_VERSION:-}" ] && CMD+=("-Dae.artifact.analysis.version=$AE_ARTIFACT_ANALYSIS_VERSION")
   CMD+=("-Dinput.inventory.file=$ADVISED_INVENTORY_FILE")
-  CMD+=("-Dinput.reference.inventory.file=$ENV_REFERENCE_INVENTORY_DIR/artifact-inventory.xls")
-  CMD+=("-Dinput.asset.descriptor.path=$ENV_VR_DESCRIPTOR_PATH")
+  CMD+=("-Dparam.reference.inventory.file=$ENV_REFERENCE_INVENTORY_DIR/artifact-inventory.xls")
+  CMD+=("-Dparam.asset.descriptor.path=$ENV_VR_DESCRIPTOR_PATH")
 
   CMD+=("-Doutput.document.file=$OUTPUT_VR_FILE")
 
@@ -282,8 +282,8 @@ generate_cert_report() {
   [ -n "${AE_CORE_VERSION:-}" ] && CMD+=("-Dae.core.version=$AE_CORE_VERSION")
   [ -n "${AE_ARTIFACT_ANALYSIS_VERSION:-}" ] && CMD+=("-Dae.artifact.analysis.version=$AE_ARTIFACT_ANALYSIS_VERSION")
   CMD+=("-Dinput.inventory.file=$ADVISED_INVENTORY_FILE")
-  CMD+=("-Dinput.reference.inventory.file=$ENV_REFERENCE_INVENTORY_DIR/artifact-inventory.xls")
-  CMD+=("-Dinput.asset.descriptor.path=$ENV_CR_DESCRIPTOR_PATH")
+  CMD+=("-Dparam.reference.inventory.file=$ENV_REFERENCE_INVENTORY_DIR/artifact-inventory.xls")
+  CMD+=("-Dparam.asset.descriptor.path=$ENV_CR_DESCRIPTOR_PATH")
 
   CMD+=("-Doutput.document.file=$OUTPUT_CR_FILE")
 
