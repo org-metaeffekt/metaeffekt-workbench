@@ -151,6 +151,30 @@
         </profile>
 
         <profile>
+            <id>VSR_en</id>
+            <modules>
+                <module>vulnerability-summary-report-template</module>
+            </modules>
+            <properties>
+                <document.name>${asset.id} SW-REPORT</document.name>
+                <document.qualifier>${asset.id}_${asset.version}_SW-REPORT</document.qualifier>
+                <document.language>en</document.language>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>VSR_de</id>
+            <modules>
+                <module>vulnerability-summary-report-template</module>
+            </modules>
+            <properties>
+                <document.name>${asset.id} SW-REPORT</document.name>
+                <document.qualifier>${asset.id}_${asset.version}_SW-REPORT</document.qualifier>
+                <document.language>de</document.language>
+            </properties>
+        </profile>
+
+        <profile>
             <id>CR_en</id>
             <modules>
                 <module>cert-report-template</module>
