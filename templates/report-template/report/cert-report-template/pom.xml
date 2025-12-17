@@ -29,24 +29,26 @@
         <inventory.source>${project.basedir}/external-resources/reference</inventory.source>
         <system.id>default</system.id>
 
-        <report.summary.path>cert-report/gen/summary-report/svg/fig_summary.svg</report.summary.path>
+        <report.summary.path>${report.module}/gen/summary-report/svg/fig_summary.svg</report.summary.path>
         <filteredDescriptorDir>${project.build.directory}/asset-descriptors</filteredDescriptorDir>
 
         <document.classifier>cr_${document.language}</document.classifier>
         <document.qualifier>${asset.id}_${asset.version}_SW-CR</document.qualifier>
+
+        <report.module>cert-report</report.module>
     </properties>
 
     <profiles>
         <profile>
             <id>CR_en</id>
             <properties>
-                <document.ditamap>cert-report_en.ditamap</document.ditamap>
+                <document.ditamap>${report.module}_en.ditamap</document.ditamap>
             </properties>
         </profile>
         <profile>
             <id>CR_de</id>
             <properties>
-                <document.ditamap>cert-report_de.ditamap</document.ditamap>
+                <document.ditamap>${report.module}_de.ditamap</document.ditamap>
             </properties>
         </profile>
     </profiles>
@@ -100,14 +102,14 @@
                         </execution>
 
                         <execution>
-                            <id>default-descriptor</id>
+                            <id>evaluate-descriptor</id>
                             <goals>
                                 <goal>generate-documents</goal>
                             </goals>
-                            <phase>process-sources</phase>
+                            <phase>generate-resources</phase>
                             <configuration>
                                 <assetDescriptorFile>${filteredDescriptorDir}/${asset.descriptor.path}</assetDescriptorFile>
-                                <targetReportDir>${project.basedir}/src/main/dita/cert-report/gen</targetReportDir>
+                                <targetReportDir>${project.basedir}/src/main/dita/${report.module}/gen</targetReportDir>
                             </configuration>
                         </execution>
                     </executions>
@@ -125,13 +127,13 @@
                             <goals>
                                 <goal>ae-generate-inventory-report-svg</goal>
                             </goals>
-                            <phase>generate-sources</phase>
+                            <phase>process-sources</phase>
                             <configuration>
                                 <inventoryInputFile>
                                     ${param.computed.inventory.dir}/${asset.name}-vulnerability-report-inventory.xlsx
                                 </inventoryInputFile>
                                 <outputDirectory>
-                                    ${project.basedir}/src/main/dita/cert-report/gen/resources/svg
+                                    ${project.basedir}/src/main/dita/${report.module}/gen/resources/svg
                                 </outputDirectory>
 
                                 <overviewActive>true</overviewActive>
@@ -154,12 +156,12 @@
                             <goals>
                                 <goal>ae-generate-inventory-report-svg</goal>
                             </goals>
-                            <phase>generate-sources</phase>
+                            <phase>process-sources</phase>
                             <configuration>
                                 <active>true</active>
 
                                 <inventoryInputFile>${param.computed.inventory.dir}/${asset.name}-statistics-report-inventory.xlsx</inventoryInputFile>
-                                <outputDirectory>${project.basedir}/src/main/dita/cert-report-overall/gen/resources/svg</outputDirectory>
+                                <outputDirectory>${project.basedir}/src/main/dita/${report.module}-overall/gen/resources/svg</outputDirectory>
 
                                 <overviewActive>true</overviewActive>
                                 <cvssActive>false</cvssActive>
@@ -210,15 +212,16 @@
                     <version>1.1.0</version>
                     <executions>
                         <execution>
-                            <phase>process-sources</phase>
+                            <phase>generate-resources</phase>
                             <goals>
                                 <goal>read-project-properties</goal>
                             </goals>
                             <configuration>
                                 <files>
                                     <!-- read the generated properties file; the content can be used for resource filtering -->
-                                    <file>${project.basedir}/src/main/dita/cert-report/gen/filtered-inventory/vulnerability-report.properties</file>
-                                    <file>${project.basedir}/src/main/dita/cert-report/gen/filtered-enriched-inventory/vulnerability-summary.properties</file>
+                                    <file>${project.basedir}/src/main/dita/${report.module}/gen/asset-descriptor.properties</file>
+                                    <file>${project.basedir}/src/main/dita/${report.module}/gen/filtered-inventory/vulnerability-report.properties</file>
+                                    <file>${project.basedir}/src/main/dita/${report.module}/gen/filtered-enriched-inventory/vulnerability-summary.properties</file>
                                 </files>
                             </configuration>
                         </execution>
