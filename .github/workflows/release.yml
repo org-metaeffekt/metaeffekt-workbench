@@ -41,7 +41,7 @@ jobs:
         run: |
           git config --local user.email "github-actions[bot]@metaeffekt.com"
           git config --local user.name "github-actions[bot]"
-          git checkout -b release/${{ inputs.version }}
+          git checkout -B release/${{ inputs.version }}
 
       - name: Install Maven
         run: |
@@ -127,7 +127,7 @@ jobs:
       # We need to use --force here as previous failed pipeline might have pushed to the branch already.
       - name: Push changes
         if: ${{ !env.ACT }}
-        run: git push --set-upstream origin "release/${{ inputs.version }} --force"
+        run: git push --set-upstream origin "release/${{ inputs.version }}" --force
 
       - name: Create Release
         if: ${{ !env.ACT }}
