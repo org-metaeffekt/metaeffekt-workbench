@@ -13,6 +13,30 @@ pipeline {
     }
 
     stages {
+
+        stage('Cleanup') {
+            steps {
+                script {
+                    // clear the full workspace to start from scratch (except vulnerability mirror data and other indexes)
+                    cleanWs()
+
+                    // additionally clean the vulnerability mirror if update should be forced
+                    // sh 'rm -rf ../.vulnerability-mirror_gen5'
+                }
+            }
+        }
+
+        stage('Checkout metaeffekt-workbench') {
+            steps {
+                script {
+                    // after celarWs we have to re-checkout the workbench (is there a better way to do this?)
+                    withCredentials([usernamePassword(credentialsId: 'JenkinsGithubAccess', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                        git url: 'https://github.com/org-metaeffekt/metaeffekt-workbench.git', branch: 'main', credentialsId: 'JenkinsGithubAccess'
+                    }
+                }
+            }
+        }
+
         stage('Checkout metaeffekt-kontinuum') {
             steps {
                 script {
@@ -74,12 +98,12 @@ pipeline {
             steps {
                 sh 'echo "EXTERNAL_KONTINUUM_DIR=\"$(pwd)/.metaeffekt-kontinuum\"" > external.rc'
 
-                // this is effectively workspace/.vulnerability-mirror; so next to the jobs workspace; reconsider as shared
-                sh 'echo "EXTERNAL_VULNERABILITY_MIRROR_DIR=\"$(dirname $(pwd))/.vulnerability-mirror\"" >> external.rc'
+                // this is effectively workspace/.vulnerability-mirror_gen5; so next to the jobs workspace; reconsider as shared
+                sh 'echo "EXTERNAL_VULNERABILITY_MIRROR_DIR=\"$(dirname $(pwd))/.vulnerability-mirror_gen5\"" >> external.rc'
 
                 // specify mirror source
-                sh 'echo "EXTERNAL_VULNERABILITY_MIRROR_URL=\"http://ae-scanner/mirror/index/ae-mirror-index_gen4.tar.gz\"" >> external.rc'
-                sh 'echo "EXTERNAL_VULNERABILITY_MIRROR_NAME=\"ae-mirror-index_gen4.tar.gz\"" >> external.rc'
+                sh 'echo "EXTERNAL_VULNERABILITY_MIRROR_URL=\"http://ae-scanner/mirror/index/ae-mirror-index_gen5.tar.gz\"" >> external.rc'
+                sh 'echo "EXTERNAL_VULNERABILITY_MIRROR_NAME=\"ae-mirror-index_gen5.tar.gz\"" >> external.rc'
             }
         }
 
@@ -127,11 +151,54 @@ pipeline {
             }
         }
 
+
+        stage('Run workspace-001 tests - react_en') {
+            steps {
+                withMaven(maven: 'maven-3.9.6') {
+                    sh './tests/scripts/pipelines/001_react-pipeline_en.sh'
+                }
+            }
+        }
+
+        stage('Run workspace-001 tests - keycloak_en') {
+            steps {
+                withMaven(maven: 'maven-3.9.6') {
+                    sh './tests/scripts/pipelines/001_keycloak-pipeline_en.sh'
+                }
+            }
+        }
+
+        stage('Publish Inventories internally') {
+            steps {
+                // openssl
+                sh 'export AE_TIMESTAMP=`date +"%Y-%m-%d@%Hh%Mm"` && curl --create-dirs -T "tests/resources/workspace-001/openssl-3.3.1/04_advised/openssl-advised-inventory.xlsx" http://ae-scanner/upload/inventory-index/openssl-3.1.1/openssl-advised-inventory-$AE_TIMESTAMP.xlsx'
+
+                // windows11 (patched and unpatched)
+                sh 'export AE_TIMESTAMP=`date +"%Y-%m-%d@%Hh%Mm"` && curl --create-dirs -T "tests/resources/workspace-001/windows11/04_advised/windows11-advised-inventory_unpatched.xlsx" http://ae-scanner/upload/inventory-index/windows-11_unpatched/windows11-advised-inventory_unpatched-$AE_TIMESTAMP.xlsx'
+                sh 'export AE_TIMESTAMP=`date +"%Y-%m-%d@%Hh%Mm"` && curl --create-dirs -T "tests/resources/workspace-001/windows11/04_advised/windows11-advised-inventory_patched.xlsx" http://ae-scanner/upload/inventory-index/windows-11_patched/windows11-advised-inventory_patched-$AE_TIMESTAMP.xlsx'
+
+                // sample-product
+                sh 'export AE_TIMESTAMP=`date +"%Y-%m-%d@%Hh%Mm"` && curl --create-dirs -T "tests/resources/workspace-001/sample-product-1.0.0/04_advised/sample-product-advised-inventory.xlsx" http://ae-scanner/upload/inventory-index/sample-product-1.0.0/sample-product-advised-inventory-$AE_TIMESTAMP.xlsx'
+
+                // react
+                sh 'export AE_TIMESTAMP=`date +"%Y-%m-%d@%Hh%Mm"` && curl --create-dirs -T "tests/resources/workspace-001/react-19.2.0/04_advised/react-advised-inventory.xlsx" http://ae-scanner/upload/inventory-index/react-19.2.0/react-advised-inventory-$AE_TIMESTAMP.xlsx'
+
+                // keycloak; activate when permanently integrated
+                sh 'export AE_TIMESTAMP=`date +"%Y-%m-%d@%Hh%Mm"` && curl --create-dirs -T "tests/resources/workspace-001/keycloak-25.0.4/04_advised/keycloak-advised-inventory.xlsx" http://ae-scanner/upload/inventory-index/keycloak-25.0.4/keycloak-advised-inventory-$AE_TIMESTAMP.xlsx'
+            }
+        }
+
         stage('Publish Dashboards') {
             steps {
+                // openssl
                 sh 'curl -T "tests/resources/workspace-001/openssl-3.3.1/04_advised/dashboards/openssl-3.3.1-dashboard.html" "ftp://$FTP_HOST/html/metaeffekt/dashboards/openssl-3.3.1-dashboard.html" --user $FTP_USER:$FTP_PASS'
+
+                // windows
                 sh 'curl -T "tests/resources/workspace-001/windows11/04_advised/dashboards/windows11-dashboard_patched.html" "ftp://$FTP_HOST/html/metaeffekt/dashboards/windows11-dashboard_patched.html" --user $FTP_USER:$FTP_PASS'
                 sh 'curl -T "tests/resources/workspace-001/windows11/04_advised/dashboards/windows11-dashboard_unpatched.html" "ftp://$FTP_HOST/html/metaeffekt/dashboards/windows11-dashboard_unpatched.html" --user $FTP_USER:$FTP_PASS'
+
+                // react
+                sh 'curl -T "tests/resources/workspace-001/react-19.2.0/04_advised/dashboards/react-19.2.0-dashboard.html" "ftp://$FTP_HOST/html/metaeffekt/dashboards/react-19.2.0-dashboard.html" --user $FTP_USER:$FTP_PASS'
 
                 // additional version (old link shared)
                 sh 'curl -T "tests/resources/workspace-001/windows11/04_advised/dashboards/windows11-dashboard_unpatched.html" "ftp://$FTP_HOST/html/metaeffekt/dashboards/windows11-dashboard.html" --user $FTP_USER:$FTP_PASS'

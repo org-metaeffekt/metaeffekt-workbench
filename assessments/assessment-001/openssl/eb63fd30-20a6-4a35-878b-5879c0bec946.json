@@ -15,7 +15,7 @@
     "lowerMetric": [
       {
         "metrics": "MPR:L",
-        "rationale": "Priv"
+        "rationale": "Some form of low level authentication is required"
       }
     ]
   },

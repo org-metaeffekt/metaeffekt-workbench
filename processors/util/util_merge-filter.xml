@@ -44,7 +44,7 @@
                         </goals>
                         <phase>generate-sources</phase>
                         <configuration>
-                            <referenceInventories>${input.reference.inventories.dir}</referenceInventories>
+                            <referenceInventories>${param.reference.inventories.dir}</referenceInventories>
                             <vulnerabilityAdvisoryFilter>${param.vulnerability.advisory.filter}</vulnerabilityAdvisoryFilter>
                             <inventoryOutputFile>${output.filtered.inventory.file}</inventoryOutputFile>
 
@@ -72,7 +72,7 @@
                         <configuration>
                             <rules>
                                 <requireProperty>
-                                    <property>input.reference.inventories.dir</property>
+                                    <property>param.reference.inventories.dir</property>
                                 </requireProperty>
                                 <requireProperty>
                                     <property>output.filtered.inventory.file</property>

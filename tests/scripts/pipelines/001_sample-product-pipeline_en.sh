@@ -90,11 +90,11 @@ enrich_inventory_with_reference() {
   [ -n "${AE_CORE_VERSION:-}" ] && CMD+=("-Dae.core.version=$AE_CORE_VERSION")
   [ -n "${AE_ARTIFACT_ANALYSIS_VERSION:-}" ] && CMD+=("-Dae.artifact.analysis.version=$AE_ARTIFACT_ANALYSIS_VERSION")
   CMD+=("-Dinput.inventory.file=$ANALYZED_INVENTORY_FILE")
-  CMD+=("-Dinput.reference.inventory.dir=$ENV_REFERENCE_INVENTORY_DIR")
 
   CMD+=("-Doutput.inventory.dir=$CURATED_INVENTORY_DIR")
   CMD+=("-Doutput.inventory.path=$CURATED_INVENTORY_PATH")
 
+  CMD+=("-Dparam.reference.inventory.dir=$ENV_REFERENCE_INVENTORY_DIR")
   pass_command_info_to_logger "enrich_inventory_with_reference"
 }
 
@@ -117,11 +117,11 @@ create_annex() {
   [ -n "${AE_CORE_VERSION:-}" ] && CMD+=("-Dae.core.version=$AE_CORE_VERSION")
   [ -n "${AE_ARTIFACT_ANALYSIS_VERSION:-}" ] && CMD+=("-Dae.artifact.analysis.version=$AE_ARTIFACT_ANALYSIS_VERSION")
   CMD+=("-Dinput.inventory.file=$CURATED_INVENTORY_DIR/$CURATED_INVENTORY_PATH")
-  CMD+=("-Dinput.reference.inventory.file=$ENV_REFERENCE_INVENTORY_DIR/artifact-inventory.xls")
-  CMD+=("-Dinput.asset.descriptor.path=$ENV_SDA_DESCRIPTOR_PATH")
 
   CMD+=("-Doutput.document.file=$OUTPUT_ANNEX_FILE")
 
+  CMD+=("-Dparam.reference.inventory.file=$ENV_REFERENCE_INVENTORY_DIR/artifact-inventory.xls")
+  CMD+=("-Dparam.asset.descriptor.path=$ENV_SDA_DESCRIPTOR_PATH")
   CMD+=("-Dparam.reference.inventory.dir=$ENV_REFERENCE_INVENTORY_DIR")
   CMD+=("-Dparam.asset.id=$PARAM_ASSET_ID")
   CMD+=("-Dparam.asset.name=$PARAM_ASSET_NAME")
@@ -159,11 +159,11 @@ create_custom-annex-document() {
   [ -n "${AE_CORE_VERSION:-}" ] && CMD+=("-Dae.core.version=$AE_CORE_VERSION")
   [ -n "${AE_ARTIFACT_ANALYSIS_VERSION:-}" ] && CMD+=("-Dae.artifact.analysis.version=$AE_ARTIFACT_ANALYSIS_VERSION")
   CMD+=("-Dinput.inventory.file=$CURATED_INVENTORY_DIR/$CURATED_INVENTORY_PATH")
-  CMD+=("-Dinput.reference.inventory.file=$ENV_REFERENCE_INVENTORY_DIR/artifact-inventory.xls")
-  CMD+=("-Dinput.asset.descriptor.path=$ENV_CAD_DESCRIPTOR_PATH")
 
   CMD+=("-Doutput.document.file=$OUTPUT_ANNEX_FILE")
 
+  CMD+=("-Dparam.reference.inventory.file=$ENV_REFERENCE_INVENTORY_DIR/artifact-inventory.xls")
+  CMD+=("-Dparam.asset.descriptor.path=$ENV_CAD_DESCRIPTOR_PATH")
   CMD+=("-Dparam.reference.inventory.dir=$ENV_REFERENCE_INVENTORY_DIR")
   CMD+=("-Dparam.asset.id=$PARAM_ASSET_ID")
   CMD+=("-Dparam.asset.name=$PARAM_ASSET_NAME")
@@ -185,13 +185,13 @@ create_custom-annex-document() {
 enrich_inventory() {
   log_info "Running enrich_inventory process."
 
-  ADVISED_INVENTORY_FILE="$ADVISED_DIR/sample-product-asset-inventory.xlsx"
   ASSESSMENT_DIR="$WORKBENCH_DIR/assessments/assessment-001/sample-product"
   CONTEXT_DIR="$WORKBENCH_DIR/contexts/example-001"
   CORRELATION_DIR="$WORKBENCH_DIR/correlations/shared"
   ADVISED_INVENTORY_FILE="$ADVISED_DIR/sample-product-advised-inventory.xlsx"
   PROCESSOR_TMP_DIR="$TMP_DIR/processor"
   SECURITY_POLICY_ACTIVE_IDS="assessment_enrichment_configuration"
+  ACTIVATE_MSRC="false"
 
   CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/advise/advise_enrich-inventory.xml" process-resources)
   [ -n "${AE_CORE_VERSION:-}" ] && CMD+=("-Dae.core.version=$AE_CORE_VERSION")
@@ -206,7 +206,7 @@ enrich_inventory() {
   CMD+=("-Dparam.assessment.dir=$ASSESSMENT_DIR")
   CMD+=("-Dparam.correlation.dir=$CORRELATION_DIR")
   CMD+=("-Dparam.context.dir=$CONTEXT_DIR")
-  CMD+=("-Dparam.activate.msrc=false")
+  CMD+=("-Dparam.activate.msrc=$ACTIVATE_MSRC")
 
   CMD+=("-Denv.vulnerability.mirror.dir=$EXTERNAL_VULNERABILITY_MIRROR_DIR/.database")
 
@@ -228,11 +228,11 @@ generate_vulnerability_summary_report() {
 
   CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/report/report_create-document.xml" verify)
   CMD+=("-Dinput.inventory.file=$WORKBENCH_DIR/tests/resources/summary")
-  CMD+=("-Dinput.reference.inventory.file=$ENV_REFERENCE_INVENTORY_DIR/artifact-inventory.xls")
-  CMD+=("-Dinput.asset.descriptor.path=$ENV_VSR_DESCRIPTOR_PATH")
 
   CMD+=("-Doutput.document.file=$OUTPUT_VSR_FILE")
 
+  CMD+=("-Dparam.asset.descriptor.path=$ENV_VSR_DESCRIPTOR_PATH")
+  CMD+=("-Dparam.reference.inventory.file=$ENV_REFERENCE_INVENTORY_DIR/artifact-inventory.xls")
   CMD+=("-Dparam.reference.inventory.dir=$ENV_REFERENCE_INVENTORY_DIR")
   CMD+=("-Dparam.asset.id=$PARAM_ASSET_ID")
   CMD+=("-Dparam.asset.name=$PARAM_ASSET_NAME")
@@ -254,6 +254,7 @@ generate_vulnerability_report() {
   log_info "Running generate_vulnerability_report process."
 
   OUTPUT_VR_FILE="$REPORTED_DIR/vulnerability-report-en.pdf"
+  OUTPUT_COMPUTED_INVENTORY_DIR="$TMP_DIR/report"
 
   PARAM_DOCUMENT_TYPE="VR"
   PARAM_ASSET_ID="Sample Product"
@@ -268,11 +269,11 @@ generate_vulnerability_report() {
   [ -n "${AE_CORE_VERSION:-}" ] && CMD+=("-Dae.core.version=$AE_CORE_VERSION")
   [ -n "${AE_ARTIFACT_ANALYSIS_VERSION:-}" ] && CMD+=("-Dae.artifact.analysis.version=$AE_ARTIFACT_ANALYSIS_VERSION")
   CMD+=("-Dinput.inventory.file=$ADVISED_INVENTORY_FILE")
-  CMD+=("-Dinput.reference.inventory.file=$ENV_REFERENCE_INVENTORY_DIR/artifact-inventory.xls")
-  CMD+=("-Dinput.asset.descriptor.path=$ENV_VR_DESCRIPTOR_PATH")
 
   CMD+=("-Doutput.document.file=$OUTPUT_VR_FILE")
 
+  CMD+=("-Dparam.reference.inventory.file=$ENV_REFERENCE_INVENTORY_DIR/artifact-inventory.xls")
+  CMD+=("-Dparam.asset.descriptor.path=$ENV_VR_DESCRIPTOR_PATH")
   CMD+=("-Dparam.reference.inventory.dir=$ENV_REFERENCE_INVENTORY_DIR")
   CMD+=("-Dparam.asset.id=$PARAM_ASSET_ID")
   CMD+=("-Dparam.asset.name=$PARAM_ASSET_NAME")
@@ -310,11 +311,11 @@ generate_cert_report() {
   [ -n "${AE_CORE_VERSION:-}" ] && CMD+=("-Dae.core.version=$AE_CORE_VERSION")
   [ -n "${AE_ARTIFACT_ANALYSIS_VERSION:-}" ] && CMD+=("-Dae.artifact.analysis.version=$AE_ARTIFACT_ANALYSIS_VERSION")
   CMD+=("-Dinput.inventory.file=$ADVISED_INVENTORY_FILE")
-  CMD+=("-Dinput.reference.inventory.file=$ENV_REFERENCE_INVENTORY_DIR/artifact-inventory.xls")
-  CMD+=("-Dinput.asset.descriptor.path=$ENV_CR_DESCRIPTOR_PATH")
 
   CMD+=("-Doutput.document.file=$OUTPUT_CR_FILE")
 
+  CMD+=("-Dparam.reference.inventory.file=$ENV_REFERENCE_INVENTORY_DIR/artifact-inventory.xls")
+  CMD+=("-Dparam.asset.descriptor.path=$ENV_CR_DESCRIPTOR_PATH")
   CMD+=("-Dparam.reference.inventory.dir=$ENV_REFERENCE_INVENTORY_DIR")
   CMD+=("-Dparam.asset.id=$PARAM_ASSET_ID")
   CMD+=("-Dparam.asset.name=$PARAM_ASSET_NAME")
@@ -348,7 +349,7 @@ generate_vulnerability_assessment_dashboard() {
 
   CMD+=("-Dparam.security.policy.file=$PARAM_SECURITY_POLICY_FILE")
   CMD+=("-Dparam.security.policy.active.ids=$SECURITY_POLICY_ACTIVE_IDS")
-  CMD+=("-Doutput.dashboard.file=$OUTPUT_DASHBOARD_FILE")
+
   CMD+=("-Denv.vulnerability.mirror.dir=$EXTERNAL_VULNERABILITY_MIRROR_DIR/.database")
 
   pass_command_info_to_logger "generate_vulnerability_assessment_dashboard"
@@ -362,13 +363,13 @@ main() {
 
   # update_mirror
   enrich_inventory_with_reference
-  # create_annex
-  # create_custom-annex-document
+  create_annex
+  create_custom-annex-document
   enrich_inventory
-  # generate_vulnerability_report
+  generate_vulnerability_report
   generate_vulnerability_summary_report
-  # generate_cert_report
-  # generate_vulnerability_assessment_dashboard
+  generate_cert_report
+  generate_vulnerability_assessment_dashboard
 }
 
 main "$@"

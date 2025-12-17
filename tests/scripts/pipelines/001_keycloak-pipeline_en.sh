@@ -30,9 +30,9 @@ set_global_variables() {
   readonly KONTINUUM_PROCESSORS_DIR="$EXTERNAL_KONTINUUM_DIR/processors"
 
   LOG_DIR="$WORKBENCH_DIR/.logs"
-  logger_init "$LOG_DIR/001_openssl-pipeline_en.log"
+  logger_init "$LOG_DIR/001_keycloak-pipeline_en.log"
 
-  readonly TARGET_BASE_DIR="$WORKSPACE_DIR/openssl-3.3.1"
+  readonly TARGET_BASE_DIR="$WORKSPACE_DIR/keycloak-25.0.4"
   readonly ANALYZED_DIR="$TARGET_BASE_DIR/02_analyzed"
   readonly CURATED_DIR="$TARGET_BASE_DIR/03_curated"
   readonly ADVISED_DIR="$TARGET_BASE_DIR/04_advised"
@@ -81,13 +81,13 @@ update_mirror() {
 enrich_inventory() {
   log_info "Running enrich_inventory process."
 
-  ANALYZED_INVENTORY_FILE="$ANALYZED_DIR/openssl-inventory.xls"
-  ASSESSMENT_DIR="$WORKBENCH_DIR/assessments/assessment-001/openssl"
+  ANALYZED_INVENTORY_FILE="$ANALYZED_DIR/keycloak-inventory.xlsx"
+  ASSESSMENT_DIR="$WORKBENCH_DIR/assessments/assessment-001/keycloak"
   CONTEXT_DIR="$WORKBENCH_DIR/contexts/example-001"
   CORRELATION_DIR="$WORKBENCH_DIR/correlations/shared"
-  ADVISED_INVENTORY_FILE="$ADVISED_DIR/openssl-advised-inventory.xlsx"
+  ADVISED_INVENTORY_FILE="$ADVISED_DIR/keycloak-advised-inventory.xlsx"
   PROCESSOR_TMP_DIR="$TMP_DIR/processor"
-  DASHBOARD_SUBJECT="OpenSSL 3.3.1"
+  DASHBOARD_SUBJECT="Keycloak 25.0.4"
   SECURITY_POLICY_ACTIVE_IDS="assessment_enrichment_configuration"
   ACTIVATE_MSRC="false"
 
@@ -102,9 +102,9 @@ enrich_inventory() {
   CMD+=("-Dparam.security.policy.file=$PARAM_SECURITY_POLICY_FILE")
   CMD+=("-Dparam.security.policy.file=$PARAM_SECURITY_POLICY_FILE")
   CMD+=("-Dparam.security.policy.active.ids=$SECURITY_POLICY_ACTIVE_IDS")
-  CMD+=("-Dparam.dashboard.title=OpenSSL 3.3.1 Assessment")
+  CMD+=("-Dparam.dashboard.title=Keycloak 25.0.4 Assessment")
   CMD+=("-Dparam.dashboard.subtitle=")
-  CMD+=("-Dparam.dashboard.footer=OpenSSL 3.3.1")
+  CMD+=("-Dparam.dashboard.footer=Keycloak 25.0.4")
   CMD+=("-Dparam.assessment.dir=$ASSESSMENT_DIR")
   CMD+=("-Dparam.correlation.dir=$CORRELATION_DIR")
   CMD+=("-Dparam.context.dir=$CONTEXT_DIR")
@@ -119,7 +119,7 @@ enrich_inventory() {
 generate_vulnerability_assessment_dashboard() {
   log_info "Running generate_vulnerability_assessment_dashboard process."
 
-  OUTPUT_DASHBOARD_FILE="$ADVISED_DIR/dashboards/openssl-3.3.1-dashboard.html"
+  OUTPUT_DASHBOARD_FILE="$ADVISED_DIR/dashboards/keycloak-25.0.4-dashboard.html"
   SECURITY_POLICY_ACTIVE_IDS="assessment_enrichment_configuration"
 
   CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/advise/advise_create-dashboard.xml" process-resources)
@@ -140,16 +140,16 @@ generate_vulnerability_assessment_dashboard() {
 generate_vulnerability_report() {
   log_info "Running generate_vulnerability_report process."
 
-  OUTPUT_VR_FILE="$REPORTED_DIR/openssl-vulnerability-report-de.pdf"
+  OUTPUT_VR_FILE="$REPORTED_DIR/keycloak-vulnerability-report-de.pdf"
   OUTPUT_COMPUTED_INVENTORY_DIR="$TMP_DIR/report"
 
   PARAM_DOCUMENT_TYPE="VR"
-  PARAM_ASSET_ID="OpenSSL"
-  PARAM_ASSET_NAME="OpenSSL"
-  PARAM_ASSET_VERSION="3.3.1"
-  PARAM_PRODUCT_NAME="OpenSSL"
-  PARAM_PRODUCT_VERSION="3.3.1"
-  PARAM_PRODUCT_WATERMARK="OpenSSL"
+  PARAM_ASSET_ID="Keycloak"
+  PARAM_ASSET_NAME="Keycloak"
+  PARAM_ASSET_VERSION="25.0.4"
+  PARAM_PRODUCT_NAME="Keycloak"
+  PARAM_PRODUCT_VERSION="25.0.4"
+  PARAM_PRODUCT_WATERMARK="Keycloak"
   PARAM_OVERVIEW_ADVISORS="CERT_FR"
 
   CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/report/report_create-document.xml" verify)
