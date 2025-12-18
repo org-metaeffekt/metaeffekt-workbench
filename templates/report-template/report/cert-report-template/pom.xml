@@ -15,7 +15,7 @@
 
     <properties>
 
-        <document.report.period.since>1 week</document.report.period.since>
+        <document.report.period.since>6 months</document.report.period.since>
         <document.report.period.until>now</document.report.period.until>
 
         <asset.id>${product.name}</asset.id>
@@ -34,6 +34,8 @@
 
         <document.classifier>cr_${document.language}</document.classifier>
         <document.qualifier>${asset.id}_${asset.version}_SW-CR</document.qualifier>
+
+        <report.summary.path>../dita/${report.module}/gen/filtered-enriched-inventory/svg/fig_summary.svg</report.summary.path>
 
         <report.module>cert-report</report.module>
     </properties>
