@@ -54,7 +54,7 @@
     -->
     <xsl:attribute-set name="common.table.head.entry" use-attribute-sets="__align__center">
         <xsl:attribute name="font-weight">bold</xsl:attribute>
-        <xsl:attribute name="text-align">start</xsl:attribute>
+        <xsl:attribute name="text-align">unset</xsl:attribute>
     </xsl:attribute-set>
 
     <!--
@@ -68,8 +68,13 @@
         <xsl:attribute name="start-indent">3pt</xsl:attribute>
         <xsl:attribute name="end-indent">3pt</xsl:attribute>
         <!-- Explicit text align for table body entries. -->
-        <xsl:attribute name="text-align">start</xsl:attribute>
+        <xsl:attribute name="text-align">unset</xsl:attribute>
         <xsl:attribute name="font-size">9pt</xsl:attribute>
+    </xsl:attribute-set>
+
+    <xsl:attribute-set name="tbody.row">
+        <!-- Enable breaking across pages -->
+        <xsl:attribute name="keep-together.within-page">auto</xsl:attribute>
     </xsl:attribute-set>
 
     <xsl:attribute-set name="tbody.row">

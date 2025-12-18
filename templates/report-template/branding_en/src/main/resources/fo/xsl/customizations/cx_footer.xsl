@@ -43,7 +43,7 @@
             <xsl:with-param name="id" select="'Custom Footer Page Number'"/>
             <xsl:with-param name="params">
                 <pagenum>
-                    Page <fo:page-number/> of <fo:page-number-citation ref-id="ae-last-page-marker" />
+                    <fo:page-number/> / <fo:page-number-citation ref-id="ae-last-page-marker" />
                 </pagenum>
             </xsl:with-param>
         </xsl:call-template>
