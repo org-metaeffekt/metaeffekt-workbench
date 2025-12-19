@@ -2,12 +2,6 @@ inventories:
   - "inventory":
       file: "${inventory.path}"
       type: INPUT
-  - "reference-inventory":
-      file: "${reference.inventory.path}"
-      type: INPUT
-      licensePath: "${reference.license.path}"
-      componentPath: "${reference.component.path}"
-
   - "filtered-inventory":
       file: "${param.computed.inventory.dir}/${asset.name}-vulnerability-report-inventory.xlsx"
       type: COMPUTED

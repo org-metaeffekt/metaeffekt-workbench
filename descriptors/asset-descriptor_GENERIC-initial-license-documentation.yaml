@@ -3,7 +3,7 @@ inventories:
       file: "${inventory.path}"
       type: INPUT
   - "reference-inventory":
-      file: "${reference.inventory.path}"
+      folder: "${reference.inventory.path}"
       type: INPUT
       licensePath: "${reference.license.path}"
       componentPath: "${reference.component.path}"

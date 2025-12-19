@@ -3,8 +3,9 @@
 <topic id="tpc_import-export-information" xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/">
     <title>Hinweise zu Ein- und Ausfuhr</title>
     <body>
-        <p conref="../../ae-common-content/bill-of-materials/de/tpc_import-export-information.dita#tpc_import-export-information/distribution-with-restricted-components-intro" />
-        <p conref="../../ae-common-content/bill-of-materials/de/tpc_import-export-information.dita#tpc_import-export-information/distribution-of-restricted-components-hint" />
-        <p conref="../../ae-common-content/bill-of-materials/de/tpc_import-export-information.dita#tpc_import-export-information/distribution-of-restricted-components-disclaimer" />
+        <!-- FIXME-RTU: Change paths to utilize german content -->
+        <p conref="../../ae-common-content/bill-of-materials/en/tpc_import-export-information.dita#tpc_import-export-information/distribution-with-restricted-components-intro" />
+        <p conref="../../ae-common-content/bill-of-materials/en/tpc_import-export-information.dita#tpc_import-export-information/distribution-of-restricted-components-hint" />
+        <p conref="../../ae-common-content/bill-of-materials/en/tpc_import-export-information.dita#tpc_import-export-information/distribution-of-restricted-components-disclaimer" />
     </body>
 </topic>

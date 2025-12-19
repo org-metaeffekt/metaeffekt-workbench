@@ -117,7 +117,6 @@ create_software_distribution_annex() {
 
   CMD+=("-Doutput.document.file=$OUTPUT_ANNEX_FILE")
 
-  CMD+=("-Dparam.reference.inventory.file=$ENV_REFERENCE_INVENTORY_DIR/artifact-inventory.xls")
   CMD+=("-Dparam.asset.descriptor.path=$ENV_SDA_DESCRIPTOR_PATH")
   CMD+=("-Dparam.reference.inventory.dir=$ENV_REFERENCE_INVENTORY_DIR")
   CMD+=("-Dparam.asset.id=$PARAM_ASSET_ID")
@@ -158,7 +157,6 @@ create_license_documentation() {
 
   CMD+=("-Doutput.document.file=$OUTPUT_ANNEX_FILE")
 
-  CMD+=("-Dparam.reference.inventory.file=$ENV_REFERENCE_INVENTORY_DIR/artifact-inventory.xls")
   CMD+=("-Dparam.asset.descriptor.path=$ENV_LD_DESCRIPTOR_PATH")
   CMD+=("-Dparam.reference.inventory.dir=$ENV_REFERENCE_INVENTORY_DIR")
   CMD+=("-Dparam.asset.id=$PARAM_ASSET_ID")
@@ -199,7 +197,6 @@ create_initial_license_documentation() {
 
   CMD+=("-Doutput.document.file=$OUTPUT_ANNEX_FILE")
 
-  CMD+=("-Dparam.reference.inventory.file=$ENV_REFERENCE_INVENTORY_DIR/artifact-inventory.xls")
   CMD+=("-Dparam.asset.descriptor.path=$ENV_ILD_DESCRIPTOR_PATH")
   CMD+=("-Dparam.reference.inventory.dir=$ENV_REFERENCE_INVENTORY_DIR")
   CMD+=("-Dparam.asset.id=$PARAM_ASSET_ID")
@@ -237,10 +234,8 @@ create_custom-annex-document() {
   [ -n "${AE_CORE_VERSION:-}" ] && CMD+=("-Dae.core.version=$AE_CORE_VERSION")
   [ -n "${AE_ARTIFACT_ANALYSIS_VERSION:-}" ] && CMD+=("-Dae.artifact.analysis.version=$AE_ARTIFACT_ANALYSIS_VERSION")
   CMD+=("-Dinput.inventory.file=$CURATED_INVENTORY_DIR/$CURATED_INVENTORY_PATH")
-
   CMD+=("-Doutput.document.file=$OUTPUT_ANNEX_FILE")
 
-  CMD+=("-Dparam.reference.inventory.file=$ENV_REFERENCE_INVENTORY_DIR/artifact-inventory.xls")
   CMD+=("-Dparam.asset.descriptor.path=$ENV_CAD_DESCRIPTOR_PATH")
   CMD+=("-Dparam.reference.inventory.dir=$ENV_REFERENCE_INVENTORY_DIR")
   CMD+=("-Dparam.asset.id=$PARAM_ASSET_ID")
@@ -307,7 +302,6 @@ create_vulnerability_summary_report() {
   CMD+=("-Doutput.document.file=$OUTPUT_VSR_FILE")
 
   CMD+=("-Dparam.asset.descriptor.path=$ENV_VSR_DESCRIPTOR_PATH")
-  CMD+=("-Dparam.reference.inventory.file=$ENV_REFERENCE_INVENTORY_DIR/artifact-inventory.xls")
   CMD+=("-Dparam.reference.inventory.dir=$ENV_REFERENCE_INVENTORY_DIR")
   CMD+=("-Dparam.asset.id=$PARAM_ASSET_ID")
   CMD+=("-Dparam.asset.name=$PARAM_ASSET_NAME")
@@ -346,7 +340,6 @@ create_vulnerability_report() {
 
   CMD+=("-Doutput.document.file=$OUTPUT_VR_FILE")
 
-  CMD+=("-Dparam.reference.inventory.file=$ENV_REFERENCE_INVENTORY_DIR/artifact-inventory.xls")
   CMD+=("-Dparam.asset.descriptor.path=$ENV_VR_DESCRIPTOR_PATH")
   CMD+=("-Dparam.reference.inventory.dir=$ENV_REFERENCE_INVENTORY_DIR")
   CMD+=("-Dparam.asset.id=$PARAM_ASSET_ID")
@@ -387,7 +380,6 @@ create_cert_report() {
 
   CMD+=("-Doutput.document.file=$OUTPUT_CR_FILE")
 
-  CMD+=("-Dparam.reference.inventory.file=$ENV_REFERENCE_INVENTORY_DIR/artifact-inventory.xls")
   CMD+=("-Dparam.asset.descriptor.path=$ENV_CR_DESCRIPTOR_PATH")
   CMD+=("-Dparam.reference.inventory.dir=$ENV_REFERENCE_INVENTORY_DIR")
   CMD+=("-Dparam.asset.id=$PARAM_ASSET_ID")
