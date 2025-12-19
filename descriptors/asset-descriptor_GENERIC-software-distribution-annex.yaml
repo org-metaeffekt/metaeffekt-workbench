@@ -12,12 +12,12 @@ documents:
   "software-distribution-annex":
     type: ANNEX
     language: "${document.language}"
+    params:
+      targetComponentDir: "${target.component.dir}"
+      targetLicensesDir: "${target.licenses.dir}"
     parts:
       "software-distribution-annex":
         type: ANNEX
-        params:
-          targetComponentDir: "${target.component.dir}"
-          targetLicensesDir: "${target.licenses.dir}"
         inventories:
           - inventoryRef: "inventory"
             referenceInventory: "reference-inventory"

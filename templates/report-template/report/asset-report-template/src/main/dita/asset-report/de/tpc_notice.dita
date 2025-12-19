@@ -1,46 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Concept//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd">
 <topic id="tpc_notice">
-    <title>Notice</title>
+    <title>Hinweise</title>
     <body>
         <section>
-            <!-- FIXME-RTU: translate notice -->
-            <title>Names and Trademarks</title>
+            <title>Namen und Marken</title>
             <p>
-                All company names, organization names, license names, and product names mentioned in this documentation
-                are used for identification purposes only. A trademark is explicitly identified as registered or
-                unregistered trademark only if required by appropriate guidelines or license terms.
+                Alle in dieser Dokumentation genannten Unternehmensnamen, Organisationsnamen, Lizenznamen und
+                Produktnamen dienen ausschließlich Identifikationszwecken. Eine Marke wird nur dann ausdrücklich als
+                eingetragene oder nicht eingetragene Marke gekennzeichnet, wenn dies durch entsprechende Richtlinien
+                oder Lizenzbedingungen erforderlich ist.
             </p>
         </section>
 
         <section>
-            <title>Warranty and Liability</title>
+            <title>Gewährleistung und Haftung</title>
             <p>
-                The covered open source software is used or made available WITHOUT ANY WARRANTY;
-                without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. The individual
-                licenses may contain more details with respect to limitation of warranty or liability.
+                Die abgedeckte Open-Source-Software wird OHNE JEGLICHE GEWÄHRLEISTUNG genutzt oder bereitgestellt;
+                auch ohne die implizite Gewährleistung der MARKTGÄNGIGKEIT oder der EIGNUNG FÜR EINEN BESTIMMTEN
+                ZWECK. Die einzelnen Lizenzen können weitere Details in Bezug auf die Beschränkung von Gewährleistung
+                oder Haftung enthalten.
             </p>
             <p>
-                The individual open source warranty or liability disclaimers indemnify the original authors of the
-                individual components. Warranties and liabilities declared on the offering by ${organization.name} are
-                subject to additional terms of use and are not affected (neither reduced nor extended) by the individual
-                disclaimers of the used open source components.
+                Die einzelnen Open-Source-Gewährleistungs- oder Haftungsausschlüsse stellen die ursprünglichen Autoren
+                der jeweiligen Komponenten frei. Von ${organization.name} für das Angebot erklärte Gewährleistungen
+                und Haftungen unterliegen zusätzlichen Nutzungsbedingungen und werden durch die einzelnen
+                Haftungsausschlüsse der verwendeten Open-Source-Komponenten nicht beeinflusst (weder eingeschränkt
+                noch erweitert).
             </p>
         </section>
 
         <section>
-            <title>Availability of Source Code</title>
+            <title>Verfügbarkeit des Quellcodes</title>
             <p>
-                This software distribution annex covers the corresponding source code of the used open source components.
+                Dieser Software Distribution Annex umfasst den entsprechenden Quellcode der verwendeten
+                Open-Source-Komponenten.
             </p>
             <p>
-                In case you regard the provision of source code to be inaccurate or incomplete please address your
-                source code request to your point of contact for the given software distribution
+                Falls die Bereitstellung des Quellcodes als ungenau oder unvollständig angesehen wird, ist die
+                Quellcodeanfrage an den jeweiligen Ansprechpartner für die betreffende Softwaredistribution zu richten.
             </p>
             <p>
-                Please note, that ${organization.name} is only obliged to make source code available in case the
-                effective license demands such provisioning within a given period of time after you obtaining the
-                software.
+                Bitte beachten, dass ${organization.name} nur dann verpflichtet ist, Quellcode bereitzustellen, wenn
+                die wirksame Lizenz eine solche Bereitstellung innerhalb eines bestimmten Zeitraums nach dem Erhalt der
+                Software verlangt.
             </p>
         </section>
 
@@ -50,7 +53,7 @@
         </p>
 
         <p>
-            This documentation is protected by copyright ${document.copyright.year}, ${organization.name}.
+            Diese Dokumentation ist urheberrechtlich geschützt. Copyright ${document.copyright.year}, ${organization.name}.
         </p>
     </body>
 </topic>
