@@ -39,11 +39,12 @@ documents:
   "cert-report":
     type: VULNERABILITY_REPORT
     language: "${document.language}"
+    params:
+      securityPolicyFile: "${security.policy.file}"
     parts:
       "vulnerability-report":
         type: VULNERABILITY_REPORT
         params:
-          securityPolicyFile: "${security.policy.file}"
           securityPolicyActiveIds: "cert_extended_configuration"
         inventories:
           - inventoryRef: "filtered-inventory"
@@ -53,7 +54,6 @@ documents:
       "statistics-report":
         type: VULNERABILITY_STATISTICS_REPORT
         params:
-          securityPolicyFile: "${security.policy.file}"
           securityPolicyActiveIds: "cert_configuration"
         inventories:
           - inventoryRef: "filtered-enriched-inventory"
@@ -62,7 +62,6 @@ documents:
       "summary-report":
         type: VULNERABILITY_SUMMARY_PART
         params:
-          securityPolicyFile: "${security.policy.file}"
           securityPolicyActiveIds: "cert_extended_configuration"
         inventories:
           - inventoryRef: "filtered-enriched-inventory"

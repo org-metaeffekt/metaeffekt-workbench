@@ -47,10 +47,13 @@ set_global_variables() {
 
   ENV_DESCRIPTOR_DIR="$WORKBENCH_DIR/descriptors"
   ENV_SDA_DESCRIPTOR_PATH="asset-descriptor_GENERIC-software-distribution-annex.yaml"
+  ENV_ILD_DESCRIPTOR_PATH="asset-descriptor_GENERIC-initial-license-documentation.yaml"
+  ENV_LD_DESCRIPTOR_PATH="asset-descriptor_GENERIC-license-documentation.yaml"
   ENV_CAD_DESCRIPTOR_PATH="asset-descriptor_GENERIC-custom-annex.yaml"
   ENV_VR_DESCRIPTOR_PATH="asset-descriptor_GENERIC-vulnerability-report.yaml"
   ENV_CR_DESCRIPTOR_PATH="asset-descriptor_GENERIC-cert-report.yaml"
   ENV_VSR_DESCRIPTOR_PATH="asset-descriptor_GENERIC-vulnerability-summary-report.yaml"
+  ENV_LANGUAGE="de"
 }
 
 create_target_directories() {
@@ -61,8 +64,6 @@ create_target_directories() {
 }
 
 update_mirror() {
-  log_info "Running update_mirror process."
-
   MIRROR_TARGET_DIR="$EXTERNAL_VULNERABILITY_MIRROR_DIR"
   MIRROR_ARCHIVE_URL="$EXTERNAL_VULNERABILITY_MIRROR_URL"
   MIRROR_ARCHIVE_NAME="$EXTERNAL_VULNERABILITY_MIRROR_NAME"
@@ -80,8 +81,6 @@ update_mirror() {
 }
 
 enrich_inventory_with_reference() {
-  log_info "Running enrich_inventory_with_reference process."
-
   ANALYZED_INVENTORY_FILE="$ANALYZED_DIR/sample-asset-1.0/sample-asset-1.0-inventory.xls"
   CURATED_INVENTORY_DIR="$CURATED_DIR/sample-asset-1.0"
   CURATED_INVENTORY_PATH="sample-asset-1.0-inventory.xls"
@@ -98,14 +97,11 @@ enrich_inventory_with_reference() {
   pass_command_info_to_logger "enrich_inventory_with_reference"
 }
 
-create_annex() {
-  log_info "Running create_annex process."
-
-  OUTPUT_ANNEX_FILE="$REPORTED_DIR/software-distribution-annex-de.pdf"
+create_software_distribution_annex() {
+  OUTPUT_ANNEX_FILE="$REPORTED_DIR/software-distribution-annex-$ENV_LANGUAGE.pdf"
   OUTPUT_COMPUTED_INVENTORY_DIR="$TMP_DIR/report"
 
   PARAM_DOCUMENT_TYPE="SDA"
-  PARAM_DOCUMENT_LANGUAGE="de"
   PARAM_ASSET_ID="Sample Product"
   PARAM_ASSET_NAME="SampleProduct"
   PARAM_ASSET_VERSION="1.0.0"
@@ -131,7 +127,7 @@ create_annex() {
   CMD+=("-Dparam.product.name=$PARAM_PRODUCT_NAME")
   CMD+=("-Dparam.product.watermark=$PARAM_PRODUCT_WATERMARK")
   CMD+=("-Dparam.document.type=$PARAM_DOCUMENT_TYPE")
-  CMD+=("-Dparam.document.language=$PARAM_DOCUMENT_LANGUAGE")
+  CMD+=("-Dparam.document.language=$ENV_LANGUAGE")
   CMD+=("-Dparam.overview.advisors=$PARAM_OVERVIEW_ADVISORS")
   CMD+=("-Dparam.property.selector.organization=metaeffekt")
 
@@ -139,17 +135,96 @@ create_annex() {
   CMD+=("-Denv.workbench.dir=$WORKBENCH_DIR")
   CMD+=("-Denv.kontinuum.dir=$EXTERNAL_KONTINUUM_DIR")
 
-  pass_command_info_to_logger "create_annex"
+  pass_command_info_to_logger "create_software_distribution_annex"
+}
+
+create_license_documentation() {
+  OUTPUT_ANNEX_FILE="$REPORTED_DIR/license-documentation-$ENV_LANGUAGE.pdf"
+  OUTPUT_COMPUTED_INVENTORY_DIR="$TMP_DIR/report"
+
+  PARAM_DOCUMENT_TYPE="LD"
+  PARAM_ASSET_ID="Sample Product"
+  PARAM_ASSET_NAME="SampleProduct"
+  PARAM_ASSET_VERSION="1.0.0"
+  PARAM_PRODUCT_NAME="Sample Product"
+  PARAM_PRODUCT_VERSION="1.0.0"
+  PARAM_PRODUCT_WATERMARK="Sample"
+  PARAM_OVERVIEW_ADVISORS="CERT_FR"
+
+  CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/report/report_create-document.xml" verify)
+  [ -n "${AE_CORE_VERSION:-}" ] && CMD+=("-Dae.core.version=$AE_CORE_VERSION")
+  [ -n "${AE_ARTIFACT_ANALYSIS_VERSION:-}" ] && CMD+=("-Dae.artifact.analysis.version=$AE_ARTIFACT_ANALYSIS_VERSION")
+  CMD+=("-Dinput.inventory.file=$CURATED_INVENTORY_DIR/$CURATED_INVENTORY_PATH")
+
+  CMD+=("-Doutput.document.file=$OUTPUT_ANNEX_FILE")
+
+  CMD+=("-Dparam.reference.inventory.file=$ENV_REFERENCE_INVENTORY_DIR/artifact-inventory.xls")
+  CMD+=("-Dparam.asset.descriptor.path=$ENV_LD_DESCRIPTOR_PATH")
+  CMD+=("-Dparam.reference.inventory.dir=$ENV_REFERENCE_INVENTORY_DIR")
+  CMD+=("-Dparam.asset.id=$PARAM_ASSET_ID")
+  CMD+=("-Dparam.asset.name=$PARAM_ASSET_NAME")
+  CMD+=("-Dparam.asset.version=$PARAM_ASSET_VERSION")
+  CMD+=("-Dparam.product.version=$PARAM_PRODUCT_VERSION")
+  CMD+=("-Dparam.product.name=$PARAM_PRODUCT_NAME")
+  CMD+=("-Dparam.product.watermark=$PARAM_PRODUCT_WATERMARK")
+  CMD+=("-Dparam.document.type=$PARAM_DOCUMENT_TYPE")
+  CMD+=("-Dparam.document.language=$ENV_LANGUAGE")
+  CMD+=("-Dparam.overview.advisors=$PARAM_OVERVIEW_ADVISORS")
+  CMD+=("-Dparam.property.selector.organization=metaeffekt")
+
+  CMD+=("-Denv.vulnerability.mirror.dir=$EXTERNAL_VULNERABILITY_MIRROR_DIR/.database")
+  CMD+=("-Denv.workbench.dir=$WORKBENCH_DIR")
+  CMD+=("-Denv.kontinuum.dir=$EXTERNAL_KONTINUUM_DIR")
+
+  pass_command_info_to_logger "create_license_documentation"
+}
+
+create_initial_license_documentation() {
+  OUTPUT_ANNEX_FILE="$REPORTED_DIR/initial-license-documentation-$ENV_LANGUAGE.pdf"
+  OUTPUT_COMPUTED_INVENTORY_DIR="$TMP_DIR/report"
+
+  PARAM_DOCUMENT_TYPE="ILD"
+  PARAM_ASSET_ID="Sample Product"
+  PARAM_ASSET_NAME="SampleProduct"
+  PARAM_ASSET_VERSION="1.0.0"
+  PARAM_PRODUCT_NAME="Sample Product"
+  PARAM_PRODUCT_VERSION="1.0.0"
+  PARAM_PRODUCT_WATERMARK="Sample"
+  PARAM_OVERVIEW_ADVISORS="CERT_FR"
+
+  CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/report/report_create-document.xml" verify)
+  [ -n "${AE_CORE_VERSION:-}" ] && CMD+=("-Dae.core.version=$AE_CORE_VERSION")
+  [ -n "${AE_ARTIFACT_ANALYSIS_VERSION:-}" ] && CMD+=("-Dae.artifact.analysis.version=$AE_ARTIFACT_ANALYSIS_VERSION")
+  CMD+=("-Dinput.inventory.file=$CURATED_INVENTORY_DIR/$CURATED_INVENTORY_PATH")
+
+  CMD+=("-Doutput.document.file=$OUTPUT_ANNEX_FILE")
+
+  CMD+=("-Dparam.reference.inventory.file=$ENV_REFERENCE_INVENTORY_DIR/artifact-inventory.xls")
+  CMD+=("-Dparam.asset.descriptor.path=$ENV_ILD_DESCRIPTOR_PATH")
+  CMD+=("-Dparam.reference.inventory.dir=$ENV_REFERENCE_INVENTORY_DIR")
+  CMD+=("-Dparam.asset.id=$PARAM_ASSET_ID")
+  CMD+=("-Dparam.asset.name=$PARAM_ASSET_NAME")
+  CMD+=("-Dparam.asset.version=$PARAM_ASSET_VERSION")
+  CMD+=("-Dparam.product.version=$PARAM_PRODUCT_VERSION")
+  CMD+=("-Dparam.product.name=$PARAM_PRODUCT_NAME")
+  CMD+=("-Dparam.product.watermark=$PARAM_PRODUCT_WATERMARK")
+  CMD+=("-Dparam.document.type=$PARAM_DOCUMENT_TYPE")
+  CMD+=("-Dparam.document.language=$ENV_LANGUAGE")
+  CMD+=("-Dparam.overview.advisors=$PARAM_OVERVIEW_ADVISORS")
+  CMD+=("-Dparam.property.selector.organization=metaeffekt")
+
+  CMD+=("-Denv.vulnerability.mirror.dir=$EXTERNAL_VULNERABILITY_MIRROR_DIR/.database")
+  CMD+=("-Denv.workbench.dir=$WORKBENCH_DIR")
+  CMD+=("-Denv.kontinuum.dir=$EXTERNAL_KONTINUUM_DIR")
+
+  pass_command_info_to_logger "create_initial_license_documentation"
 }
 
 create_custom-annex-document() {
-  log_info "Running create_custom-annex-document process."
-
-  OUTPUT_ANNEX_FILE="$REPORTED_DIR/custom-annex-document_de.pdf"
+  OUTPUT_ANNEX_FILE="$REPORTED_DIR/custom-annex-document_$ENV_LANGUAGE.pdf"
   OUTPUT_COMPUTED_INVENTORY_DIR="$TMP_DIR/report"
 
   PARAM_DOCUMENT_TYPE="CAD"
-  PARAM_DOCUMENT_LANGUAGE="de"
   PARAM_ASSET_ID="Sample Product"
   PARAM_ASSET_NAME="SampleProduct"
   PARAM_ASSET_VERSION="1.0.0"
@@ -175,7 +250,7 @@ create_custom-annex-document() {
   CMD+=("-Dparam.product.name=$PARAM_PRODUCT_NAME")
   CMD+=("-Dparam.product.watermark=$PARAM_PRODUCT_WATERMARK")
   CMD+=("-Dparam.document.type=$PARAM_DOCUMENT_TYPE")
-  CMD+=("-Dparam.document.language=$PARAM_DOCUMENT_LANGUAGE")
+  CMD+=("-Dparam.document.language=$ENV_LANGUAGE")
   CMD+=("-Dparam.overview.advisors=$PARAM_OVERVIEW_ADVISORS")
   CMD+=("-Dparam.property.selector.organization=metaeffekt")
 
@@ -187,8 +262,6 @@ create_custom-annex-document() {
 }
 
 enrich_inventory() {
-  log_info "Running enrich_inventory process."
-
   ASSESSMENT_DIR="$WORKBENCH_DIR/assessments/assessment-001/sample-product"
   CONTEXT_DIR="$WORKBENCH_DIR/contexts/example-001"
   CORRELATION_DIR="$WORKBENCH_DIR/correlations/shared"
@@ -217,13 +290,10 @@ enrich_inventory() {
   pass_command_info_to_logger "enrich_inventory"
 }
 
-generate_vulnerability_summary_report() {
-  log_info "Running generate_vulnerability_summary_report process."
-
-  OUTPUT_VSR_FILE="$REPORTED_DIR/vulnerability-summary-report-de.pdf"
+create_vulnerability_summary_report() {
+  OUTPUT_VSR_FILE="$REPORTED_DIR/vulnerability-summary-report-$ENV_LANGUAGE.pdf"
 
   PARAM_DOCUMENT_TYPE="VSR"
-  PARAM_DOCUMENT_LANGUAGE="de"
   PARAM_ASSET_ID="Sample Product"
   PARAM_ASSET_NAME="SampleProduct"
   PARAM_ASSET_VERSION="1.0.0"
@@ -246,24 +316,21 @@ generate_vulnerability_summary_report() {
   CMD+=("-Dparam.product.name=$PARAM_PRODUCT_NAME")
   CMD+=("-Dparam.product.watermark=$PARAM_PRODUCT_WATERMARK")
   CMD+=("-Dparam.document.type=$PARAM_DOCUMENT_TYPE")
-  CMD+=("-Dparam.document.language=$PARAM_DOCUMENT_LANGUAGE")
+  CMD+=("-Dparam.document.language=$ENV_LANGUAGE")
   CMD+=("-Dparam.property.selector.organization=metaeffekt")
 
   CMD+=("-Denv.vulnerability.mirror.dir=$EXTERNAL_VULNERABILITY_MIRROR_DIR/.database")
   CMD+=("-Denv.workbench.dir=$WORKBENCH_DIR")
   CMD+=("-Denv.kontinuum.dir=$EXTERNAL_KONTINUUM_DIR")
 
-  pass_command_info_to_logger "generate_vulnerability-summary-report"
+  pass_command_info_to_logger "create_vulnerability-summary-report"
 }
 
-generate_vulnerability_report() {
-  log_info "Running generate_vulnerability_report process."
-
-  OUTPUT_VR_FILE="$REPORTED_DIR/vulnerability-report-de.pdf"
+create_vulnerability_report() {
+  OUTPUT_VR_FILE="$REPORTED_DIR/vulnerability-report-$ENV_LANGUAGE.pdf"
   OUTPUT_COMPUTED_INVENTORY_DIR="$TMP_DIR/report"
 
   PARAM_DOCUMENT_TYPE="VR"
-  PARAM_DOCUMENT_LANGUAGE="de"
   PARAM_ASSET_ID="Sample Product"
   PARAM_ASSET_NAME="SampleProduct"
   PARAM_ASSET_VERSION="1.0.0"
@@ -289,7 +356,7 @@ generate_vulnerability_report() {
   CMD+=("-Dparam.product.name=$PARAM_PRODUCT_NAME")
   CMD+=("-Dparam.product.watermark=$PARAM_PRODUCT_WATERMARK")
   CMD+=("-Dparam.document.type=$PARAM_DOCUMENT_TYPE")
-  CMD+=("-Dparam.document.language=$PARAM_DOCUMENT_LANGUAGE")
+  CMD+=("-Dparam.document.language=$ENV_LANGUAGE")
   CMD+=("-Dparam.overview.advisors=$PARAM_OVERVIEW_ADVISORS")
   CMD+=("-Dparam.property.selector.organization=metaeffekt")
 
@@ -297,17 +364,14 @@ generate_vulnerability_report() {
   CMD+=("-Denv.workbench.dir=$WORKBENCH_DIR")
   CMD+=("-Denv.kontinuum.dir=$EXTERNAL_KONTINUUM_DIR")
 
-  pass_command_info_to_logger "generate_vulnerability-report"
+  pass_command_info_to_logger "create_vulnerability-report"
 }
 
-generate_cert_report() {
-  log_info "Running generate_cert_report process."
-
-  OUTPUT_CR_FILE="$REPORTED_DIR/cert-report-de.pdf"
+create_cert_report() {
+  OUTPUT_CR_FILE="$REPORTED_DIR/cert-report-$ENV_LANGUAGE.pdf"
   OUTPUT_COMPUTED_INVENTORY_DIR="$TMP_DIR/report"
 
   PARAM_DOCUMENT_TYPE="CR"
-  PARAM_DOCUMENT_LANGUAGE="de"
   PARAM_ASSET_ID="Sample Product"
   PARAM_ASSET_NAME="SampleProduct"
   PARAM_ASSET_VERSION="1.0.0"
@@ -333,7 +397,7 @@ generate_cert_report() {
   CMD+=("-Dparam.product.name=$PARAM_PRODUCT_NAME")
   CMD+=("-Dparam.product.watermark=$PARAM_PRODUCT_WATERMARK")
   CMD+=("-Dparam.document.type=$PARAM_DOCUMENT_TYPE")
-  CMD+=("-Dparam.document.language=$PARAM_DOCUMENT_LANGUAGE")
+  CMD+=("-Dparam.document.language=$ENV_LANGUAGE")
   CMD+=("-Dparam.overview.advisors=$PARAM_OVERVIEW_ADVISORS")
   CMD+=("-Dparam.property.selector.organization=metaeffekt")
 
@@ -341,12 +405,10 @@ generate_cert_report() {
   CMD+=("-Denv.workbench.dir=$WORKBENCH_DIR")
   CMD+=("-Denv.kontinuum.dir=$EXTERNAL_KONTINUUM_DIR")
 
-  pass_command_info_to_logger "generate_cert_report"
+  pass_command_info_to_logger "create_cert_report"
 }
 
-generate_vulnerability_assessment_dashboard() {
-  log_info "Running generate_vulnerability_assessment_dashboard process."
-
+create_vulnerability_assessment_dashboard() {
   OUTPUT_DASHBOARD_FILE="$ADVISED_DIR/dashboards/sample-product-dashboard.html"
   SECURITY_POLICY_ACTIVE_IDS="assessment_enrichment_configuration"
 
@@ -362,7 +424,7 @@ generate_vulnerability_assessment_dashboard() {
 
   CMD+=("-Denv.vulnerability.mirror.dir=$EXTERNAL_VULNERABILITY_MIRROR_DIR/.database")
 
-  pass_command_info_to_logger "generate_vulnerability_assessment_dashboard"
+  pass_command_info_to_logger "create_vulnerability_assessment_dashboard"
 }
 
 main() {
@@ -371,15 +433,26 @@ main() {
   SCRIPT_NAME=$(basename "$(readlink -f "$0")")
   create_target_directories
 
-  # update_mirror
+  # setup
+  update_mirror
+
+  # enrichment
   enrich_inventory_with_reference
-  create_annex
-  create_custom-annex-document
   enrich_inventory
-  generate_vulnerability_report
-  generate_vulnerability_summary_report
-  generate_cert_report
-  generate_vulnerability_assessment_dashboard
+
+  # create annex documents
+  create_software_distribution_annex
+  create_license_documentation
+  create_initial_license_documentation
+  create_custom-annex-document
+
+  # create vulnerability documents
+  create_vulnerability_report
+  create_vulnerability_summary_report
+  create_cert_report
+
+  # create dashboards
+  create_vulnerability_assessment_dashboard
 }
 
 main "$@"

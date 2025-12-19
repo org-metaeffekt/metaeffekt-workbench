@@ -12,12 +12,12 @@ documents:
   "license-documentation":
     type: LICENSE_DOCUMENTATION
     language: "${document.language}"
+    params:
+      targetComponentDir: "${target.component.dir}"
+      targetLicensesDir: "${target.licenses.dir}"
     parts:
       "license-documentation":
         type: LICENSE_DOCUMENTATION
-        params:
-          targetComponentDir: "${target.component.dir}"
-          targetLicensesDir: "${target.licenses.dir}"
         inventories:
           - inventoryRef: "inventory"
             referenceInventory: "reference-inventory"
