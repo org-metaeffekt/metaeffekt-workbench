@@ -82,7 +82,7 @@
             <properties>
                 <document.name>${asset.id} ILD-REPORT</document.name>
                 <document.qualifier>${asset.id}_${asset.version}_ILD-REPORT</document.qualifier>
-                <asset.report.type>ANNEX</asset.report.type>
+                <asset.report.type>INITIAL LICENSE DOCUMENTATION</asset.report.type>
                 <document.language>en</document.language>
             </properties>
         </profile>
@@ -95,7 +95,7 @@
             <properties>
                 <document.name>${asset.id} ILD-REPORT</document.name>
                 <document.qualifier>${asset.id}_${asset.version}_ILD-REPORT</document.qualifier>
-                <asset.report.type>ANNEX</asset.report.type>
+                <asset.report.type>INITIAL LICENSE DOCUMENTATION</asset.report.type>
                 <document.language>de</document.language>
             </properties>
         </profile>

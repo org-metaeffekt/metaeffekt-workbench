@@ -15,7 +15,7 @@
 
     <properties>
 
-        <document.report.period.since>6 months</document.report.period.since>
+        <document.report.period.since>1 week</document.report.period.since>
         <document.report.period.until>now</document.report.period.until>
 
         <asset.id>${product.name}</asset.id>
@@ -146,7 +146,6 @@
                                     <files>
                                         <file>${security.policy.file}</file>
                                     </files>
-                                    <!-- FIXME-RTU: consider where to set these active Ids -->
                                     <activeIds>cert_extended_configuration</activeIds>
                                 </securityPolicy>
                             </configuration>
@@ -174,7 +173,6 @@
                                     <files>
                                         <file>${security.policy.file}</file>
                                     </files>
-                                    <!-- FIXME-RTU: consider where to set these active Ids -->
                                     <activeIds>cert_configuration</activeIds>
                                 </securityPolicy>
                             </configuration>
