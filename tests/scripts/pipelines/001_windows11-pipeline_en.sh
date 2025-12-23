@@ -39,13 +39,8 @@ ENV_REFERENCE_INVENTORY_DIR="$WORKBENCH_DIR/inventories/example-reference-invent
 ENV_REFERENCE_LICENSES_DIR="$WORKBENCH_DIR/inventories/example-reference-inventory/licenses"
 ENV_REFERENCE_COMPONENTS_DIR="$WORKBENCH_DIR/inventories/example-reference-inventory/components"
 
-ENV_REPORT_TEMPLATE_DIR="$WORKBENCH_DIR/templates/report-template"
 PARAM_SECURITY_POLICY_FILE="$WORKBENCH_DIR/policies/security-policy/security-policy.json"
 
-ENV_DESCRIPTOR_DIR="$WORKBENCH_DIR/descriptors"
-ENV_SDA_DESCRIPTOR_PATH="asset-descriptor_GENERIC-software-distribution-annex.yaml"
-ENV_VR_DESCRIPTOR_PATH="asset-descriptor_GENERIC-vulnerability-report.yaml"
-ENV_CR_DESCRIPTOR_PATH="asset-descriptor_GENERIC-cert-report.yaml"
 SECURITY_POLICY_ACTIVE_IDS="assessment_enrichment_configuration"
 
 if ! mkdir -p "$ANALYZED_DIR" "$ADVISED_DIR" "$REPORTED_DIR" "$TMP_DIR" ; then
