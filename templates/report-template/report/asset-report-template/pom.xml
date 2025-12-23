@@ -20,6 +20,8 @@
         <document.classifier>bom_${document.language}</document.classifier>
         <document.qualifier>${asset.id}_${asset.version}_SW-BOM</document.qualifier>
         <report.module>asset-report</report.module>
+
+        <asset.descriptor.filtered.file>${project.build.directory}/asset-descriptors/asset-descriptor_filtered.yaml</asset.descriptor.filtered.file>
     </properties>
 
     <profiles>
@@ -85,6 +87,29 @@
             <plugins>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-antrun-plugin</artifactId>
+                    <version>1.8</version>
+                    <executions>
+                        <execution>
+                            <id>copy-and-filter-asset</id>
+                            <phase>validate</phase>
+                            <configuration>
+                                <target>
+                                    <copy file="${asset.descriptor.file}" toFile="${asset.descriptor.filtered.file}" />
+
+                                    <!-- move to intermediate dir to perform resource-plugin filtering; inplace filtering not possible -->
+                                    <move file="${asset.descriptor.filtered.file}" todir="${project.build.directory}/aggregated-asset-descriptors" />
+                                </target>
+                            </configuration>
+                            <goals>
+                                <goal>run</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-resources-plugin</artifactId>
                     <version>2.6</version>
                     <executions>
@@ -100,11 +125,8 @@
                                 <outputDirectory>${project.build.directory}/asset-descriptors</outputDirectory>
                                 <resources>
                                     <resource>
-                                        <directory>${asset.descriptor.basedir}</directory>
+                                        <directory>${project.build.directory}/aggregated-asset-descriptors</directory>
                                         <filtering>true</filtering>
-                                        <includes>
-                                            <include>${asset.descriptor.path}</include>
-                                        </includes>
                                     </resource>
                                 </resources>
                             </configuration>
@@ -124,7 +146,7 @@
                             </goals>
                             <phase>generate-resources</phase>
                             <configuration>
-                                <assetDescriptorFile>${project.build.directory}/asset-descriptors/${asset.descriptor.path}</assetDescriptorFile>
+                                <assetDescriptorFile>${asset.descriptor.filtered.file}</assetDescriptorFile>
                                 <targetReportDir>${project.basedir}/src/main/dita/${report.module}/gen</targetReportDir>
                             </configuration>
                         </execution>
@@ -211,31 +233,6 @@
                                 <copy file="${project.build.directory}/${project.artifactId}-${project.version}-${document.classifier}.pdf"
                                       tofile="${output.document.file}" />
                             </target>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-enforcer-plugin</artifactId>
-                <version>3.5.0</version>
-                <executions>
-                    <execution>
-                        <id>enforce-property</id>
-                        <goals>
-                            <goal>enforce</goal>
-                        </goals>
-                        <configuration>
-                            <rules>
-                                <requireProperty>
-                                    <property>asset.descriptor.basedir</property>
-                                </requireProperty>
-                                <requireProperty>
-                                    <property>asset.descriptor.path</property>
-                                </requireProperty>
-                            </rules>
-                            <fail>true</fail>
                         </configuration>
                     </execution>
                 </executions>
