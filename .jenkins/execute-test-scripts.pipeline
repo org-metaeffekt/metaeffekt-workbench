@@ -103,7 +103,6 @@ pipeline {
 
                 // specify mirror source
                 sh 'echo "EXTERNAL_VULNERABILITY_MIRROR_URL=\"http://ae-scanner/mirror/index/ae-mirror-index_gen5.tar.gz\"" >> external.rc'
-                sh 'echo "EXTERNAL_VULNERABILITY_MIRROR_NAME=\"ae-mirror-index_gen5.tar.gz\"" >> external.rc'
             }
         }
 
@@ -119,11 +118,33 @@ pipeline {
             }
         }
 
+        stage('Run workspace-001 tests - mongodb_en') {
+            steps {
+                // run pipeline
+                withMaven(maven: 'maven-3.9.6') {
+                    sh './tests/scripts/pipelines/001_mongodb-pipeline_en.sh'
+                }
+
+                // publish inventory (internal)
+                sh 'export AE_TIMESTAMP=`date +"%Y-%m-%d@%Hh%Mm"` && curl --create-dirs -T "tests/resources/workspace-001/mongodb-8.2.2/04_advised/mongodb-advised-inventory.xlsx" http://ae-scanner/upload/inventory-index/mongodb-3.1.1/mongodb-advised-inventory-$AE_TIMESTAMP.xlsx'
+
+                // publish dashboard
+                sh 'curl -T "tests/resources/workspace-001/mongodb-8.2.2/04_advised/dashboards/mongodb-8.2.2-dashboard.html" "ftp://$FTP_HOST/html/metaeffekt/dashboards/mongodb-8.2.2-dashboard.html" --user $FTP_USER:$FTP_PASS'
+            }
+        }
+
         stage('Run workspace-001 tests - openssl_en') {
             steps {
+                // run pipeline
                 withMaven(maven: 'maven-3.9.6') {
                     sh './tests/scripts/pipelines/001_openssl-pipeline_en.sh'
                 }
+
+                // publish inventory (internal)
+                sh 'export AE_TIMESTAMP=`date +"%Y-%m-%d@%Hh%Mm"` && curl --create-dirs -T "tests/resources/workspace-001/openssl-3.3.1/04_advised/openssl-advised-inventory.xlsx" http://ae-scanner/upload/inventory-index/openssl-3.1.1/openssl-advised-inventory-$AE_TIMESTAMP.xlsx'
+
+                // publish dashboard
+                sh 'curl -T "tests/resources/workspace-001/openssl-3.3.1/04_advised/dashboards/openssl-3.3.1-dashboard.html" "ftp://$FTP_HOST/html/metaeffekt/dashboards/openssl-3.3.1-dashboard.html" --user $FTP_USER:$FTP_PASS'
             }
         }
 
@@ -171,7 +192,6 @@ pipeline {
         stage('Publish Inventories internally') {
             steps {
                 // openssl
-                sh 'export AE_TIMESTAMP=`date +"%Y-%m-%d@%Hh%Mm"` && curl --create-dirs -T "tests/resources/workspace-001/openssl-3.3.1/04_advised/openssl-advised-inventory.xlsx" http://ae-scanner/upload/inventory-index/openssl-3.1.1/openssl-advised-inventory-$AE_TIMESTAMP.xlsx'
 
                 // windows11 (patched and unpatched)
                 sh 'export AE_TIMESTAMP=`date +"%Y-%m-%d@%Hh%Mm"` && curl --create-dirs -T "tests/resources/workspace-001/windows11/04_advised/windows11-advised-inventory_unpatched.xlsx" http://ae-scanner/upload/inventory-index/windows-11_unpatched/windows11-advised-inventory_unpatched-$AE_TIMESTAMP.xlsx'
