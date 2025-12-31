@@ -22,7 +22,6 @@ on:
         type: string
 env:
   MIRROR_URL: "https://metaeffekt.com/mirror/ae-vulnerability-mirror/ae-mirror-index_gen5-external.tar.gz"
-  MIRROR_NAME: "ae-mirror-index_gen5-external.tar.gz"
 
 permissions:
   contents: write
@@ -68,7 +67,6 @@ jobs:
           echo "EXTERNAL_KONTINUUM_DIR=${{ github.workspace }}/.metaeffekt-kontinuum" >> ${{ github.workspace }}/external.rc
           echo "EXTERNAL_VULNERABILITY_MIRROR_DIR=${{ github.workspace }}/.mirror" >> ${{ github.workspace }}/external.rc
           echo "EXTERNAL_VULNERABILITY_MIRROR_URL=${{ env.MIRROR_URL }}" >> ${{ github.workspace }}/external.rc
-          echo "EXTERNAL_VULNERABILITY_MIRROR_NAME=${{ env.MIRROR_NAME }}" >> ${{ github.workspace }}/external.rc
           echo "AE_CORE_VERSION=${{ inputs.ae-core-version }}" >> ${{ github.workspace }}/external.rc
           echo "AE_ARTIFACT_ANALYSIS_VERSION=${{ inputs.ae-artifact-analysis-version }}" >> ${{ github.workspace }}/external.rc
 

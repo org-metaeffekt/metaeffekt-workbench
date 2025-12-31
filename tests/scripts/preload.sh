@@ -36,12 +36,6 @@ else
   log_info "No EXTERNAL_VULNERABILITY_MIRROR_URL specified in external.rc, this might result in scripts failing."
 fi
 
-if [ -n "${EXTERNAL_VULNERABILITY_MIRROR_NAME:-}" ]; then
-  log_info "External mirror name specified: $EXTERNAL_VULNERABILITY_MIRROR_NAME"
-else
-  log_info "No EXTERNAL_VULNERABILITY_MIRROR_NAME specified in external.rc, this might result in scripts failing."
-fi
-
 if [ -n "${AE_CORE_VERSION:-}" ]; then
   log_info "Core version specified: $AE_CORE_VERSION"
 else

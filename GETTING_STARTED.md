@@ -36,8 +36,6 @@ in the root of this repository. A template for this file has been provided here:
   the mirror, point this to the metaeffekt-kontinuum/.mirror instead.
 - EXTERNAL_VULNERABILITY_MIRROR_URL="https://mirror-url/mirror.tar.gz"
     - Point this to a valid URL where an instance of the mirror can be downloaded.
-- EXTERNAL_VULNERABILITY_MIRROR_NAME="mirror.tar.gz"
-    - The name of the mirror archive file
 
 ## Running the Reference Pipeline
 

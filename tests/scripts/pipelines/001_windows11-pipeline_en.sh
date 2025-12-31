@@ -57,13 +57,11 @@ log_info "Running update_mirror process."
 
 MIRROR_TARGET_DIR="$EXTERNAL_VULNERABILITY_MIRROR_DIR"
 MIRROR_ARCHIVE_URL="$EXTERNAL_VULNERABILITY_MIRROR_URL"
-MIRROR_ARCHIVE_NAME="$EXTERNAL_VULNERABILITY_MIRROR_NAME"
 CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/mirror/mirror_download-index.xml" compile)
 [ -n "${AE_CORE_VERSION:-}" ] && CMD+=("-Dae.core.version=$AE_CORE_VERSION")
 [ -n "${AE_ARTIFACT_ANALYSIS_VERSION:-}" ] && CMD+=("-Dae.artifact.analysis.version=$AE_ARTIFACT_ANALYSIS_VERSION")
 CMD+=("-Denv.vulnerability.mirror.dir=$MIRROR_TARGET_DIR")
 CMD+=("-Dparam.mirror.archive.url=$MIRROR_ARCHIVE_URL")
-CMD+=("-Dparam.mirror.archive.name=$MIRROR_ARCHIVE_NAME")
 
 pass_command_info_to_logger "update_mirror"
 
