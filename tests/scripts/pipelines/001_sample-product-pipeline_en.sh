@@ -46,14 +46,14 @@ set_global_variables() {
   PARAM_SECURITY_POLICY_FILE="$WORKBENCH_DIR/policies/security-policy/security-policy.json"
 
   ENV_DESCRIPTOR_DIR="$WORKBENCH_DIR/descriptors"
-  ENV_SDA_DESCRIPTOR_PATH="asset-descriptor_GENERIC-software-distribution-annex.yaml"
-  ENV_ILD_DESCRIPTOR_PATH="asset-descriptor_GENERIC-initial-license-documentation.yaml"
-  ENV_LD_DESCRIPTOR_PATH="asset-descriptor_GENERIC-license-documentation.yaml"
-  ENV_CAD_DESCRIPTOR_PATH="asset-descriptor_GENERIC-custom-annex.yaml"
-  ENV_VR_DESCRIPTOR_PATH="asset-descriptor_GENERIC-vulnerability-report.yaml"
-  ENV_CR_DESCRIPTOR_PATH="asset-descriptor_GENERIC-cert-report.yaml"
-  ENV_VSR_DESCRIPTOR_PATH="asset-descriptor_GENERIC-vulnerability-summary-report.yaml"
-  ENV_LANGUAGE="en"
+  ENV_SDA_DESCRIPTOR_FILE="$ENV_DESCRIPTOR_DIR/asset-descriptor_GENERIC-software-distribution-annex.yaml"
+  ENV_ILD_DESCRIPTOR_FILE="$ENV_DESCRIPTOR_DIR/asset-descriptor_GENERIC-initial-license-documentation.yaml"
+  ENV_LD_DESCRIPTOR_FILE="$ENV_DESCRIPTOR_DIR/asset-descriptor_GENERIC-license-documentation.yaml"
+  ENV_CAD_DESCRIPTOR_FILE="$ENV_DESCRIPTOR_DIR/asset-descriptor_GENERIC-custom-annex.yaml"
+  ENV_VR_DESCRIPTOR_FILE="$ENV_DESCRIPTOR_DIR/asset-descriptor_GENERIC-vulnerability-report.yaml"
+  ENV_CR_DESCRIPTOR_FILE="$ENV_DESCRIPTOR_DIR/asset-descriptor_GENERIC-cert-report.yaml"
+  ENV_VSR_DESCRIPTOR_FILE="$ENV_DESCRIPTOR_DIR/asset-descriptor_GENERIC-vulnerability-summary-report.yaml"
+  ENV_LANGUAGE="de"
 }
 
 create_target_directories() {
@@ -115,7 +115,7 @@ create_software_distribution_annex() {
 
   CMD+=("-Doutput.document.file=$OUTPUT_ANNEX_FILE")
 
-  CMD+=("-Dparam.asset.descriptor.path=$ENV_SDA_DESCRIPTOR_PATH")
+  CMD+=("-Dparam.asset.descriptor.file=$ENV_SDA_DESCRIPTOR_FILE")
   CMD+=("-Dparam.reference.inventory.dir=$ENV_REFERENCE_INVENTORY_DIR")
   CMD+=("-Dparam.asset.id=$PARAM_ASSET_ID")
   CMD+=("-Dparam.asset.name=$PARAM_ASSET_NAME")
@@ -155,7 +155,7 @@ create_license_documentation() {
 
   CMD+=("-Doutput.document.file=$OUTPUT_ANNEX_FILE")
 
-  CMD+=("-Dparam.asset.descriptor.path=$ENV_LD_DESCRIPTOR_PATH")
+  CMD+=("-Dparam.asset.descriptor.file=$ENV_LD_DESCRIPTOR_FILE")
   CMD+=("-Dparam.reference.inventory.dir=$ENV_REFERENCE_INVENTORY_DIR")
   CMD+=("-Dparam.asset.id=$PARAM_ASSET_ID")
   CMD+=("-Dparam.asset.name=$PARAM_ASSET_NAME")
@@ -195,7 +195,7 @@ create_initial_license_documentation() {
 
   CMD+=("-Doutput.document.file=$OUTPUT_ANNEX_FILE")
 
-  CMD+=("-Dparam.asset.descriptor.path=$ENV_ILD_DESCRIPTOR_PATH")
+  CMD+=("-Dparam.asset.descriptor.file=$ENV_ILD_DESCRIPTOR_FILE")
   CMD+=("-Dparam.reference.inventory.dir=$ENV_REFERENCE_INVENTORY_DIR")
   CMD+=("-Dparam.asset.id=$PARAM_ASSET_ID")
   CMD+=("-Dparam.asset.name=$PARAM_ASSET_NAME")
@@ -235,7 +235,7 @@ create_custom-annex-document() {
 
   CMD+=("-Doutput.document.file=$OUTPUT_ANNEX_FILE")
 
-  CMD+=("-Dparam.asset.descriptor.path=$ENV_CAD_DESCRIPTOR_PATH")
+  CMD+=("-Dparam.asset.descriptor.file=$ENV_CAD_DESCRIPTOR_FILE")
   CMD+=("-Dparam.reference.inventory.dir=$ENV_REFERENCE_INVENTORY_DIR")
   CMD+=("-Dparam.asset.id=$PARAM_ASSET_ID")
   CMD+=("-Dparam.asset.name=$PARAM_ASSET_NAME")
@@ -300,7 +300,7 @@ create_vulnerability_summary_report() {
 
   CMD+=("-Doutput.document.file=$OUTPUT_VSR_FILE")
 
-  CMD+=("-Dparam.asset.descriptor.path=$ENV_VSR_DESCRIPTOR_PATH")
+  CMD+=("-Dparam.asset.descriptor.file=$ENV_VSR_DESCRIPTOR_FILE")
   CMD+=("-Dparam.reference.inventory.dir=$ENV_REFERENCE_INVENTORY_DIR")
   CMD+=("-Dparam.asset.id=$PARAM_ASSET_ID")
   CMD+=("-Dparam.asset.name=$PARAM_ASSET_NAME")
@@ -339,7 +339,7 @@ create_vulnerability_report() {
 
   CMD+=("-Doutput.document.file=$OUTPUT_VR_FILE")
 
-  CMD+=("-Dparam.asset.descriptor.path=$ENV_VR_DESCRIPTOR_PATH")
+  CMD+=("-Dparam.asset.descriptor.file=$ENV_VR_DESCRIPTOR_FILE")
   CMD+=("-Dparam.reference.inventory.dir=$ENV_REFERENCE_INVENTORY_DIR")
   CMD+=("-Dparam.asset.id=$PARAM_ASSET_ID")
   CMD+=("-Dparam.asset.name=$PARAM_ASSET_NAME")
@@ -379,7 +379,7 @@ create_cert_report() {
 
   CMD+=("-Doutput.document.file=$OUTPUT_CR_FILE")
 
-  CMD+=("-Dparam.asset.descriptor.path=$ENV_CR_DESCRIPTOR_PATH")
+  CMD+=("-Dparam.asset.descriptor.file=$ENV_CR_DESCRIPTOR_FILE")
   CMD+=("-Dparam.reference.inventory.dir=$ENV_REFERENCE_INVENTORY_DIR")
   CMD+=("-Dparam.asset.id=$PARAM_ASSET_ID")
   CMD+=("-Dparam.asset.name=$PARAM_ASSET_NAME")
