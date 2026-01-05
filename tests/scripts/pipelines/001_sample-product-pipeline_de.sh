@@ -215,7 +215,7 @@ create_initial_license_documentation() {
   pass_command_info_to_logger "create_initial_license_documentation"
 }
 
-create_custom-annex-document() {
+create_custom_annex_document() {
   OUTPUT_ANNEX_FILE="$REPORTED_DIR/custom-annex-document_$ENV_LANGUAGE.pdf"
   OUTPUT_COMPUTED_INVENTORY_DIR="$TMP_DIR/report"
 
@@ -435,7 +435,7 @@ main() {
   create_software_distribution_annex
   create_license_documentation
   create_initial_license_documentation
-  create_custom-annex-document
+  create_custom_annex_document
 
   # create vulnerability documents
   create_vulnerability_report

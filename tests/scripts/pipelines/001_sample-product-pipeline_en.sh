@@ -53,7 +53,7 @@ set_global_variables() {
   ENV_VR_DESCRIPTOR_FILE="$ENV_DESCRIPTOR_DIR/asset-descriptor_GENERIC-vulnerability-report.yaml"
   ENV_CR_DESCRIPTOR_FILE="$ENV_DESCRIPTOR_DIR/asset-descriptor_GENERIC-cert-report.yaml"
   ENV_VSR_DESCRIPTOR_FILE="$ENV_DESCRIPTOR_DIR/asset-descriptor_GENERIC-vulnerability-summary-report.yaml"
-  ENV_LANGUAGE="de"
+  ENV_LANGUAGE="en"
 }
 
 create_target_directories() {
@@ -97,7 +97,6 @@ enrich_inventory_with_reference() {
 
 create_software_distribution_annex() {
   OUTPUT_ANNEX_FILE="$REPORTED_DIR/software-distribution-annex-$ENV_LANGUAGE.pdf"
-  OUTPUT_COMPUTED_INVENTORY_DIR="$TMP_DIR/report"
 
   PARAM_DOCUMENT_TYPE="SDA"
   PARAM_ASSET_ID="Sample Product"
@@ -137,7 +136,6 @@ create_software_distribution_annex() {
 
 create_license_documentation() {
   OUTPUT_ANNEX_FILE="$REPORTED_DIR/license-documentation-$ENV_LANGUAGE.pdf"
-  OUTPUT_COMPUTED_INVENTORY_DIR="$TMP_DIR/report"
 
   PARAM_DOCUMENT_TYPE="LD"
   PARAM_ASSET_ID="Sample Product"
@@ -177,7 +175,6 @@ create_license_documentation() {
 
 create_initial_license_documentation() {
   OUTPUT_ANNEX_FILE="$REPORTED_DIR/initial-license-documentation-$ENV_LANGUAGE.pdf"
-  OUTPUT_COMPUTED_INVENTORY_DIR="$TMP_DIR/report"
 
   PARAM_DOCUMENT_TYPE="ILD"
   PARAM_ASSET_ID="Sample Product"
@@ -215,9 +212,8 @@ create_initial_license_documentation() {
   pass_command_info_to_logger "create_initial_license_documentation"
 }
 
-create_custom-annex-document() {
+create_custom_annex_document() {
   OUTPUT_ANNEX_FILE="$REPORTED_DIR/custom-annex-document_$ENV_LANGUAGE.pdf"
-  OUTPUT_COMPUTED_INVENTORY_DIR="$TMP_DIR/report"
 
   PARAM_DOCUMENT_TYPE="CAD"
   PARAM_ASSET_ID="Sample Product"
@@ -321,7 +317,6 @@ create_vulnerability_summary_report() {
 
 create_vulnerability_report() {
   OUTPUT_VR_FILE="$REPORTED_DIR/vulnerability-report-$ENV_LANGUAGE.pdf"
-  OUTPUT_COMPUTED_INVENTORY_DIR="$TMP_DIR/report"
 
   PARAM_DOCUMENT_TYPE="VR"
   PARAM_ASSET_ID="Sample Product"
@@ -361,7 +356,6 @@ create_vulnerability_report() {
 
 create_cert_report() {
   OUTPUT_CR_FILE="$REPORTED_DIR/cert-report-$ENV_LANGUAGE.pdf"
-  OUTPUT_COMPUTED_INVENTORY_DIR="$TMP_DIR/report"
 
   PARAM_DOCUMENT_TYPE="CR"
   PARAM_ASSET_ID="Sample Product"
@@ -421,7 +415,6 @@ create_vulnerability_assessment_dashboard() {
 main() {
   source_preload
   set_global_variables
-  SCRIPT_NAME=$(basename "$(readlink -f "$0")")
   create_target_directories
 
   # setup
@@ -435,7 +428,7 @@ main() {
   create_software_distribution_annex
   create_license_documentation
   create_initial_license_documentation
-  create_custom-annex-document
+  create_custom_annex_document
 
   # create vulnerability documents
   create_vulnerability_report
