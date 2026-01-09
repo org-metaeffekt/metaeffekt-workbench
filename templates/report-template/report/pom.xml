@@ -197,15 +197,6 @@
                 <document.language>de</document.language>
             </properties>
         </profile>
-
-        <profile>
-            <id>all</id>
-            <modules>
-                <module>asset-report-template</module>
-                <module>cert-report-template</module>
-                <module>vulnerability-report-template</module>
-            </modules>
-        </profile>
     </profiles>
 
 </project>
