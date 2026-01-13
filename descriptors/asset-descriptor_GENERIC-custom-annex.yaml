@@ -21,12 +21,8 @@ documents:
         inventories:
           - inventoryRef: "inventory"
             referenceInventory: "reference-inventory"
-            assetName: "${product.name}"
-            assetVersion: "${product.version}"
       "software-distribution-annex":
         type: ANNEX
         inventories:
           - inventoryRef: "inventory"
             referenceInventory: "reference-inventory"
-           # assetName: "${asset.name}"
-           # assetVersion: "${asset.version}"

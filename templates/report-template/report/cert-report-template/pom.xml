@@ -66,7 +66,7 @@
                     <version>1.8</version>
                     <executions>
                         <execution>
-                            <id>copy-and-filter-asset-descriptor</id>
+                            <id>copy-asset-descriptor</id>
                             <phase>validate</phase>
                             <configuration>
                                 <target>
@@ -90,7 +90,7 @@
                     <executions>
                         <!-- Copy and filter asset-descriptor -->
                         <execution>
-                            <id>copy-asset-descriptors</id>
+                            <id>filter-asset-descriptors</id>
                             <phase>initialize</phase>
                             <goals>
                                 <goal>copy-resources</goal>
@@ -130,7 +130,7 @@
                             <goals>
                                 <goal>generate-documents</goal>
                             </goals>
-                            <phase>generate-resources</phase>
+                            <phase>process-sources</phase>
                             <configuration>
                                 <assetDescriptorFile>${asset.descriptor.filtered.file}</assetDescriptorFile>
                                 <targetReportDir>${project.basedir}/src/main/dita/${report.module}/gen</targetReportDir>
@@ -151,7 +151,7 @@
                             <goals>
                                 <goal>ae-generate-inventory-report-svg</goal>
                             </goals>
-                            <phase>process-sources</phase>
+                            <phase>generate-sources</phase>
                             <configuration>
                                 <inventoryInputFile>
                                     ${param.computed.inventory.dir}/${asset.name}-vulnerability-report-inventory.xlsx
@@ -179,7 +179,7 @@
                             <goals>
                                 <goal>ae-generate-inventory-report-svg</goal>
                             </goals>
-                            <phase>process-sources</phase>
+                            <phase>generate-sources</phase>
                             <configuration>
                                 <active>true</active>
 
@@ -234,7 +234,7 @@
                     <version>1.1.0</version>
                     <executions>
                         <execution>
-                            <phase>generate-resources</phase>
+                            <phase>process-sources</phase>
                             <goals>
                                 <goal>read-project-properties</goal>
                             </goals>
@@ -255,6 +255,10 @@
             <plugin>
                 <groupId>com.metaeffekt.artifact.analysis</groupId>
                 <artifactId>ae-asset-descriptor-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>com.metaeffekt.artifact.analysis</groupId>
+                <artifactId>ae-inventory-enrichment-plugin</artifactId>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -290,10 +294,6 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>buildnumber-maven-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>com.metaeffekt.artifact.analysis</groupId>
-                <artifactId>ae-inventory-enrichment-plugin</artifactId>
             </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>

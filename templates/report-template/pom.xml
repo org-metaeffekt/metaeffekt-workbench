@@ -223,7 +223,7 @@
                         </execution>
                         <execution>
                             <id>generate-glossary</id>
-                            <phase>process-sources</phase>
+                            <phase>generate-resources</phase>
                             <goals>
                                 <goal>generate-glossary</goal>
                             </goals>
@@ -245,6 +245,7 @@
                     <executions>
                         <execution>
                             <id>retrieve-branding</id>
+                            <phase>generate-sources</phase>
                             <goals>
                                 <goal>unpack</goal>
                             </goals>
@@ -263,6 +264,7 @@
                         </execution>
                         <execution>
                             <id>retrieve-custom-branding</id>
+                            <phase>generate-sources</phase>
                             <goals>
                                 <goal>unpack</goal>
                             </goals>

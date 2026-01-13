@@ -28,18 +28,16 @@
     </frontmatter>
 
     <chapter href="ae-common-content/bill-of-materials/de/tpc_open-source-based-bom.dita">
-        <topicref href="asset-report/gen/inventory/tpc_asset-report.dita" />
-        <topicref href="asset-report/gen/inventory/tpc_asset-licenses.dita" />
-        <topicref href="asset-report/gen/inventory/tpc_asset-no-license.dita" />
-    </chapter>
-
-    <chapter href="ae-common-content/bill-of-materials/de/tpc_open-source-based-bom.dita">
         <topicref href="ae-common-content/components/de/tpc_provider-proprietary-components.dita" />
         <topicref href="ae-common-content/components/de/tpc_proprietary-components.dita" />
         <topicref href="ae-common-content/components/de/tpc_oss-components.dita" />
         <topicref href="ae-common-content/components/de/tpc_public-domain-components.dita" />
         <topicref href="asset-report/de/tpc_import-export-information.dita" />
     </chapter>
+
+    <chapter href="asset-report/de/tpc_asset-overview.dita">
+        <topicref format="ditamap" href="asset-report/gen/parts/map_initial-license-documentation-initial-license-documentation.ditamap" />
+    </chapter>>
 
     <topicref format="ditamap" href="asset-report/gen/parts/map_software-distribution-annex-annex.ditamap" />
 

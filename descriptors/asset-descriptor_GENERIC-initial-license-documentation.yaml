@@ -21,7 +21,3 @@ documents:
         inventories:
           - inventoryRef: "inventory"
             referenceInventory: "reference-inventory"
-
-            # these fields are used as overwrites if not all artifacts are contained in a primary asset, remove to enable dynamic asset detection
-            assetName: "${asset.name}"
-            assetVersion: "${asset.version}"
