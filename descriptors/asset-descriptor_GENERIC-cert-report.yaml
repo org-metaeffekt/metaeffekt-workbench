@@ -34,6 +34,15 @@ documents:
     type: VULNERABILITY_REPORT
     language: "${document.language}"
     params:
+      #parameters for document content references
+      cert.report.overview.statistics.table.reference: "filtered-enriched-inventory"
+      cert.report.overview.statistics.table.modified.reference: "filtered-enriched-inventory"
+
+      cert.report.overview.statistics.table.advisor.reference: "filtered-enriched-inventory"
+      cert.report.overview.statistics.table.advisor.preface.reference: "filtered-enriched-inventory"
+      cert.report.overview.statistics.table.advisor.modified.reference: "filtered-enriched-inventory"
+
+      # parameters for document content generation
       securityPolicyFile: "${security.policy.file}"
     parts:
       "vulnerability-report":
