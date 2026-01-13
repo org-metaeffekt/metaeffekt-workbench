@@ -245,7 +245,7 @@
                     <executions>
                         <execution>
                             <id>retrieve-branding</id>
-                            <phase>generate-sources</phase>
+                            <phase>initialize</phase>
                             <goals>
                                 <goal>unpack</goal>
                             </goals>
@@ -264,7 +264,7 @@
                         </execution>
                         <execution>
                             <id>retrieve-custom-branding</id>
-                            <phase>generate-sources</phase>
+                            <phase>initialize</phase>
                             <goals>
                                 <goal>unpack</goal>
                             </goals>
