@@ -37,7 +37,7 @@
 
     <chapter href="asset-report/de/tpc_asset-overview.dita">
         <topicref format="ditamap" href="asset-report/gen/parts/map_initial-license-documentation-initial-license-documentation.ditamap" />
-    </chapter>>
+    </chapter>
 
     <topicref format="ditamap" href="asset-report/gen/parts/map_software-distribution-annex-annex.ditamap" />
 
