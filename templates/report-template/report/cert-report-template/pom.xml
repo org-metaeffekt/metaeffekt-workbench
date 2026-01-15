@@ -29,13 +29,12 @@
         <inventory.source>${project.basedir}/external-resources/reference</inventory.source>
         <system.id>default</system.id>
 
-        <report.summary.path>${report.module}/gen/summary-report/svg/fig_summary.svg</report.summary.path>
         <filteredDescriptorDir>${project.build.directory}/asset-descriptors</filteredDescriptorDir>
 
         <document.classifier>cr_${document.language}</document.classifier>
         <document.qualifier>${asset.id}_${asset.version}_SW-CR</document.qualifier>
 
-        <report.summary.path>../dita/${report.module}/gen/filtered-enriched-inventory/svg/fig_summary.svg</report.summary.path>
+        <report.summary.path>../dita/${report.module}/gen/${vulnerability.summary.part.content.reference}/svg/fig_summary.svg</report.summary.path>
 
         <report.module>cert-report</report.module>
 
@@ -234,7 +233,7 @@
                     <version>1.1.0</version>
                     <executions>
                         <execution>
-                            <id>read-properties</id>
+                            <id>read-descriptor-properties</id>
                             <phase>process-sources</phase>
                             <goals>
                                 <goal>read-project-properties</goal>
@@ -243,8 +242,20 @@
                                 <files>
                                     <!-- read the generated properties file; the content can be used for resource filtering -->
                                     <file>${project.basedir}/src/main/dita/${report.module}/gen/asset-descriptor.properties</file>
-                                    <file>${project.basedir}/src/main/dita/${report.module}/gen/${cert.report.vulnerability.report.properties.reference}/vulnerability-report.properties</file>
-                                    <file>${project.basedir}/src/main/dita/${report.module}/gen/${cert.report.vulnerability.summary.properties.reference}/vulnerability-summary.properties</file>
+                                </files>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>read-report-properties</id>
+                            <phase>process-sources</phase>
+                            <goals>
+                                <goal>read-project-properties</goal>
+                            </goals>
+                            <configuration>
+                                <files>
+                                    <!-- read the report properties, the path of these properties depends on the descriptor properties thus needing a separate execution -->
+                                    <file>${project.basedir}/src/main/dita/${report.module}/gen/${vulnerability.report.properties.reference}/vulnerability-report.properties</file>
+                                    <file>${project.basedir}/src/main/dita/${report.module}/gen/${vulnerability.summary.properties.reference}/vulnerability-summary.properties</file>
                                 </files>
                             </configuration>
                         </execution>
