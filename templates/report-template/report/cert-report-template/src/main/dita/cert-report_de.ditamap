@@ -37,7 +37,7 @@
     <chapter href="cert-report/gen/filtered-inventory/tpc_inventory-vulnerability-components.dita" />
     <chapter href="cert-report/gen/filtered-inventory/tpc_inventory-vulnerability-details.dita" />
 
-	<appendix href="appendix.dita" >
+	<appendix href="tmp/de/appendix.dita" >
 		<!-- overall -->
 		<topicref href="cert-report-overall/de/tpc_vulnerability-cert-report.dita" />
 	</appendix>

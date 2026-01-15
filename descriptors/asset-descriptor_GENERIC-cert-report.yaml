@@ -42,9 +42,22 @@ documents:
       cert.report.overview.statistics.table.advisor.preface.reference: "filtered-enriched-inventory"
       cert.report.overview.statistics.table.advisor.modified.reference: "filtered-enriched-inventory"
 
+      #parameters for generated properties
+      cert.report.vulnerability.report.properties.reference: "filtered-inventory"
+      cert.report.vulnerability.summary.properties.reference: "filtered-enriched-inventory"
+
       # parameters for document content generation
       securityPolicyFile: "${security.policy.file}"
     parts:
+      "summary-report":
+        type: VULNERABILITY_SUMMARY_PART
+        params:
+          securityPolicyActiveIds: "cert_extended_configuration"
+        inventories:
+          - inventoryRef: "filtered-enriched-inventory"
+            assetName: "${asset.name}"
+            assetVersion: "${asset.version}"
+
       "vulnerability-report":
         type: VULNERABILITY_REPORT
         params:
@@ -58,14 +71,6 @@ documents:
         type: VULNERABILITY_STATISTICS_REPORT
         params:
           securityPolicyActiveIds: "cert_configuration"
-        inventories:
-          - inventoryRef: "filtered-enriched-inventory"
-            assetName: "${asset.name}"
-            assetVersion: "${asset.version}"
-      "summary-report":
-        type: VULNERABILITY_SUMMARY_PART
-        params:
-          securityPolicyActiveIds: "cert_extended_configuration"
         inventories:
           - inventoryRef: "filtered-enriched-inventory"
             assetName: "${asset.name}"
