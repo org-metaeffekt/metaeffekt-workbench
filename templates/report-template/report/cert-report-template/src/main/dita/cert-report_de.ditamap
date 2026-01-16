@@ -29,7 +29,7 @@
     <chapter href="cert-report/gen/${vulnerability.report.content.reference}/tpc_inventory-cert.dita" />
 
     <!-- periodic -->
-    <chapter href="cert-report/de/tpc_vulnerability-cert-${ae.vulnerability.report.overview.switch}.dita" />
+    <chapter href="cert-report/de/tpc_vulnerability-cert-${ae.vulnerability.report.overview.switch}.dita" >
 
         <!-- details -->
         <topicref href="cert-report/gen/${vulnerability.report.content.reference}/tpc_inventory-vulnerability-report.dita" />
