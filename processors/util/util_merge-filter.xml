@@ -42,7 +42,7 @@
                         <goals>
                             <goal>merge-advisor-inventories</goal>
                         </goals>
-                        <phase>initialize</phase>
+                        <phase>generate-sources</phase>
                         <configuration>
                             <referenceInventories>${input.inventory.file}</referenceInventories>
                             <vulnerabilityAdvisoryFilter>${param.vulnerability.advisory.filter}</vulnerabilityAdvisoryFilter>

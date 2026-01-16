@@ -116,7 +116,7 @@
                             <rules>
                                 <requireProperty>
                                     <property>input.inventory.file</property>
-                                </requireProperty>                                
+                                </requireProperty>
                                 <requireProperty>
                                     <property>output.enrichment.inventory</property>
                                 </requireProperty>

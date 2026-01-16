@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE bookmap PUBLIC "-//OASIS//DTD DITA BookMap//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/bookmap.dtd">
-<bookmap id="map_oftware-distribution-annex_en" xml:lang="de">
+<bookmap id="map_oftware-distribution-annex_de" xml:lang="de">
     <title>
         <ph>${product.name} ${product.version}</ph>
     </title>
