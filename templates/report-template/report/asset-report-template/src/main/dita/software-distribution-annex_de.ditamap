@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE bookmap PUBLIC "-//OASIS//DTD DITA BookMap//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/bookmap.dtd">
-<bookmap id="map_oftware-distribution-annex_en" xml:lang="de">
+<bookmap id="map_oftware-distribution-annex_de" xml:lang="de">
     <title>
         <ph>${product.name} ${product.version}</ph>
     </title>
@@ -21,7 +21,7 @@
 
     <frontmatter>
         <topicref href="asset-report/gen/imprint/tpc_imprint.dita" />
-        <topicref href="asset-report/en/tpc_notice.dita" />
+        <topicref href="asset-report/de/tpc_notice.dita" />
         <booklists>
             <toc/>
         </booklists>
@@ -38,7 +38,7 @@
     <topicref format="ditamap" href="asset-report/gen/map_software-distribution-annex-document.ditamap" />
 
     <backmatter>
-        <booklists>
+	    <booklists>
             <glossarylist>
                 <topicref format="ditamap" href="glossary/gen/glossary/de/gmap_glossary.ditamap" />
             </glossarylist>

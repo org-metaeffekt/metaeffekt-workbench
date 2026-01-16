@@ -91,8 +91,8 @@
                     <version>1.8</version>
                     <executions>
                         <execution>
-                            <id>copy-and-filter-asset-descriptor</id>
-                            <phase>validate</phase>
+                            <id>copy-asset-descriptor</id>
+                            <phase>initialize</phase>
                             <configuration>
                                 <target>
                                     <copy file="${asset.descriptor.file}" toFile="${asset.descriptor.filtered.file}" />
@@ -115,7 +115,7 @@
                     <executions>
                         <!-- Copy and filter asset-descriptor -->
                         <execution>
-                            <id>copy-asset-descriptors</id>
+                            <id>filter-asset-descriptor</id>
                             <phase>generate-sources</phase>
                             <goals>
                                 <goal>copy-resources</goal>
@@ -144,7 +144,7 @@
                             <goals>
                                 <goal>generate-documents</goal>
                             </goals>
-                            <phase>generate-resources</phase>
+                            <phase>process-sources</phase>
                             <configuration>
                                 <assetDescriptorFile>${asset.descriptor.filtered.file}</assetDescriptorFile>
                                 <targetReportDir>${project.basedir}/src/main/dita/${report.module}/gen</targetReportDir>
@@ -181,7 +181,8 @@
                     <version>1.1.0</version>
                     <executions>
                         <execution>
-                            <phase>process-resources</phase>
+                            <id>read-properties</id>
+                            <phase>process-sources</phase>
                             <goals>
                                 <goal>read-project-properties</goal>
                             </goals>
@@ -236,6 +237,10 @@
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>properties-maven-plugin</artifactId>
             </plugin>
         </plugins>
     </build>

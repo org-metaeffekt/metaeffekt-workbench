@@ -2,10 +2,10 @@ inventories:
   - "inventory":
       file: "${inventory.path}"
       type: INPUT
-  - "filtered-inventory":
+  - merged-inventory:
       file: "${param.computed.inventory.dir}/${asset.name}-vulnerability-report-inventory.xlsx"
       type: COMPUTED
-  - "filtered-enriched-inventory":
+  - "cert-advisory-inventory":
       file: "${param.computed.inventory.dir}/${asset.name}-statistics-report-inventory.xlsx"
       type: COMPUTED
 
@@ -14,13 +14,13 @@ transformations:
     inputInventories:
       - "inventory"
     outputInventories:
-      - "filtered-inventory"
-      - "filtered-enriched-inventory"
+      - "merged-inventory"
+      - "cert-advisory-inventory"
     params:
       input.inventory.file: "${inventory.file}"
       param.vulnerabilities.advisory.filter: '[{"name":"${overview.advisors}"}]'
-      param.filtered.inventory.file: "${filtered-inventory.file}"
-      output.enrichment.inventory: "${filtered-enriched-inventory.file}"
+      param.filtered.inventory.file: "${merged-inventory.file}"
+      output.enrichment.inventory: "${cert-advisory-inventory.file}"
       env.vulnerability.mirror.dir: "${env.vulnerability.mirror.dir}"
       param.security.policy.file: "${security.policy.file}"
       param.security.policy.active.ids: "cert_extended_configuration"
@@ -34,23 +34,36 @@ documents:
     type: VULNERABILITY_REPORT
     language: "${document.language}"
     params:
-      #parameters for document content references
-      cert.report.overview.statistics.table.reference: "filtered-enriched-inventory"
-      cert.report.overview.statistics.table.modified.reference: "filtered-enriched-inventory"
-
-      cert.report.overview.statistics.table.advisor.reference: "filtered-enriched-inventory"
-      cert.report.overview.statistics.table.advisor.preface.reference: "filtered-enriched-inventory"
-      cert.report.overview.statistics.table.advisor.modified.reference: "filtered-enriched-inventory"
-
-      # parameters for document content generation
+      #parameters for generated parts
       securityPolicyFile: "${security.policy.file}"
+
+      #parameters for generated properties
+      vulnerability.report.properties.reference: "cert-advisory-inventory"
+      vulnerability.summary.properties.reference: "cert-advisory-inventory"
+
+      #parameters for report content references (match with inventoryRef)
+      vulnerability.summary.part.content.reference: "cert-advisory-inventory"
+      vulnerability.report.content.reference: "cert-advisory-inventory"
+      vulnerability.statistics.report.content.reference: "cert-advisory-inventory"
+      vulnerability.statistics.report.all.content.reference: "merged-inventory"
     parts:
+      "summary-report":
+        type: VULNERABILITY_SUMMARY_PART
+        params:
+          securityPolicyActiveIds: "cert_extended_configuration"
+          filterAdvisorySummary: "true"
+        inventories:
+          - inventoryRef: "cert-advisory-inventory"
+            assetName: "${asset.name}"
+            assetVersion: "${asset.version}"
+
       "vulnerability-report":
         type: VULNERABILITY_REPORT
         params:
           securityPolicyActiveIds: "cert_extended_configuration"
+          filterAdvisorySummary: "true"
         inventories:
-          - inventoryRef: "filtered-inventory"
+          - inventoryRef: "cert-advisory-inventory"
             assetName: "${asset.name}"
             assetVersion: "${asset.version}"
 
@@ -58,15 +71,17 @@ documents:
         type: VULNERABILITY_STATISTICS_REPORT
         params:
           securityPolicyActiveIds: "cert_configuration"
+          filterAdvisorySummary: "true"
         inventories:
-          - inventoryRef: "filtered-enriched-inventory"
+          - inventoryRef: "cert-advisory-inventory"
             assetName: "${asset.name}"
             assetVersion: "${asset.version}"
-      "summary-report":
-        type: VULNERABILITY_SUMMARY_PART
+
+      "statistics-report-all":
+        type: VULNERABILITY_STATISTICS_REPORT
         params:
-          securityPolicyActiveIds: "cert_extended_configuration"
+          securityPolicyActiveIds: "cert_configuration"
         inventories:
-          - inventoryRef: "filtered-enriched-inventory"
+          - inventoryRef: "merged-inventory"
             assetName: "${asset.name}"
             assetVersion: "${asset.version}"
