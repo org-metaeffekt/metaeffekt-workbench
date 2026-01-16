@@ -29,13 +29,14 @@
     <chapter href="cert-report/gen/${vulnerability.report.content.reference}/tpc_inventory-cert.dita" />
 
     <!-- periodic -->
-    <chapter href="cert-report/en/tpc_vulnerability-cert-${ae.vulnerability.report.overview.switch}.dita" />
+    <chapter href="cert-report/en/tpc_vulnerability-cert-${ae.vulnerability.report.overview.switch}.dita" >
 
-    <!-- details -->
-    <chapter href="cert-report/gen/${vulnerability.report.content.reference}/tpc_inventory-vulnerability-report.dita" />
-    <chapter href="cert-report/gen/${vulnerability.report.content.reference}/tpc_inventory-vulnerability-assets.dita" />
-    <chapter href="cert-report/gen/${vulnerability.report.content.reference}/tpc_inventory-vulnerability-components.dita" />
-    <chapter href="cert-report/gen/${vulnerability.report.content.reference}/tpc_inventory-vulnerability-details.dita" />
+        <!-- details -->
+        <topicref href="cert-report/gen/${vulnerability.report.content.reference}/tpc_inventory-vulnerability-report.dita" />
+        <topicref href="cert-report/gen/${vulnerability.report.content.reference}/tpc_inventory-vulnerability-assets.dita" />
+        <topicref href="cert-report/gen/${vulnerability.report.content.reference}/tpc_inventory-vulnerability-components.dita" />
+        <topicref href="cert-report/gen/${vulnerability.report.content.reference}/tpc_inventory-vulnerability-details.dita" />
+    </chapter>
 
 	<appendix href="tmp/en/appendix.dita" >
 		<!-- overall -->
