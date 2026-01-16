@@ -21,32 +21,30 @@ Unlike the tests in [metaeffekt-kontinuum](https://github.com/org-metaeffekt/met
 in this repository contain all necessary parameters and Maven calls for specific processors directly within the scripts
 rather than in sub-scripts. This design aims to improve readability and simplifies customization.
 
-Additionally, this repository requires a local instance of the [metaeffekt-kontinuum](https://github.com/org-metaeffekt/metaeffekt-kontinuum)
-repository on branch 0.135.x.
-
-## Prerequisites
+Additionally, this repository requires a local instance of the [metaeffekt-kontinuum](https://github.com/org-metaeffekt/metaeffekt-kontinuum).
 
 To ensure all reference processes and pipelines in this repository can run, we need to create an external.rc file
 in the root of this repository. A template for this file has been provided here: [external-template.rc](external-template.rc).
-
-- EXTERNAL_KONTINUUM_DIR="/PATH/TO/KONTINUUM" 
-  - Point this to the absolute path of a [metaeffekt-kontinuum](https://github.com/org-metaeffekt/metaeffekt-kontinuum) instance on branch 0.135.x
-- EXTERNAL_VULNERABILITY_MIRROR_DIR="/PATH/TO/MIRROR"
-  - Point this to an instance of a vulnerability mirror. If you are not sure what this means, or you don't have a local instance of
-  the mirror, point this to the metaeffekt-kontinuum/.mirror instead.
-- EXTERNAL_VULNERABILITY_MIRROR_URL="https://mirror-url/mirror.tar.gz"
-    - Point this to a valid URL where an instance of the mirror can be downloaded.
 
 ## Running the Reference Pipeline
 
 To first get started it is recommended to execute one of the following reference pipelines. No adjustments to the actual
 pipeline scripts should be necessary if the external.rc file has been set correctly.
 
-- [`sample-product-pipeline_de.sh`](tests/scripts/pipelines/sample-product-pipeline_de.sh)
-- [`sample-product-pipeline_en.sh`](tests/scripts/pipelines/sample-product-pipeline_en.sh)
+- [001_sample-product-pipeline_de.sh](tests/scripts/pipelines/001_sample-product-pipeline_de.sh)
+- [001_sample-product-pipeline_en.sh](tests/scripts/pipelines/001_sample-product-pipeline_en.sh)
 
 ## Running single Processors
 
 **Note:** Scripts can be executed from any directory. All required resources for processor execution are included
-in this repository. The only additional requirement is a local instance of our vulnerability mirror
-(a public version will be available in the future).
+in this repository. The only additional requirement is a local instance of our vulnerability mirror which should automatically
+be downloaded when given the correct url in your external.rc file.
+
+## Running with non-snapshot versions
+
+The default versioning by all processes and scripts in this repository utilizes HEAD-SNAPSHOT versions of core and
+artifact-analysis. To overwrite this and test the workbench scripts with release versions of core and artifact-analysis, change
+the necessary parameter in your external.rc file and the following files:
+
+- [workbench-parent.xml](processors/workbench-parent.xml)
+- [pom.xml](templates/report-template/pom.xml)
