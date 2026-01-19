@@ -1,6 +1,6 @@
 inventories:
   - "inventory":
-      file: "${inventory.path}"
+      folder: "${input.inventory.dir}"
       type: INPUT
   - merged-inventory:
       file: "${param.computed.inventory.dir}/${asset.name}-vulnerability-report-inventory.xlsx"
@@ -10,22 +10,34 @@ inventories:
       type: COMPUTED
 
 transformations:
-  "transform-with-maven":
+  "merge-advisors":
     inputInventories:
       - "inventory"
     outputInventories:
       - "merged-inventory"
+    params:
+      input.inventory.dir: "${inventory.folder}"
+      output.inventory.file: "${merged-inventory.file}"
+      param.security.policy.file: "${security.policy.file}"
+      param.security.policy.active.ids: "cert_extended_configuration"
+    maven:
+      pom: "${kontinuum.processors.dir}/util/util_merge-advisors.xml"
+      workingDir: "."
+      command: "process-sources"
+
+  "enrich-advisors":
+    inputInventories:
+      - "merged-inventory"
+    outputInventories:
       - "cert-advisory-inventory"
     params:
-      input.inventory.file: "${inventory.file}"
-      param.vulnerabilities.advisory.filter: '[{"name":"${overview.advisors}"}]'
-      param.filtered.inventory.file: "${merged-inventory.file}"
-      output.enrichment.inventory: "${cert-advisory-inventory.file}"
+      input.inventory.file: "${merged-inventory.file}"
+      output.inventory.file: "${cert-advisory-inventory.file}"
       env.vulnerability.mirror.dir: "${env.vulnerability.mirror.dir}"
       param.security.policy.file: "${security.policy.file}"
       param.security.policy.active.ids: "cert_extended_configuration"
     maven:
-      pom: "${workbench.processors.dir}/util/util_merge-filter-enrich-advisors.xml"
+      pom: "${workbench.processors.dir}/util/util_enrich-advisors.xml"
       workingDir: "."
       command: "generate-sources"
 

@@ -1,12 +1,31 @@
 inventories:
   - "inventory":
-      file: "${inventory.path}"
+      folder: "${input.inventory.dir}"
       type: INPUT
+
   - "reference-inventory":
       folder: "${reference.inventory.path}"
       type: INPUT
       licensePath: "${reference.license.path}"
       componentPath: "${reference.component.path}"
+
+  - "merged-inventory":
+      file: "${param.computed.inventory.dir}/${asset.name}-merged-inventory.xlsx"
+      type: COMPUTED
+
+transformations:
+  "transform-with-maven":
+    inputInventories:
+      - "inventory"
+    outputInventories:
+      - "merged-inventory"
+    params:
+      input.inventory.dir: "${inventory.folder}"
+      output.inventory.file: "${merged-inventory.file}"
+    maven:
+      pom: "${kontinuum.processors.dir}/util/util_merge-inventories.xml"
+      workingDir: "."
+      command: "process-sources"
 
 documents:
   "license-documentation":
@@ -19,9 +38,7 @@ documents:
       "license-documentation":
         type: LICENSE_DOCUMENTATION
         inventories:
-          - inventoryRef: "inventory"
+          - inventoryRef: "merged-inventory"
             referenceInventory: "reference-inventory"
-
-            # these fields are used as overwrites if not all artifacts are contained in a primary asset, remove to enable dynamic asset detection
             assetName: "${asset.name}"
             assetVersion: "${asset.version}"

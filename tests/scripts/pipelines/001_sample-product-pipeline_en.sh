@@ -36,6 +36,7 @@ set_global_variables() {
   readonly CURATED_DIR="$TARGET_BASE_DIR/03_curated"
   readonly ADVISED_DIR="$TARGET_BASE_DIR/04_advised"
   readonly REPORTED_DIR="$TARGET_BASE_DIR/05_reported"
+  readonly GROUPED_DIR="$TARGET_BASE_DIR/07_grouped"
   readonly TMP_DIR="$TARGET_BASE_DIR/99_tmp"
 
   ENV_REFERENCE_INVENTORY_DIR="$WORKBENCH_DIR/inventories/example-reference-inventory/inventory"
@@ -110,7 +111,7 @@ create_software_distribution_annex() {
   CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/report/report_create-document.xml" verify)
   [ -n "${AE_CORE_VERSION:-}" ] && CMD+=("-Dae.core.version=$AE_CORE_VERSION")
   [ -n "${AE_ARTIFACT_ANALYSIS_VERSION:-}" ] && CMD+=("-Dae.artifact.analysis.version=$AE_ARTIFACT_ANALYSIS_VERSION")
-  CMD+=("-Dinput.inventory.file=$CURATED_INVENTORY_DIR/$CURATED_INVENTORY_PATH")
+  CMD+=("-Dinput.inventory.dir=$GROUPED_DIR/asset-report")
 
   CMD+=("-Doutput.document.file=$OUTPUT_ANNEX_FILE")
 
@@ -149,7 +150,7 @@ create_license_documentation() {
   CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/report/report_create-document.xml" verify)
   [ -n "${AE_CORE_VERSION:-}" ] && CMD+=("-Dae.core.version=$AE_CORE_VERSION")
   [ -n "${AE_ARTIFACT_ANALYSIS_VERSION:-}" ] && CMD+=("-Dae.artifact.analysis.version=$AE_ARTIFACT_ANALYSIS_VERSION")
-  CMD+=("-Dinput.inventory.file=$CURATED_INVENTORY_DIR/$CURATED_INVENTORY_PATH")
+  CMD+=("-Dinput.inventory.dir=$GROUPED_DIR/asset-report")
 
   CMD+=("-Doutput.document.file=$OUTPUT_ANNEX_FILE")
 
@@ -188,7 +189,7 @@ create_initial_license_documentation() {
   CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/report/report_create-document.xml" verify)
   [ -n "${AE_CORE_VERSION:-}" ] && CMD+=("-Dae.core.version=$AE_CORE_VERSION")
   [ -n "${AE_ARTIFACT_ANALYSIS_VERSION:-}" ] && CMD+=("-Dae.artifact.analysis.version=$AE_ARTIFACT_ANALYSIS_VERSION")
-  CMD+=("-Dinput.inventory.file=$CURATED_INVENTORY_DIR/$CURATED_INVENTORY_PATH")
+  CMD+=("-Dinput.inventory.dir=$GROUPED_DIR/asset-report")
 
   CMD+=("-Doutput.document.file=$OUTPUT_ANNEX_FILE")
 
@@ -227,7 +228,7 @@ create_custom_annex_document() {
   CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/report/report_create-document.xml" verify)
   [ -n "${AE_CORE_VERSION:-}" ] && CMD+=("-Dae.core.version=$AE_CORE_VERSION")
   [ -n "${AE_ARTIFACT_ANALYSIS_VERSION:-}" ] && CMD+=("-Dae.artifact.analysis.version=$AE_ARTIFACT_ANALYSIS_VERSION")
-  CMD+=("-Dinput.inventory.file=$CURATED_INVENTORY_DIR/$CURATED_INVENTORY_PATH")
+  CMD+=("-Dinput.inventory.dir=$GROUPED_DIR/asset-report")
 
   CMD+=("-Doutput.document.file=$OUTPUT_ANNEX_FILE")
 
@@ -292,7 +293,7 @@ create_vulnerability_summary_report() {
   PARAM_PRODUCT_WATERMARK="Sample"
 
   CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/report/report_create-document.xml" verify)
-  CMD+=("-Dinput.inventory.file=$WORKBENCH_DIR/tests/resources/summary")
+  CMD+=("-Dinput.inventory.dir=$GROUPED_DIR/vulnerability-summary-report")
 
   CMD+=("-Doutput.document.file=$OUTPUT_VSR_FILE")
 
@@ -330,7 +331,7 @@ create_vulnerability_report() {
   CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/report/report_create-document.xml" verify)
   [ -n "${AE_CORE_VERSION:-}" ] && CMD+=("-Dae.core.version=$AE_CORE_VERSION")
   [ -n "${AE_ARTIFACT_ANALYSIS_VERSION:-}" ] && CMD+=("-Dae.artifact.analysis.version=$AE_ARTIFACT_ANALYSIS_VERSION")
-  CMD+=("-Dinput.inventory.file=$ADVISED_INVENTORY_FILE")
+  CMD+=("-Dinput.inventory.dir=$GROUPED_DIR/vulnerability-report")
 
   CMD+=("-Doutput.document.file=$OUTPUT_VR_FILE")
 
@@ -369,7 +370,7 @@ create_cert_report() {
   CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/report/report_create-document.xml" verify)
   [ -n "${AE_CORE_VERSION:-}" ] && CMD+=("-Dae.core.version=$AE_CORE_VERSION")
   [ -n "${AE_ARTIFACT_ANALYSIS_VERSION:-}" ] && CMD+=("-Dae.artifact.analysis.version=$AE_ARTIFACT_ANALYSIS_VERSION")
-  CMD+=("-Dinput.inventory.file=$ADVISED_INVENTORY_FILE")
+  CMD+=("-Dinput.inventory.dir=$GROUPED_DIR/vulnerability-report")
 
   CMD+=("-Doutput.document.file=$OUTPUT_CR_FILE")
 
@@ -418,7 +419,7 @@ main() {
   create_target_directories
 
   # setup
-  update_mirror
+  #update_mirror
 
   # enrichment
   enrich_inventory_with_reference
