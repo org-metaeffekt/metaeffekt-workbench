@@ -38,7 +38,7 @@
         <topicref href="cert-report/gen/${vulnerability.report.content.reference}/tpc_inventory-vulnerability-details.dita" />
     </chapter>
 
-	<appendix href="tmp/de/appendix.dita" >
+	<appendix href="cert-report/de/appendix.dita" >
 		<!-- overall -->
 		<topicref href="cert-report-overall/de/tpc_vulnerability-cert-report.dita" />
 	</appendix>
@@ -49,7 +49,7 @@
                 <topicref format="ditamap" href="glossary/gen/glossary/de/gmap_glossary.ditamap" />
             </glossarylist>
         </booklists>
-        <topicref href="tmp/de/tpc_vulnerability-report-notice.dita" />
+        <topicref href="cert-report/de/tpc_vulnerability-report-notice.dita" />
         <topicref href="cert-report/de/tpc_report-history.dita" />
     </backmatter>
 	
