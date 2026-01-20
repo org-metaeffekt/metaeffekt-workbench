@@ -23,7 +23,7 @@ transformations:
     maven:
       pom: "${kontinuum.processors.dir}/util/util_merge-advisors.xml"
       workingDir: "."
-      command: "process-sources"
+      command: "generate-sources"
 
   "enrich-advisors":
     inputInventories:
@@ -34,10 +34,12 @@ transformations:
       input.inventory.file: "${merged-inventory.file}"
       output.inventory.file: "${cert-advisory-inventory.file}"
       env.vulnerability.mirror.dir: "${env.vulnerability.mirror.dir}"
+      param.report.period.since: "${report.period.since}"
+      param.report.period.until: "${report.period.until}"
       param.security.policy.file: "${security.policy.file}"
       param.security.policy.active.ids: "cert_extended_configuration"
     maven:
-      pom: "${workbench.processors.dir}/util/util_enrich-advisors.xml"
+      pom: "${kontinuum.processors.dir}/util/util_enrich-advisors.xml"
       workingDir: "."
       command: "generate-sources"
 
