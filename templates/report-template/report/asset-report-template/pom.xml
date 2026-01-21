@@ -140,6 +140,17 @@
                     <version>${ae.artifact.analysis.version}</version>
                     <executions>
                         <execution>
+                            <id>transform-inventory</id>
+                            <goals>
+                                <goal>transform</goal>
+                            </goals>
+                            <phase>generate-sources</phase>
+                            <configuration>
+                                <assetDescriptorFile>${asset.descriptor.filtered.file}</assetDescriptorFile>
+                            </configuration>
+                        </execution>
+
+                        <execution>
                             <id>evaluate-descriptor</id>
                             <goals>
                                 <goal>generate-documents</goal>

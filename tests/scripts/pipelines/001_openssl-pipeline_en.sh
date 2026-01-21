@@ -37,11 +37,8 @@ set_global_variables() {
   readonly CURATED_DIR="$TARGET_BASE_DIR/03_curated"
   readonly ADVISED_DIR="$TARGET_BASE_DIR/04_advised"
   readonly REPORTED_DIR="$TARGET_BASE_DIR/05_reported"
+  readonly GROUPED_DIR="$TARGET_BASE_DIR/07_grouped"
   readonly TMP_DIR="$TARGET_BASE_DIR/99_tmp"
-
-  ENV_REFERENCE_INVENTORY_DIR="$WORKBENCH_DIR/inventories/example-reference-inventory/inventory"
-  ENV_REFERENCE_LICENSES_DIR="$WORKBENCH_DIR/inventories/example-reference-inventory/licenses"
-  ENV_REFERENCE_COMPONENTS_DIR="$WORKBENCH_DIR/inventories/example-reference-inventory/components"
 
   ENV_REPORT_TEMPLATE_DIR="$WORKBENCH_DIR/templates/report-template"
   PARAM_SECURITY_POLICY_FILE="$WORKBENCH_DIR/policies/security-policy/security-policy.json"
@@ -150,12 +147,11 @@ generate_vulnerability_report() {
   CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/report/report_create-document.xml" verify)
   [ -n "${AE_CORE_VERSION:-}" ] && CMD+=("-Dae.core.version=$AE_CORE_VERSION")
   [ -n "${AE_ARTIFACT_ANALYSIS_VERSION:-}" ] && CMD+=("-Dae.artifact.analysis.version=$AE_ARTIFACT_ANALYSIS_VERSION")
-  CMD+=("-Dinput.inventory.file=$ADVISED_INVENTORY_FILE")
+  CMD+=("-Dinput.inventory.dir=$GROUPED_DIR/vulnerability-report")
 
   CMD+=("-Doutput.document.file=$OUTPUT_VR_FILE")
 
   CMD+=("-Dparam.asset.descriptor.file=$ENV_VR_DESCRIPTOR_FILE")
-  CMD+=("-Dparam.reference.inventory.dir=$ENV_REFERENCE_INVENTORY_DIR")
   CMD+=("-Dparam.asset.id=$PARAM_ASSET_ID")
   CMD+=("-Dparam.asset.name=$PARAM_ASSET_NAME")
   CMD+=("-Dparam.asset.version=$PARAM_ASSET_VERSION")
