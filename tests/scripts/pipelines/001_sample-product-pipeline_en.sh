@@ -73,7 +73,6 @@ update_mirror() {
   [ -n "${AE_ARTIFACT_ANALYSIS_VERSION:-}" ] && CMD+=("-Dae.artifact.analysis.version=$AE_ARTIFACT_ANALYSIS_VERSION")
 
   CMD+=("-Dparam.mirror.archive.url=$MIRROR_ARCHIVE_URL")
-
   CMD+=("-Denv.vulnerability.mirror.dir=$MIRROR_TARGET_DIR")
 
   pass_command_info_to_logger "update_mirror"
@@ -98,6 +97,7 @@ enrich_inventory_with_reference() {
 
 create_software_distribution_annex() {
   OUTPUT_ANNEX_FILE="$REPORTED_DIR/software-distribution-annex-$ENV_LANGUAGE.pdf"
+  OUTPUT_COMPUTED_INVENTORY_DIR="$TMP_DIR/report"
 
   PARAM_DOCUMENT_TYPE="SDA"
   PARAM_ASSET_ID="Sample Product"
@@ -137,6 +137,7 @@ create_software_distribution_annex() {
 
 create_license_documentation() {
   OUTPUT_ANNEX_FILE="$REPORTED_DIR/license-documentation-$ENV_LANGUAGE.pdf"
+  OUTPUT_COMPUTED_INVENTORY_DIR="$TMP_DIR/report"
 
   PARAM_DOCUMENT_TYPE="LD"
   PARAM_ASSET_ID="Sample Product"
@@ -176,6 +177,7 @@ create_license_documentation() {
 
 create_initial_license_documentation() {
   OUTPUT_ANNEX_FILE="$REPORTED_DIR/initial-license-documentation-$ENV_LANGUAGE.pdf"
+  OUTPUT_COMPUTED_INVENTORY_DIR="$TMP_DIR/report"
 
   PARAM_DOCUMENT_TYPE="ILD"
   PARAM_ASSET_ID="Sample Product"
@@ -215,6 +217,7 @@ create_initial_license_documentation() {
 
 create_custom_annex_document() {
   OUTPUT_ANNEX_FILE="$REPORTED_DIR/custom-annex-document_$ENV_LANGUAGE.pdf"
+  OUTPUT_COMPUTED_INVENTORY_DIR="$TMP_DIR/report"
 
   PARAM_DOCUMENT_TYPE="CAD"
   PARAM_ASSET_ID="Sample Product"
@@ -283,6 +286,7 @@ enrich_inventory() {
 
 create_vulnerability_summary_report() {
   OUTPUT_VSR_FILE="$REPORTED_DIR/vulnerability-summary-report-$ENV_LANGUAGE.pdf"
+  OUTPUT_COMPUTED_INVENTORY_DIR="$TMP_DIR/report"
 
   PARAM_DOCUMENT_TYPE="VSR"
   PARAM_ASSET_ID="Sample Product"
@@ -298,7 +302,6 @@ create_vulnerability_summary_report() {
   CMD+=("-Doutput.document.file=$OUTPUT_VSR_FILE")
 
   CMD+=("-Dparam.asset.descriptor.file=$ENV_VSR_DESCRIPTOR_FILE")
-  CMD+=("-Dparam.reference.inventory.dir=$ENV_REFERENCE_INVENTORY_DIR")
   CMD+=("-Dparam.asset.id=$PARAM_ASSET_ID")
   CMD+=("-Dparam.asset.name=$PARAM_ASSET_NAME")
   CMD+=("-Dparam.asset.version=$PARAM_ASSET_VERSION")
@@ -318,6 +321,7 @@ create_vulnerability_summary_report() {
 
 create_vulnerability_report() {
   OUTPUT_VR_FILE="$REPORTED_DIR/vulnerability-report-$ENV_LANGUAGE.pdf"
+  OUTPUT_COMPUTED_INVENTORY_DIR="$TMP_DIR/report"
 
   PARAM_DOCUMENT_TYPE="VR"
   PARAM_ASSET_ID="Sample Product"
@@ -336,7 +340,6 @@ create_vulnerability_report() {
   CMD+=("-Doutput.document.file=$OUTPUT_VR_FILE")
 
   CMD+=("-Dparam.asset.descriptor.file=$ENV_VR_DESCRIPTOR_FILE")
-  CMD+=("-Dparam.reference.inventory.dir=$ENV_REFERENCE_INVENTORY_DIR")
   CMD+=("-Dparam.asset.id=$PARAM_ASSET_ID")
   CMD+=("-Dparam.asset.name=$PARAM_ASSET_NAME")
   CMD+=("-Dparam.asset.version=$PARAM_ASSET_VERSION")
@@ -357,6 +360,7 @@ create_vulnerability_report() {
 
 create_cert_report() {
   OUTPUT_CR_FILE="$REPORTED_DIR/cert-report-$ENV_LANGUAGE.pdf"
+  OUTPUT_COMPUTED_INVENTORY_DIR="$TMP_DIR/report"
 
   PARAM_DOCUMENT_TYPE="CR"
   PARAM_ASSET_ID="Sample Product"
@@ -375,7 +379,6 @@ create_cert_report() {
   CMD+=("-Doutput.document.file=$OUTPUT_CR_FILE")
 
   CMD+=("-Dparam.asset.descriptor.file=$ENV_CR_DESCRIPTOR_FILE")
-  CMD+=("-Dparam.reference.inventory.dir=$ENV_REFERENCE_INVENTORY_DIR")
   CMD+=("-Dparam.asset.id=$PARAM_ASSET_ID")
   CMD+=("-Dparam.asset.name=$PARAM_ASSET_NAME")
   CMD+=("-Dparam.asset.version=$PARAM_ASSET_VERSION")
@@ -419,7 +422,7 @@ main() {
   create_target_directories
 
   # setup
-  #update_mirror
+  update_mirror
 
   # enrichment
   enrich_inventory_with_reference
