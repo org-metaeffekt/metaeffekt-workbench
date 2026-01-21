@@ -31,27 +31,13 @@ set_global_variables() {
 
   LOG_DIR="$WORKBENCH_DIR/.logs"
   logger_init "$LOG_DIR/001_react-pipeline_en.log"
-
-  readonly TARGET_BASE_DIR="$WORKSPACE_DIR/react-19.2.0"
-  readonly ANALYZED_DIR="$TARGET_BASE_DIR/02_analyzed"
-  readonly CURATED_DIR="$TARGET_BASE_DIR/03_curated"
-  readonly ADVISED_DIR="$TARGET_BASE_DIR/04_advised"
-  readonly REPORTED_DIR="$TARGET_BASE_DIR/05_reported"
-  readonly GROUPED_DIR="$TARGET_BASE_DIR/07_grouped"
-  readonly TMP_DIR="$TARGET_BASE_DIR/99_tmp"
+  create_workspace_directories "$WORKSPACE_DIR/react-19.2.0"
 
   ENV_REPORT_TEMPLATE_DIR="$WORKBENCH_DIR/templates/report-template"
   PARAM_SECURITY_POLICY_FILE="$WORKBENCH_DIR/policies/security-policy/security-policy.json"
 
   ENV_DESCRIPTOR_DIR="$WORKBENCH_DIR/descriptors"
   ENV_VR_DESCRIPTOR_FILE="$WORKBENCH_DIR/descriptors/asset-descriptor_GENERIC-vulnerability-report.yaml"
-}
-
-create_target_directories() {
-    if ! mkdir -p "$ANALYZED_DIR" "$ADVISED_DIR" "$REPORTED_DIR" "$TMP_DIR" ; then
-        log_error "Failed to create target directories"
-        exit 1
-    fi
 }
 
 update_mirror() {
@@ -74,12 +60,12 @@ update_mirror() {
 enrich_inventory() {
   log_info "Running enrich_inventory process."
 
-  ANALYZED_INVENTORY_FILE="$ANALYZED_DIR/react-inventory.xls"
+  PREPARED_INVENTORY_FILE="$PREPARED_DIR/react-inventory.xls"
   ASSESSMENT_DIR="$WORKBENCH_DIR/assessments/assessment-001/react"
   CONTEXT_DIR="$WORKBENCH_DIR/contexts/example-001"
   CORRELATION_DIR="$WORKBENCH_DIR/correlations/shared"
   ADVISED_INVENTORY_FILE="$ADVISED_DIR/react-advised-inventory.xlsx"
-  PROCESSOR_TMP_DIR="$TMP_DIR/processor"
+  PROCESSOR_TMP_DIR="$ADDITIONAL_DIR/processor"
   DASHBOARD_SUBJECT="React Server Components 19.2.0"
   SECURITY_POLICY_ACTIVE_IDS="assessment_enrichment_configuration"
   ACTIVATE_MSRC="false"
@@ -87,7 +73,7 @@ enrich_inventory() {
   CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/advise/advise_enrich-inventory.xml" process-resources)
   [ -n "${AE_CORE_VERSION:-}" ] && CMD+=("-Dae.core.version=$AE_CORE_VERSION")
   [ -n "${AE_ARTIFACT_ANALYSIS_VERSION:-}" ] && CMD+=("-Dae.artifact.analysis.version=$AE_ARTIFACT_ANALYSIS_VERSION")
-  CMD+=("-Dinput.inventory.file=$ANALYZED_INVENTORY_FILE")
+  CMD+=("-Dinput.inventory.file=$PREPARED_INVENTORY_FILE")
 
   CMD+=("-Doutput.inventory.file=$ADVISED_INVENTORY_FILE")
   CMD+=("-Doutput.tmp.dir=$PROCESSOR_TMP_DIR")
@@ -106,6 +92,10 @@ enrich_inventory() {
   CMD+=("-Denv.vulnerability.mirror.dir=$EXTERNAL_VULNERABILITY_MIRROR_DIR/.database")
 
   pass_command_info_to_logger "enrich_inventory"
+}
+
+copy_to_grouped() {
+  cp "$ADVISED_INVENTORY_FILE" "$GROUPED_VR_DIR"
 }
 
 generate_vulnerability_assessment_dashboard() {
@@ -133,7 +123,7 @@ generate_vulnerability_report() {
   log_info "Running generate_vulnerability_report process."
 
   OUTPUT_VR_FILE="$REPORTED_DIR/react-vulnerability-report-de.pdf"
-  OUTPUT_COMPUTED_INVENTORY_DIR="$TMP_DIR/report"
+  OUTPUT_COMPUTED_INVENTORY_DIR="$ADDITIONAL_DIR/report"
 
   PARAM_DOCUMENT_TYPE="VR"
   PARAM_ASSET_ID="React Server Components"
@@ -147,7 +137,7 @@ generate_vulnerability_report() {
   CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/report/report_create-document.xml" verify)
   [ -n "${AE_CORE_VERSION:-}" ] && CMD+=("-Dae.core.version=$AE_CORE_VERSION")
   [ -n "${AE_ARTIFACT_ANALYSIS_VERSION:-}" ] && CMD+=("-Dae.artifact.analysis.version=$AE_ARTIFACT_ANALYSIS_VERSION")
-  CMD+=("-Dinput.inventory.dir=$GROUPED_DIR/vulnerability-report")
+  CMD+=("-Dinput.inventory.dir=$GROUPED_VR_DIR")
 
   CMD+=("-Doutput.document.file=$OUTPUT_VR_FILE")
 
@@ -173,10 +163,12 @@ main() {
   source_preload
   set_global_variables
   SCRIPT_NAME=$(basename "$(readlink -f "$0")")
-  create_target_directories
 
   update_mirror
   enrich_inventory
+
+  copy_to_grouped
+
   generate_vulnerability_assessment_dashboard
   generate_vulnerability_report
 }

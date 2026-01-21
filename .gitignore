@@ -15,9 +15,13 @@
 **/ae-common-content
 
 # exclude derived results from workspace-001
+**/workspace-001/*/xx_*
 **/workspace-001/*/03_*
 **/workspace-001/*/04_*
 **/workspace-001/*/05_*
-**/workspace-001/*/99_*
+**/workspace-001/*/06_*
+**/workspace-001/*/07_*
+**/workspace-001/*/08_*
+**/workspace-001/*/09_*
 
 external.rc

@@ -29,15 +29,8 @@ set_global_variables() {
   readonly KONTINUUM_PROCESSORS_DIR="$EXTERNAL_KONTINUUM_DIR/processors"
 
   LOG_DIR="$WORKBENCH_DIR/.logs"
-  logger_init "$LOG_DIR/001_sample-product-pipeline_en.log"
-
-  readonly TARGET_BASE_DIR="$WORKSPACE_DIR/sample-product-1.0.0"
-  readonly ANALYZED_DIR="$TARGET_BASE_DIR/02_analyzed"
-  readonly CURATED_DIR="$TARGET_BASE_DIR/03_curated"
-  readonly ADVISED_DIR="$TARGET_BASE_DIR/04_advised"
-  readonly REPORTED_DIR="$TARGET_BASE_DIR/05_reported"
-  readonly GROUPED_DIR="$TARGET_BASE_DIR/07_grouped"
-  readonly TMP_DIR="$TARGET_BASE_DIR/99_tmp"
+  logger_init "$LOG_DIR/001_sample-product-pipeline_de.log"
+  create_workspace_directories "$WORKSPACE_DIR/sample-product-1.0.0"
 
   ENV_REFERENCE_INVENTORY_DIR="$WORKBENCH_DIR/inventories/example-reference-inventory/inventory"
   ENV_REFERENCE_LICENSES_DIR="$WORKBENCH_DIR/inventories/example-reference-inventory/licenses"
@@ -57,13 +50,6 @@ set_global_variables() {
   ENV_LANGUAGE="en"
 }
 
-create_target_directories() {
-    if ! mkdir -p "$ANALYZED_DIR" "$ADVISED_DIR" "$REPORTED_DIR" "$TMP_DIR" ; then
-        log_error "Failed to create target directories"
-        exit 1
-    fi
-}
-
 update_mirror() {
   MIRROR_TARGET_DIR="$EXTERNAL_VULNERABILITY_MIRROR_DIR"
   MIRROR_ARCHIVE_URL="$EXTERNAL_VULNERABILITY_MIRROR_URL"
@@ -79,25 +65,65 @@ update_mirror() {
 }
 
 enrich_inventory_with_reference() {
-  ANALYZED_INVENTORY_FILE="$ANALYZED_DIR/sample-asset-1.0/sample-asset-1.0-inventory.xls"
-  CURATED_INVENTORY_DIR="$CURATED_DIR/sample-asset-1.0"
-  CURATED_INVENTORY_PATH="sample-asset-1.0-inventory.xls"
+  PREPARED_INVENTORY_FILE="$PREPARED_DIR/sample-asset-1.0/sample-asset-1.0-inventory.xls"
+  AGGREGATED_INVENTORY_DIR="$AGGREGATED_DIR/sample-asset-1.0"
+  AGGREGATED_INVENTORY_PATH="sample-asset-1.0-inventory.xls"
 
   CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/advise/advise_enrich-with-reference.xml" process-resources)
   [ -n "${AE_CORE_VERSION:-}" ] && CMD+=("-Dae.core.version=$AE_CORE_VERSION")
   [ -n "${AE_ARTIFACT_ANALYSIS_VERSION:-}" ] && CMD+=("-Dae.artifact.analysis.version=$AE_ARTIFACT_ANALYSIS_VERSION")
-  CMD+=("-Dinput.inventory.file=$ANALYZED_INVENTORY_FILE")
+  CMD+=("-Dinput.inventory.file=$PREPARED_INVENTORY_FILE")
 
-  CMD+=("-Doutput.inventory.dir=$CURATED_INVENTORY_DIR")
-  CMD+=("-Doutput.inventory.path=$CURATED_INVENTORY_PATH")
+  CMD+=("-Doutput.inventory.dir=$AGGREGATED_INVENTORY_DIR")
+  CMD+=("-Doutput.inventory.path=$AGGREGATED_INVENTORY_PATH")
 
   CMD+=("-Dparam.reference.inventory.dir=$ENV_REFERENCE_INVENTORY_DIR")
   pass_command_info_to_logger "enrich_inventory_with_reference"
 }
 
+enrich_inventory() {
+  ASSESSMENT_DIR="$WORKBENCH_DIR/assessments/assessment-001/sample-product"
+  CONTEXT_DIR="$WORKBENCH_DIR/contexts/example-001"
+  CORRELATION_DIR="$WORKBENCH_DIR/correlations/shared"
+  ADVISED_INVENTORY_FILE="$ADVISED_DIR/sample-product-advised-inventory.xlsx"
+  PROCESSOR_TMP_DIR="$ADDITIONAL_DIR/processor"
+  SECURITY_POLICY_ACTIVE_IDS="assessment_enrichment_configuration"
+  ACTIVATE_MSRC="false"
+
+  CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/advise/advise_enrich-inventory.xml" process-resources)
+  [ -n "${AE_CORE_VERSION:-}" ] && CMD+=("-Dae.core.version=$AE_CORE_VERSION")
+  [ -n "${AE_ARTIFACT_ANALYSIS_VERSION:-}" ] && CMD+=("-Dae.artifact.analysis.version=$AE_ARTIFACT_ANALYSIS_VERSION")
+  CMD+=("-Dinput.inventory.file=$AGGREGATED_INVENTORY_DIR/$AGGREGATED_INVENTORY_PATH")
+
+  CMD+=("-Doutput.inventory.file=$ADVISED_INVENTORY_FILE")
+  CMD+=("-Doutput.tmp.dir=$PROCESSOR_TMP_DIR")
+
+  CMD+=("-Dparam.security.policy.file=$PARAM_SECURITY_POLICY_FILE")
+  CMD+=("-Dparam.security.policy.active.ids=$SECURITY_POLICY_ACTIVE_IDS")
+  CMD+=("-Dparam.assessment.dir=$ASSESSMENT_DIR")
+  CMD+=("-Dparam.correlation.dir=$CORRELATION_DIR")
+  CMD+=("-Dparam.context.dir=$CONTEXT_DIR")
+  CMD+=("-Dparam.activate.msrc=$ACTIVATE_MSRC")
+
+  CMD+=("-Denv.vulnerability.mirror.dir=$EXTERNAL_VULNERABILITY_MIRROR_DIR/.database")
+
+  pass_command_info_to_logger "enrich_inventory"
+}
+
+copy_to_grouped() {
+  cp "$AGGREGATED_INVENTORY_DIR/$AGGREGATED_INVENTORY_PATH" "$GROUPED_SDA_DIR"
+  cp "$AGGREGATED_INVENTORY_DIR/$AGGREGATED_INVENTORY_PATH" "$GROUPED_CR_DIR"
+  cp "$AGGREGATED_INVENTORY_DIR/$AGGREGATED_INVENTORY_PATH" "$GROUPED_CA_DIR"
+  cp "$AGGREGATED_INVENTORY_DIR/$AGGREGATED_INVENTORY_PATH" "$GROUPED_ILD_DIR"
+  cp "$AGGREGATED_INVENTORY_DIR/$AGGREGATED_INVENTORY_PATH" "$GROUPED_LD_DIR"
+  cp "$AGGREGATED_INVENTORY_DIR/$AGGREGATED_INVENTORY_PATH" "$GROUPED_SDA_DIR"
+  cp "$ADVISED_INVENTORY_FILE" "$GROUPED_VR_DIR"
+  cp "$ADVISED_INVENTORY_FILE" "$GROUPED_VSR_DIR"
+}
+
 create_software_distribution_annex() {
   OUTPUT_ANNEX_FILE="$REPORTED_DIR/software-distribution-annex-$ENV_LANGUAGE.pdf"
-  OUTPUT_COMPUTED_INVENTORY_DIR="$TMP_DIR/report"
+  OUTPUT_COMPUTED_INVENTORY_DIR="$ADDITIONAL_DIR/report"
 
   PARAM_DOCUMENT_TYPE="SDA"
   PARAM_ASSET_ID="Sample Product"
@@ -111,7 +137,7 @@ create_software_distribution_annex() {
   CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/report/report_create-document.xml" verify)
   [ -n "${AE_CORE_VERSION:-}" ] && CMD+=("-Dae.core.version=$AE_CORE_VERSION")
   [ -n "${AE_ARTIFACT_ANALYSIS_VERSION:-}" ] && CMD+=("-Dae.artifact.analysis.version=$AE_ARTIFACT_ANALYSIS_VERSION")
-  CMD+=("-Dinput.inventory.dir=$GROUPED_DIR/asset-report")
+  CMD+=("-Dinput.inventory.dir=$GROUPED_SDA_DIR")
 
   CMD+=("-Doutput.document.file=$OUTPUT_ANNEX_FILE")
 
@@ -137,7 +163,7 @@ create_software_distribution_annex() {
 
 create_license_documentation() {
   OUTPUT_ANNEX_FILE="$REPORTED_DIR/license-documentation-$ENV_LANGUAGE.pdf"
-  OUTPUT_COMPUTED_INVENTORY_DIR="$TMP_DIR/report"
+  OUTPUT_COMPUTED_INVENTORY_DIR="$ADDITIONAL_DIR/report"
 
   PARAM_DOCUMENT_TYPE="LD"
   PARAM_ASSET_ID="Sample Product"
@@ -151,7 +177,7 @@ create_license_documentation() {
   CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/report/report_create-document.xml" verify)
   [ -n "${AE_CORE_VERSION:-}" ] && CMD+=("-Dae.core.version=$AE_CORE_VERSION")
   [ -n "${AE_ARTIFACT_ANALYSIS_VERSION:-}" ] && CMD+=("-Dae.artifact.analysis.version=$AE_ARTIFACT_ANALYSIS_VERSION")
-  CMD+=("-Dinput.inventory.dir=$GROUPED_DIR/asset-report")
+  CMD+=("-Dinput.inventory.dir=$GROUPED_LD_DIR")
 
   CMD+=("-Doutput.document.file=$OUTPUT_ANNEX_FILE")
 
@@ -177,7 +203,7 @@ create_license_documentation() {
 
 create_initial_license_documentation() {
   OUTPUT_ANNEX_FILE="$REPORTED_DIR/initial-license-documentation-$ENV_LANGUAGE.pdf"
-  OUTPUT_COMPUTED_INVENTORY_DIR="$TMP_DIR/report"
+  OUTPUT_COMPUTED_INVENTORY_DIR="$ADDITIONAL_DIR/report"
 
   PARAM_DOCUMENT_TYPE="ILD"
   PARAM_ASSET_ID="Sample Product"
@@ -191,7 +217,7 @@ create_initial_license_documentation() {
   CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/report/report_create-document.xml" verify)
   [ -n "${AE_CORE_VERSION:-}" ] && CMD+=("-Dae.core.version=$AE_CORE_VERSION")
   [ -n "${AE_ARTIFACT_ANALYSIS_VERSION:-}" ] && CMD+=("-Dae.artifact.analysis.version=$AE_ARTIFACT_ANALYSIS_VERSION")
-  CMD+=("-Dinput.inventory.dir=$GROUPED_DIR/asset-report")
+  CMD+=("-Dinput.inventory.dir=$GROUPED_ILD_DIR")
 
   CMD+=("-Doutput.document.file=$OUTPUT_ANNEX_FILE")
 
@@ -217,7 +243,7 @@ create_initial_license_documentation() {
 
 create_custom_annex_document() {
   OUTPUT_ANNEX_FILE="$REPORTED_DIR/custom-annex-document_$ENV_LANGUAGE.pdf"
-  OUTPUT_COMPUTED_INVENTORY_DIR="$TMP_DIR/report"
+  OUTPUT_COMPUTED_INVENTORY_DIR="$ADDITIONAL_DIR/report"
 
   PARAM_DOCUMENT_TYPE="CAD"
   PARAM_ASSET_ID="Sample Product"
@@ -231,7 +257,7 @@ create_custom_annex_document() {
   CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/report/report_create-document.xml" verify)
   [ -n "${AE_CORE_VERSION:-}" ] && CMD+=("-Dae.core.version=$AE_CORE_VERSION")
   [ -n "${AE_ARTIFACT_ANALYSIS_VERSION:-}" ] && CMD+=("-Dae.artifact.analysis.version=$AE_ARTIFACT_ANALYSIS_VERSION")
-  CMD+=("-Dinput.inventory.dir=$GROUPED_DIR/asset-report")
+  CMD+=("-Dinput.inventory.dir=$GROUPED_CA_DIR")
 
   CMD+=("-Doutput.document.file=$OUTPUT_ANNEX_FILE")
 
@@ -255,38 +281,9 @@ create_custom_annex_document() {
   pass_command_info_to_logger "create_custom_annex"
 }
 
-enrich_inventory() {
-  ASSESSMENT_DIR="$WORKBENCH_DIR/assessments/assessment-001/sample-product"
-  CONTEXT_DIR="$WORKBENCH_DIR/contexts/example-001"
-  CORRELATION_DIR="$WORKBENCH_DIR/correlations/shared"
-  ADVISED_INVENTORY_FILE="$ADVISED_DIR/sample-product-advised-inventory.xlsx"
-  PROCESSOR_TMP_DIR="$TMP_DIR/processor"
-  SECURITY_POLICY_ACTIVE_IDS="assessment_enrichment_configuration"
-  ACTIVATE_MSRC="false"
-
-  CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/advise/advise_enrich-inventory.xml" process-resources)
-  [ -n "${AE_CORE_VERSION:-}" ] && CMD+=("-Dae.core.version=$AE_CORE_VERSION")
-  [ -n "${AE_ARTIFACT_ANALYSIS_VERSION:-}" ] && CMD+=("-Dae.artifact.analysis.version=$AE_ARTIFACT_ANALYSIS_VERSION")
-  CMD+=("-Dinput.inventory.file=$CURATED_INVENTORY_DIR/$CURATED_INVENTORY_PATH")
-
-  CMD+=("-Doutput.inventory.file=$ADVISED_INVENTORY_FILE")
-  CMD+=("-Doutput.tmp.dir=$PROCESSOR_TMP_DIR")
-
-  CMD+=("-Dparam.security.policy.file=$PARAM_SECURITY_POLICY_FILE")
-  CMD+=("-Dparam.security.policy.active.ids=$SECURITY_POLICY_ACTIVE_IDS")
-  CMD+=("-Dparam.assessment.dir=$ASSESSMENT_DIR")
-  CMD+=("-Dparam.correlation.dir=$CORRELATION_DIR")
-  CMD+=("-Dparam.context.dir=$CONTEXT_DIR")
-  CMD+=("-Dparam.activate.msrc=$ACTIVATE_MSRC")
-
-  CMD+=("-Denv.vulnerability.mirror.dir=$EXTERNAL_VULNERABILITY_MIRROR_DIR/.database")
-
-  pass_command_info_to_logger "enrich_inventory"
-}
-
 create_vulnerability_summary_report() {
   OUTPUT_VSR_FILE="$REPORTED_DIR/vulnerability-summary-report-$ENV_LANGUAGE.pdf"
-  OUTPUT_COMPUTED_INVENTORY_DIR="$TMP_DIR/report"
+  OUTPUT_COMPUTED_INVENTORY_DIR="$ADDITIONAL_DIR/report"
 
   PARAM_DOCUMENT_TYPE="VSR"
   PARAM_ASSET_ID="Sample Product"
@@ -297,7 +294,7 @@ create_vulnerability_summary_report() {
   PARAM_PRODUCT_WATERMARK="Sample"
 
   CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/report/report_create-document.xml" verify)
-  CMD+=("-Dinput.inventory.dir=$GROUPED_DIR/vulnerability-summary-report")
+  CMD+=("-Dinput.inventory.dir=$GROUPED_VSR_DIR")
 
   CMD+=("-Doutput.document.file=$OUTPUT_VSR_FILE")
 
@@ -321,7 +318,7 @@ create_vulnerability_summary_report() {
 
 create_vulnerability_report() {
   OUTPUT_VR_FILE="$REPORTED_DIR/vulnerability-report-$ENV_LANGUAGE.pdf"
-  OUTPUT_COMPUTED_INVENTORY_DIR="$TMP_DIR/report"
+  OUTPUT_COMPUTED_INVENTORY_DIR="$ADDITIONAL_DIR/report"
 
   PARAM_DOCUMENT_TYPE="VR"
   PARAM_ASSET_ID="Sample Product"
@@ -335,7 +332,7 @@ create_vulnerability_report() {
   CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/report/report_create-document.xml" verify)
   [ -n "${AE_CORE_VERSION:-}" ] && CMD+=("-Dae.core.version=$AE_CORE_VERSION")
   [ -n "${AE_ARTIFACT_ANALYSIS_VERSION:-}" ] && CMD+=("-Dae.artifact.analysis.version=$AE_ARTIFACT_ANALYSIS_VERSION")
-  CMD+=("-Dinput.inventory.dir=$GROUPED_DIR/vulnerability-report")
+  CMD+=("-Dinput.inventory.dir=$GROUPED_VR_DIR")
 
   CMD+=("-Doutput.document.file=$OUTPUT_VR_FILE")
 
@@ -360,7 +357,7 @@ create_vulnerability_report() {
 
 create_cert_report() {
   OUTPUT_CR_FILE="$REPORTED_DIR/cert-report-$ENV_LANGUAGE.pdf"
-  OUTPUT_COMPUTED_INVENTORY_DIR="$TMP_DIR/report"
+  OUTPUT_COMPUTED_INVENTORY_DIR="$ADDITIONAL_DIR/report"
 
   PARAM_DOCUMENT_TYPE="CR"
   PARAM_ASSET_ID="Sample Product"
@@ -374,7 +371,7 @@ create_cert_report() {
   CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/report/report_create-document.xml" verify)
   [ -n "${AE_CORE_VERSION:-}" ] && CMD+=("-Dae.core.version=$AE_CORE_VERSION")
   [ -n "${AE_ARTIFACT_ANALYSIS_VERSION:-}" ] && CMD+=("-Dae.artifact.analysis.version=$AE_ARTIFACT_ANALYSIS_VERSION")
-  CMD+=("-Dinput.inventory.dir=$GROUPED_DIR/vulnerability-report")
+  CMD+=("-Dinput.inventory.dir=$GROUPED_CR_DIR")
 
   CMD+=("-Doutput.document.file=$OUTPUT_CR_FILE")
 
@@ -419,7 +416,6 @@ create_vulnerability_assessment_dashboard() {
 main() {
   source_preload
   set_global_variables
-  create_target_directories
 
   # setup
   update_mirror
@@ -427,6 +423,9 @@ main() {
   # enrichment
   enrich_inventory_with_reference
   enrich_inventory
+
+  # copy inventories to grouped
+  copy_to_grouped
 
   # create annex documents
   create_software_distribution_annex
