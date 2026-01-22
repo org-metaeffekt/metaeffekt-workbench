@@ -127,49 +127,71 @@ pipeline {
                     }
 
                     // publish inventory (internal)
-                    sh 'export AE_TIMESTAMP=`date +"%Y-%m-%d@%Hh%Mm"` && curl --create-dirs -T "tests/resources/workspace-001/mongodb-8.2.2/04_advised/mongodb-advised-inventory.xlsx" http://ae-scanner/upload/inventory-index/mongodb-3.1.1/mongodb-advised-inventory-$AE_TIMESTAMP.xlsx'
+                    sh 'export AE_TIMESTAMP=`date +"%Y-%m-%d@%Hh%Mm"` && curl --create-dirs -T "tests/resources/workspace-001/mongodb-8.2.2/06_advised/mongodb-advised-inventory.xlsx" http://ae-scanner/upload/inventory-index/mongodb-3.1.1/mongodb-advised-inventory-$AE_TIMESTAMP.xlsx'
 
                     // publish dashboard
-                    sh 'curl -T "tests/resources/workspace-001/mongodb-8.2.2/04_advised/dashboards/mongodb-8.2.2-dashboard.html" "ftp://$FTP_HOST/html/metaeffekt/dashboards/mongodb-8.2.2-dashboard.html" --user $FTP_USER:$FTP_PASS'
+                    sh 'curl -T "tests/resources/workspace-001/mongodb-8.2.2/06_advised/dashboards/mongodb-8.2.2-dashboard.html" "ftp://$FTP_HOST/html/metaeffekt/dashboards/mongodb-8.2.2-dashboard.html" --user $FTP_USER:$FTP_PASS'
                 }
             }
         }
 
         stage('Run workspace-001 tests - openssl_en') {
             steps {
-                // run pipeline
-                withMaven(maven: 'maven-3.9.6') {
-                    sh './tests/scripts/pipelines/001_openssl-pipeline_en.sh'
+                catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE', message: '001_openssl-pipeline_en.sh.') {
+                    // run pipeline
+                    withMaven(maven: 'maven-3.9.6') {
+                        sh './tests/scripts/pipelines/001_openssl-pipeline_en.sh'
+                    }
+
+                    // publish inventory (internal)
+                    sh 'export AE_TIMESTAMP=`date +"%Y-%m-%d@%Hh%Mm"` && curl --create-dirs -T "tests/resources/workspace-001/openssl-3.3.1/06_advised/openssl-advised-inventory.xlsx" http://ae-scanner/upload/inventory-index/openssl-3.1.1/openssl-advised-inventory-$AE_TIMESTAMP.xlsx'
+
+                    // publish dashboard
+                    sh 'curl -T "tests/resources/workspace-001/openssl-3.3.1/06_advised/dashboards/openssl-3.3.1-dashboard.html" "ftp://$FTP_HOST/html/metaeffekt/dashboards/openssl-3.3.1-dashboard.html" --user $FTP_USER:$FTP_PASS'
                 }
-
-                // publish inventory (internal)
-                sh 'export AE_TIMESTAMP=`date +"%Y-%m-%d@%Hh%Mm"` && curl --create-dirs -T "tests/resources/workspace-001/openssl-3.3.1/04_advised/openssl-advised-inventory.xlsx" http://ae-scanner/upload/inventory-index/openssl-3.1.1/openssl-advised-inventory-$AE_TIMESTAMP.xlsx'
-
-                // publish dashboard
-                sh 'curl -T "tests/resources/workspace-001/openssl-3.3.1/04_advised/dashboards/openssl-3.3.1-dashboard.html" "ftp://$FTP_HOST/html/metaeffekt/dashboards/openssl-3.3.1-dashboard.html" --user $FTP_USER:$FTP_PASS'
             }
         }
 
         stage('Run workspace-001 tests - windows11_en') {
             steps {
-                withMaven(maven: 'maven-3.9.6') {
-                    sh './tests/scripts/pipelines/001_windows11-pipeline_en.sh'
+                catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE', message: '001_windows11-pipeline_en.sh failed.') {
+                    // run pipeline
+                    withMaven(maven: 'maven-3.9.6') {
+                        sh './tests/scripts/pipelines/001_windows11-pipeline_en.sh'
+                    }
+
+                    // publish inventory (internal) (patched and unpatched)
+                    sh 'export AE_TIMESTAMP=`date +"%Y-%m-%d@%Hh%Mm"` && curl --create-dirs -T "tests/resources/workspace-001/windows11/06_advised/windows11-advised-inventory_unpatched.xlsx" http://ae-scanner/upload/inventory-index/windows-11_unpatched/windows11-advised-inventory_unpatched-$AE_TIMESTAMP.xlsx'
+                    sh 'export AE_TIMESTAMP=`date +"%Y-%m-%d@%Hh%Mm"` && curl --create-dirs -T "tests/resources/workspace-001/windows11/06_advised/windows11-advised-inventory_patched.xlsx" http://ae-scanner/upload/inventory-index/windows-11_patched/windows11-advised-inventory_patched-$AE_TIMESTAMP.xlsx'
+
+                    // publish dashboard
+                    sh 'curl -T "tests/resources/workspace-001/windows11/06_advised/dashboards/windows11-dashboard_patched.html" "ftp://$FTP_HOST/html/metaeffekt/dashboards/windows11-dashboard_patched.html" --user $FTP_USER:$FTP_PASS'
+                    sh 'curl -T "tests/resources/workspace-001/windows11/06_advised/dashboards/windows11-dashboard_unpatched.html" "ftp://$FTP_HOST/html/metaeffekt/dashboards/windows11-dashboard_unpatched.html" --user $FTP_USER:$FTP_PASS'
                 }
             }
         }
 
         stage('Run workspace-001 tests - sample-product_de') {
             steps {
-                withMaven(maven: 'maven-3.9.6') {
-                    sh './tests/scripts/pipelines/001_sample-product-pipeline_de.sh'
+                catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE', message: '001_sample-product-pipeline_de.sh failed.') {
+                    // run pipeline
+                    withMaven(maven: 'maven-3.9.6') {
+                        sh './tests/scripts/pipelines/001_sample-product-pipeline_de.sh'
+                    }
+
+                    // publish inventory (internal)
+                    sh 'export AE_TIMESTAMP=`date +"%Y-%m-%d@%Hh%Mm"` && curl --create-dirs -T "tests/resources/workspace-001/sample-product-1.0.0/06_advised/sample-product-advised-inventory.xlsx" http://ae-scanner/upload/inventory-index/sample-product-1.0.0/sample-product-advised-inventory-$AE_TIMESTAMP.xlsx'
                 }
             }
         }
 
         stage('Run workspace-001 tests - sample-product_en') {
             steps {
-                withMaven(maven: 'maven-3.9.6') {
-                    sh './tests/scripts/pipelines/001_sample-product-pipeline_en.sh'
+                catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE', message: '001_sample-product-pipeline_en.sh failed.') {
+                    // run pipeline
+                    withMaven(maven: 'maven-3.9.6') {
+                        sh './tests/scripts/pipelines/001_sample-product-pipeline_en.sh'
+                    }
                 }
             }
         }
@@ -177,56 +199,31 @@ pipeline {
 
         stage('Run workspace-001 tests - react_en') {
             steps {
-                withMaven(maven: 'maven-3.9.6') {
-                    sh './tests/scripts/pipelines/001_react-pipeline_en.sh'
+                catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE', message: '001_react-pipeline_en.sh failed.') {
+                    // run pipeline
+                    withMaven(maven: 'maven-3.9.6') {
+                        sh './tests/scripts/pipelines/001_react-pipeline_en.sh'
+                    }
+
+                    // publish inventory (internal)
+                    sh 'export AE_TIMESTAMP=`date +"%Y-%m-%d@%Hh%Mm"` && curl --create-dirs -T "tests/resources/workspace-001/react-19.2.0/06_advised/react-advised-inventory.xlsx" http://ae-scanner/upload/inventory-index/react-19.2.0/react-advised-inventory-$AE_TIMESTAMP.xlsx'
+
+                    // publish dashboard
+                    sh 'curl -T "tests/resources/workspace-001/react-19.2.0/06_advised/dashboards/react-19.2.0-dashboard.html" "ftp://$FTP_HOST/html/metaeffekt/dashboards/react-19.2.0-dashboard.html" --user $FTP_USER:$FTP_PASS'
                 }
             }
         }
 
         stage('Run workspace-001 tests - keycloak_en') {
             steps {
+                // run pipeline
                 withMaven(maven: 'maven-3.9.6') {
                     sh './tests/scripts/pipelines/001_keycloak-pipeline_en.sh'
                 }
+
+                // publish inventory (internal)
+                sh 'export AE_TIMESTAMP=`date +"%Y-%m-%d@%Hh%Mm"` && curl --create-dirs -T "tests/resources/workspace-001/keycloak-25.0.4/06_advised/keycloak-advised-inventory.xlsx" http://ae-scanner/upload/inventory-index/keycloak-25.0.4/keycloak-advised-inventory-$AE_TIMESTAMP.xlsx'
             }
         }
-
-        stage('Publish Inventories internally') {
-            steps {
-                // openssl
-
-                // windows11 (patched and unpatched)
-                sh 'export AE_TIMESTAMP=`date +"%Y-%m-%d@%Hh%Mm"` && curl --create-dirs -T "tests/resources/workspace-001/windows11/04_advised/windows11-advised-inventory_unpatched.xlsx" http://ae-scanner/upload/inventory-index/windows-11_unpatched/windows11-advised-inventory_unpatched-$AE_TIMESTAMP.xlsx'
-                sh 'export AE_TIMESTAMP=`date +"%Y-%m-%d@%Hh%Mm"` && curl --create-dirs -T "tests/resources/workspace-001/windows11/04_advised/windows11-advised-inventory_patched.xlsx" http://ae-scanner/upload/inventory-index/windows-11_patched/windows11-advised-inventory_patched-$AE_TIMESTAMP.xlsx'
-
-                // sample-product
-                sh 'export AE_TIMESTAMP=`date +"%Y-%m-%d@%Hh%Mm"` && curl --create-dirs -T "tests/resources/workspace-001/sample-product-1.0.0/04_advised/sample-product-advised-inventory.xlsx" http://ae-scanner/upload/inventory-index/sample-product-1.0.0/sample-product-advised-inventory-$AE_TIMESTAMP.xlsx'
-
-                // react
-                sh 'export AE_TIMESTAMP=`date +"%Y-%m-%d@%Hh%Mm"` && curl --create-dirs -T "tests/resources/workspace-001/react-19.2.0/04_advised/react-advised-inventory.xlsx" http://ae-scanner/upload/inventory-index/react-19.2.0/react-advised-inventory-$AE_TIMESTAMP.xlsx'
-
-                // keycloak; activate when permanently integrated
-                sh 'export AE_TIMESTAMP=`date +"%Y-%m-%d@%Hh%Mm"` && curl --create-dirs -T "tests/resources/workspace-001/keycloak-25.0.4/04_advised/keycloak-advised-inventory.xlsx" http://ae-scanner/upload/inventory-index/keycloak-25.0.4/keycloak-advised-inventory-$AE_TIMESTAMP.xlsx'
-            }
-        }
-
-        stage('Publish Dashboards') {
-            steps {
-                // openssl
-                sh 'curl -T "tests/resources/workspace-001/openssl-3.3.1/04_advised/dashboards/openssl-3.3.1-dashboard.html" "ftp://$FTP_HOST/html/metaeffekt/dashboards/openssl-3.3.1-dashboard.html" --user $FTP_USER:$FTP_PASS'
-
-                // windows
-                sh 'curl -T "tests/resources/workspace-001/windows11/04_advised/dashboards/windows11-dashboard_patched.html" "ftp://$FTP_HOST/html/metaeffekt/dashboards/windows11-dashboard_patched.html" --user $FTP_USER:$FTP_PASS'
-                sh 'curl -T "tests/resources/workspace-001/windows11/04_advised/dashboards/windows11-dashboard_unpatched.html" "ftp://$FTP_HOST/html/metaeffekt/dashboards/windows11-dashboard_unpatched.html" --user $FTP_USER:$FTP_PASS'
-
-                // react
-                sh 'curl -T "tests/resources/workspace-001/react-19.2.0/04_advised/dashboards/react-19.2.0-dashboard.html" "ftp://$FTP_HOST/html/metaeffekt/dashboards/react-19.2.0-dashboard.html" --user $FTP_USER:$FTP_PASS'
-
-                // additional version (old link shared)
-                sh 'curl -T "tests/resources/workspace-001/windows11/04_advised/dashboards/windows11-dashboard_unpatched.html" "ftp://$FTP_HOST/html/metaeffekt/dashboards/windows11-dashboard.html" --user $FTP_USER:$FTP_PASS'
-            }
-        }
-
     }
-
 }
