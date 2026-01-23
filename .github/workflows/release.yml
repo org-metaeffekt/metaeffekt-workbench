@@ -56,7 +56,7 @@ jobs:
         run: |
           git clone https://github.com/org-metaeffekt/metaeffekt-kontinuum.git ${{ github.workspace }}/.metaeffekt-kontinuum
           cd ${{ github.workspace }}/.metaeffekt-kontinuum
-          git checkout ${{ inputs.metaeffekt-kontinuum-version }}
+          git checkout -b ${{ inputs.ae-kontinuum-version }} origin/${{ inputs.ae-kontinuum-version }}
 
       - name: Create external.rc file
         run: |
@@ -98,16 +98,6 @@ jobs:
         with:
           name: logs
           path: .logs
-
-      - name: Dump last 100 lines of log file
-        if: always()
-        shell: bash
-        run: |
-          shopt -s nullglob
-          for f in .metaeffekt-kontinuum/.logs/*; do
-            echo "- $f -"
-            tail -n 100 "$f"
-          done
 
       - name: Commit changes
         if: ${{ !env.ACT }}
