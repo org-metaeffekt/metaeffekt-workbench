@@ -56,7 +56,7 @@ jobs:
         run: |
           git clone https://github.com/org-metaeffekt/metaeffekt-kontinuum.git ${{ github.workspace }}/.metaeffekt-kontinuum
           cd ${{ github.workspace }}/.metaeffekt-kontinuum
-          git checkout -b ${{ inputs.ae-kontinuum-version }} origin/${{ inputs.ae-kontinuum-version }}
+          git checkout -b ${{ inputs.ae-kontinuum-version }} ${{ inputs.ae-kontinuum-version }}
 
       - name: Create external.rc file
         run: |
