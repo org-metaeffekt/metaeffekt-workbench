@@ -102,7 +102,7 @@ jobs:
       - name: Commit changes
         if: ${{ !env.ACT }}
         run: |
-          git add templates/report-template/pom.xml processors/workbench-parent.xml
+          git add templates/report-template/pom.xml
           git commit -m "Release ${{ inputs.version }}" || echo "No changes to commit"
 
       # We need to use --force here as previous failed pipeline might have pushed to the branch already.
