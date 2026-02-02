@@ -1,0 +1,12 @@
+# Contributes additionally to the priority score, when a vulnerability descriptions contains fragments indicating
+# cross-site scripting or request forgery.
+sets:
+  - name: request forgery
+    category: external threat
+    score: 1.0
+    min:
+      - amount: 1
+        keywords:
+          - cross-site request forgery
+          - CSFR
+          - forge requests

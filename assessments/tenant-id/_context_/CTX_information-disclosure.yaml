@@ -1,0 +1,21 @@
+# Contributes additionally to the priority score, when a vulnerability descriptions contains fragments indicating
+# a disclosure of information.
+sets:
+  - name: information disclosure
+    category: confidentiality threat
+    score: 1.5
+    min:
+      - amount: 1
+        keywords:
+          - information disclosure
+          - making private services on the VM accessible to the network
+          - leaking credential
+          - leaked credential
+          - leaked credentials
+          - credential leak
+          - credentials leak
+          - exposed credential
+          - credential exposed
+          - credentials exposed
+          - readable by unauthorized
+          - readable by unauthorised

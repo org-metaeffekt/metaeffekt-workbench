@@ -1,0 +1,16 @@
+# Contributes additionally to the priority score, when a vulnerability descriptions contains fragments indicating
+# the vulnerability can be used for privilege escalation.
+sets:
+  - name: privilege escalation
+    category: general threat
+    score: 2.0
+    min:
+      - amount: 1
+        keywords:
+          - privilege escalation
+          - jailbreak
+          - container escape
+          - to access any other file
+          - arbitrary code execution
+          - allows unauthorized access
+          - allows unauthorised access

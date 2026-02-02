@@ -1,0 +1,23 @@
+# Contributes additionally to the priority score, when a vulnerability descriptions contains fragments indicating
+# the vulnerability can be exploited by an external attacker.
+sets:
+  - name: external attacker
+    category: external threat
+    score: 2.0
+    min:
+      - amount: 1
+        keywords:
+          - external attacker
+          - external attackers
+          - external adversary
+          - external adversaries
+          - external user
+          - remote attacker
+          - remote attackers
+          - remote adversary
+          - remote adversaries
+          - remote code execution
+          - remote code executions
+          - RCE
+          - execute arbitrary code
+          - initiate the attack remotely

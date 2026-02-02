@@ -1,0 +1,16 @@
+# Contributes additionally to the priority score, when a vulnerability descriptions contains fragments indicating
+# a resource exemption attack.
+sets:
+  - name: resource exemption
+    category: availability threat
+    score: 1.0
+    min:
+      - amount: 1
+        keywords:
+          - resource consumption
+          - resource exemption
+          - denial of service
+          - denial of service attacks
+          - connection pool exhaustion
+          - memory leak
+          - resource leak

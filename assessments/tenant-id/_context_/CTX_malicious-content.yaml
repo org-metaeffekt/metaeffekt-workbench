@@ -1,0 +1,19 @@
+# Contributes additionally to the priority score, when a vulnerability descriptions contains fragments indicating
+# malicious content being presented or inserted.
+sets:
+  - name: malicious content
+    category: integrity threat
+    score: 1.0
+    min:
+      - amount: 1
+        keywords:
+          - request smuggling
+          - missing input validation
+          - SQL injection
+          - sql injection
+          - sql-injection
+          - XML External Entity Injection
+          - XML Entity Expansion
+          - XXE
+          - specifically crafted request
+          - specifically crafted content
