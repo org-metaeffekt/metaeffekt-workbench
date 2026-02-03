@@ -9,18 +9,17 @@ When executing the advise enrichment processors the according assessment folder 
 The folder structure in assessments is as follows:
 
 * The first level is the `<tenant-id>` folder. It supports that assessments between different tenants are not shared.
-* The second level is the asset level. The folder name is equivalent by the project-unique `<asset-id>`. If several 
-  generations exist that only have few in common. The folder may include the major version or an equivalent extension
-  `<asset-id\[-major-version\]>`.
-* Within the asset folder several folders are contained:
-  * A manually managed shared folder named `_generic-assessments_`; assessments in this folder apply to all assessment
-    contexts.
-  * Multiple context-specific assessment folders named after the `<assessment-context>`; these folder may be 
-    automatically populated when using the Vulnerability Assessment Sashboard with a git-bound backend Vulnerability
-    Assessment Service.
+* The second level is the asset level. The folder name is equivalent by the project-unique `<asset-name>`. If several 
+  generations exist that only have few in common, the folder may include the major version or an equivalent extension
+  `<asset-name\[-asset-generation\]>` or `<asset-name\[-asset-major.version\]>`.
+* The asset folder contains multiple context-specific assessment folders named after the `<assessment-context>`; these 
+  folder have the following substructure:
+  * dynamic: automatically populated when using the Vulnerability Assessment Dashboard with a git-bound backend Asset Manager
+      Service.
+  * generic: a manually managed folder with assessments. This folder can be left empty or may even not exist.
 
 Since assessments are meant to be agnostic to an asset version, the asset version usually does not appear in the folder 
-structure. Only in case a new generation is started the `<asset-id>` folder may include the major version of the asset,
+structure. Only in case a new generation is started the `<asset-name>` folder may include the major version of the asset,
 as mentioned earlier.
 
 The name of the assessment context may include several parts or aspects. This can either be an embedding into a 
@@ -28,9 +27,9 @@ product-tree, a mapping to a security zone or conduit, an exposure level or othe
 context is determined by the project structure and simply passed through the system as discriminator or identifier for
 the given assessment context.
 
-## Vulnerability Assessment Service 
+## Asset Manager Service 
 
-The Vulnerability Assessment Service can either be deployed centrally or on a local machine. In any case the associated
+The Asset Manager Service can either be deployed centrally or on a local machine. In any case the associated
 database is this git repository with the `assessments` directory.
 
 ## Additional Context Files
@@ -38,13 +37,13 @@ database is this git repository with the `assessments` directory.
 Context files can be supplied on various levels. You may include a '_context_' folder either in
 * the `<tenant-id>` folders; applies to all assessments,
 * the `<asset-id\[-major-version\]>` folders; applies to all assessments on the given asset, or
-* the `<assessment-context-id>`; applies to a specific assessment context, only.
+* the `<assessment-context>`; applies to a specific assessment context, only.
 
 Deeper-nested context definitions overwrite less deeper-nested context definitions.
 
-A basic set of definitions can be found in the `_context-pool_` folder.
+A basic set of definitions can be found in the `context-template` folder.
 
-Since context definition tend to be organization wide and less asset- or assessment-context-specific, it is recommended
+Since context definition tend to be organization-wide and less asset- or assessment-context-specific, it is recommended
 to manage context definitions on `<tenant-id>` level and only deviate from this policy, when specifically required.
 
 NOTE: The current context definitions overlap to a certain extent with the future Threat-Assessment approach. In this
@@ -65,8 +64,7 @@ enable the above functions the following task have to be performed:
   * validate context yamls and assessment files for not interfere or enable
     additional isolation of the folders
 * remove assessment-001 folder and adjust existing pipelines
-* adjust and test Vulnerability Assessment Service based on the new folder structure
-  * it must be able to connect the service to the `assessments/<tenant-id>` folder in a
-    first iteration. We may see in the future that the tenant-id needs to propagate through the
-    inventories and potentially the dashboard.
-
+* adjust and test Asset Manager Service based on the new folder structure
+  * it must be able to connect the service to the `assessments` folder in a
+    first iteration. The subpath to the specific assessment-context folder is propagated within the inventory and
+    the Asset Manager Service API.
