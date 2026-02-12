@@ -29,8 +29,8 @@ set_global_variables() {
   readonly KONTINUUM_PROCESSORS_DIR="$EXTERNAL_KONTINUUM_DIR/processors"
 
   LOG_DIR="$WORKBENCH_DIR/.logs"
-  logger_init "$LOG_DIR/001_sample-product-pipeline_de.log"
-  create_workspace_directories "$WORKSPACE_DIR/sample-product-1.0.0"
+  logger_init "$LOG_DIR/001_sample-product-pipeline_en.log"
+  create_workspace_directories "$WORKSPACE_DIR/sample-product-1.0.0" "sample-asset-1.0.0"
 
   ENV_REFERENCE_INVENTORY_DIR="$WORKBENCH_DIR/inventories/example-reference-inventory"
   ENV_REFERENCE_LICENSES_DIR="$WORKBENCH_DIR/inventories/example-reference-inventory/licenses"
@@ -65,9 +65,9 @@ update_mirror() {
 }
 
 enrich_inventory_with_reference() {
-  PREPARED_INVENTORY_FILE="$PREPARED_DIR/sample-asset-1.0/sample-asset-1.0-inventory.xls"
-  AGGREGATED_INVENTORY_DIR="$AGGREGATED_DIR/sample-asset-1.0"
-  AGGREGATED_INVENTORY_PATH="sample-asset-1.0-inventory.xls"
+  PREPARED_INVENTORY_FILE="$PREPARED_DIR/sample-asset-1.0.0-inventory.xls"
+  AGGREGATED_INVENTORY_DIR="$AGGREGATED_DIR"
+  AGGREGATED_INVENTORY_PATH="sample-asset-1.0.0-inventory.xls"
 
   CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/advise/advise_enrich-with-reference.xml" process-resources)
   [ -n "${AE_CORE_VERSION:-}" ] && CMD+=("-Dae.core.version=$AE_CORE_VERSION")
@@ -111,14 +111,16 @@ enrich_inventory() {
 }
 
 copy_to_grouped() {
-  cp "$AGGREGATED_INVENTORY_DIR/$AGGREGATED_INVENTORY_PATH" "$GROUPED_SDA_DIR"
-  cp "$AGGREGATED_INVENTORY_DIR/$AGGREGATED_INVENTORY_PATH" "$GROUPED_CR_DIR"
-  cp "$AGGREGATED_INVENTORY_DIR/$AGGREGATED_INVENTORY_PATH" "$GROUPED_CA_DIR"
-  cp "$AGGREGATED_INVENTORY_DIR/$AGGREGATED_INVENTORY_PATH" "$GROUPED_ILD_DIR"
-  cp "$AGGREGATED_INVENTORY_DIR/$AGGREGATED_INVENTORY_PATH" "$GROUPED_LD_DIR"
-  cp "$AGGREGATED_INVENTORY_DIR/$AGGREGATED_INVENTORY_PATH" "$GROUPED_SDA_DIR"
-  cp "$ADVISED_INVENTORY_FILE" "$GROUPED_VR_DIR"
-  cp "$ADVISED_INVENTORY_FILE" "$GROUPED_VSR_DIR"
+  CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/util/util_transform-inventories.xml" process-resources)
+  [ -n "${AE_CORE_VERSION:-}" ] && CMD+=("-Dae.core.version=$AE_CORE_VERSION")
+  [ -n "${AE_ARTIFACT_ANALYSIS_VERSION:-}" ] && CMD+=("-Dae.artifact.analysis.version=$AE_ARTIFACT_ANALYSIS_VERSION")
+  CMD+=("-Dinput.inventory.dir=$WORKSPACE_DIR/sample-product-1.0.0")
+  CMD+=("-Doutput.inventory.dir=$WORKSPACE_DIR/sample-product-1.0.0/07_grouped")
+  CMD+=("-Dparam.kotlin.script.file=$WORKBENCH_DIR/scripts/group.kts")
+  CMD+=("-Dparam.asset.name=sample-asset-1.0.0")
+
+  pass_command_info_to_logger "group"
+
 }
 
 create_software_distribution_annex() {
@@ -430,7 +432,7 @@ create_cert_report() {
 }
 
 create_vulnerability_assessment_dashboard() {
-  OUTPUT_DASHBOARD_FILE="$ADVISED_DIR/dashboards/sample-product-dashboard.html"
+  OUTPUT_DASHBOARD_FILE="$REPORTED_DIR/sample-product-dashboard.html"
   SECURITY_POLICY_ACTIVE_IDS="assessment_enrichment_configuration"
 
   CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/advise/advise_create-dashboard.xml" process-resources)

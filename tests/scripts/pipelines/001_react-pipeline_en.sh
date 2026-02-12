@@ -31,7 +31,7 @@ set_global_variables() {
 
   LOG_DIR="$WORKBENCH_DIR/.logs"
   logger_init "$LOG_DIR/001_react-pipeline_en.log"
-  create_workspace_directories "$WORKSPACE_DIR/react-19.2.0"
+  create_workspace_directories "$WORKSPACE_DIR/react-19.2.0" "react-19.2.0"
 
   ENV_REPORT_TEMPLATE_DIR="$WORKBENCH_DIR/templates/report-template"
   PARAM_SECURITY_POLICY_FILE="$WORKBENCH_DIR/policies/security-policy/security-policy.json"
@@ -95,7 +95,15 @@ enrich_inventory() {
 }
 
 copy_to_grouped() {
-  cp "$ADVISED_INVENTORY_FILE" "$GROUPED_VR_DIR"
+  CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/util/util_transform-inventories.xml" process-resources)
+  [ -n "${AE_CORE_VERSION:-}" ] && CMD+=("-Dae.core.version=$AE_CORE_VERSION")
+  [ -n "${AE_ARTIFACT_ANALYSIS_VERSION:-}" ] && CMD+=("-Dae.artifact.analysis.version=$AE_ARTIFACT_ANALYSIS_VERSION")
+  CMD+=("-Dinput.inventory.dir=$WORKSPACE_DIR/react-19.2.0")
+  CMD+=("-Doutput.inventory.dir=$WORKSPACE_DIR/react-19.2.0/07_grouped")
+  CMD+=("-Dparam.kotlin.script.file=$WORKBENCH_DIR/scripts/group.kts")
+  CMD+=("-Dparam.asset.name=react-19.2.0")
+
+  pass_command_info_to_logger "group"
 }
 
 generate_vulnerability_assessment_dashboard() {
