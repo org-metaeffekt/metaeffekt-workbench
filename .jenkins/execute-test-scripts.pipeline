@@ -127,10 +127,10 @@ pipeline {
                     }
 
                     // publish inventory (internal)
-                    sh 'export AE_TIMESTAMP=`date +"%Y-%m-%d@%Hh%Mm"` && curl --create-dirs -T "tests/resources/workspace-001/mongodb-8.2.2/06_advised/mongodb-advised-inventory.xlsx" http://ae-scanner/upload/inventory-index/mongodb-3.1.1/mongodb-advised-inventory-$AE_TIMESTAMP.xlsx'
+                    sh 'export AE_TIMESTAMP=`date +"%Y-%m-%d@%Hh%Mm"` && curl --create-dirs -T "tests/resources/workspace-001/mongodb-8.2.2/06_advised/mongodb-8.2.2/mongodb-advised-inventory.xlsx" http://ae-scanner/upload/inventory-index/mongodb-3.1.1/mongodb-advised-inventory-$AE_TIMESTAMP.xlsx'
 
                     // publish dashboard
-                    sh 'curl -T "tests/resources/workspace-001/mongodb-8.2.2/06_advised/dashboards/mongodb-8.2.2-dashboard.html" "ftp://$FTP_HOST/html/metaeffekt/dashboards/mongodb-8.2.2-dashboard.html" --user $FTP_USER:$FTP_PASS'
+                    sh 'curl -T "tests/resources/workspace-001/mongodb-8.2.2/06_advised/mongodb-8.2.2/dashboards/mongodb-8.2.2-dashboard.html" "ftp://$FTP_HOST/html/metaeffekt/dashboards/mongodb-8.2.2-dashboard.html" --user $FTP_USER:$FTP_PASS'
                 }
             }
         }
@@ -144,10 +144,10 @@ pipeline {
                     }
 
                     // publish inventory (internal)
-                    sh 'export AE_TIMESTAMP=`date +"%Y-%m-%d@%Hh%Mm"` && curl --create-dirs -T "tests/resources/workspace-001/openssl-3.3.1/06_advised/openssl-advised-inventory.xlsx" http://ae-scanner/upload/inventory-index/openssl-3.1.1/openssl-advised-inventory-$AE_TIMESTAMP.xlsx'
+                    sh 'export AE_TIMESTAMP=`date +"%Y-%m-%d@%Hh%Mm"` && curl --create-dirs -T "tests/resources/workspace-001/openssl-3.3.1/06_advised/openssl-3.3.1/openssl-advised-inventory.xlsx" http://ae-scanner/upload/inventory-index/openssl-3.1.1/openssl-advised-inventory-$AE_TIMESTAMP.xlsx'
 
                     // publish dashboard
-                    sh 'curl -T "tests/resources/workspace-001/openssl-3.3.1/06_advised/dashboards/openssl-3.3.1-dashboard.html" "ftp://$FTP_HOST/html/metaeffekt/dashboards/openssl-3.3.1-dashboard.html" --user $FTP_USER:$FTP_PASS'
+                    sh 'curl -T "tests/resources/workspace-001/openssl-3.3.1/06_advised/openssl-3.3.1/dashboards/openssl-3.3.1-dashboard.html" "ftp://$FTP_HOST/html/metaeffekt/dashboards/openssl-3.3.1-dashboard.html" --user $FTP_USER:$FTP_PASS'
                 }
             }
         }
@@ -161,12 +161,12 @@ pipeline {
                     }
 
                     // publish inventory (internal) (patched and unpatched)
-                    sh 'export AE_TIMESTAMP=`date +"%Y-%m-%d@%Hh%Mm"` && curl --create-dirs -T "tests/resources/workspace-001/windows11/06_advised/windows11-advised-inventory_unpatched.xlsx" http://ae-scanner/upload/inventory-index/windows-11_unpatched/windows11-advised-inventory_unpatched-$AE_TIMESTAMP.xlsx'
-                    sh 'export AE_TIMESTAMP=`date +"%Y-%m-%d@%Hh%Mm"` && curl --create-dirs -T "tests/resources/workspace-001/windows11/06_advised/windows11-advised-inventory_patched.xlsx" http://ae-scanner/upload/inventory-index/windows-11_patched/windows11-advised-inventory_patched-$AE_TIMESTAMP.xlsx'
+                    sh 'export AE_TIMESTAMP=`date +"%Y-%m-%d@%Hh%Mm"` && curl --create-dirs -T "tests/resources/workspace-001/windows11/06_advised/windows11/windows11-advised-inventory_unpatched.xlsx" http://ae-scanner/upload/inventory-index/windows-11_unpatched/windows11-advised-inventory_unpatched-$AE_TIMESTAMP.xlsx'
+                    sh 'export AE_TIMESTAMP=`date +"%Y-%m-%d@%Hh%Mm"` && curl --create-dirs -T "tests/resources/workspace-001/windows11/06_advised/windows11/windows11-advised-inventory_patched.xlsx" http://ae-scanner/upload/inventory-index/windows-11_patched/windows11-advised-inventory_patched-$AE_TIMESTAMP.xlsx'
 
                     // publish dashboard
-                    sh 'curl -T "tests/resources/workspace-001/windows11/06_advised/dashboards/windows11-dashboard_patched.html" "ftp://$FTP_HOST/html/metaeffekt/dashboards/windows11-dashboard_patched.html" --user $FTP_USER:$FTP_PASS'
-                    sh 'curl -T "tests/resources/workspace-001/windows11/06_advised/dashboards/windows11-dashboard_unpatched.html" "ftp://$FTP_HOST/html/metaeffekt/dashboards/windows11-dashboard_unpatched.html" --user $FTP_USER:$FTP_PASS'
+                    sh 'curl -T "tests/resources/workspace-001/windows11/06_advised/windows11/dashboards/windows11-dashboard_patched.html" "ftp://$FTP_HOST/html/metaeffekt/dashboards/windows11-dashboard_patched.html" --user $FTP_USER:$FTP_PASS'
+                    sh 'curl -T "tests/resources/workspace-001/windows11/06_advised/windows11/dashboards/windows11-dashboard_unpatched.html" "ftp://$FTP_HOST/html/metaeffekt/dashboards/windows11-dashboard_unpatched.html" --user $FTP_USER:$FTP_PASS'
                 }
             }
         }
@@ -180,7 +180,7 @@ pipeline {
                     }
 
                     // publish inventory (internal)
-                    sh 'export AE_TIMESTAMP=`date +"%Y-%m-%d@%Hh%Mm"` && curl --create-dirs -T "tests/resources/workspace-001/sample-product-1.0.0/06_advised/sample-product-advised-inventory.xlsx" http://ae-scanner/upload/inventory-index/sample-product-1.0.0/sample-product-advised-inventory-$AE_TIMESTAMP.xlsx'
+                    sh 'export AE_TIMESTAMP=`date +"%Y-%m-%d@%Hh%Mm"` && curl --create-dirs -T "tests/resources/workspace-001/sample-product-1.0.0/06_advised/sample-product-1.0.0/sample-product-advised-inventory.xlsx" http://ae-scanner/upload/inventory-index/sample-product-1.0.0/sample-product-advised-inventory-$AE_TIMESTAMP.xlsx'
                 }
             }
         }
@@ -206,10 +206,10 @@ pipeline {
                     }
 
                     // publish inventory (internal)
-                    sh 'export AE_TIMESTAMP=`date +"%Y-%m-%d@%Hh%Mm"` && curl --create-dirs -T "tests/resources/workspace-001/react-19.2.0/06_advised/react-advised-inventory.xlsx" http://ae-scanner/upload/inventory-index/react-19.2.0/react-advised-inventory-$AE_TIMESTAMP.xlsx'
+                    sh 'export AE_TIMESTAMP=`date +"%Y-%m-%d@%Hh%Mm"` && curl --create-dirs -T "tests/resources/workspace-001/react-19.2.0/06_advised/react-19.2.0/react-advised-inventory.xlsx" http://ae-scanner/upload/inventory-index/react-19.2.0/react-advised-inventory-$AE_TIMESTAMP.xlsx'
 
                     // publish dashboard
-                    sh 'curl -T "tests/resources/workspace-001/react-19.2.0/06_advised/dashboards/react-19.2.0-dashboard.html" "ftp://$FTP_HOST/html/metaeffekt/dashboards/react-19.2.0-dashboard.html" --user $FTP_USER:$FTP_PASS'
+                    sh 'curl -T "tests/resources/workspace-001/react-19.2.0/06_advised/react-19.2.0/dashboards/react-19.2.0-dashboard.html" "ftp://$FTP_HOST/html/metaeffekt/dashboards/react-19.2.0-dashboard.html" --user $FTP_USER:$FTP_PASS'
                 }
             }
         }
@@ -223,7 +223,7 @@ pipeline {
                     }
 
                     // publish inventory (internal)
-                    sh 'export AE_TIMESTAMP=`date +"%Y-%m-%d@%Hh%Mm"` && curl --create-dirs -T "tests/resources/workspace-001/keycloak-25.0.4/06_advised/keycloak-advised-inventory.xlsx" http://ae-scanner/upload/inventory-index/keycloak-25.0.4/keycloak-advised-inventory-$AE_TIMESTAMP.xlsx'
+                    sh 'export AE_TIMESTAMP=`date +"%Y-%m-%d@%Hh%Mm"` && curl --create-dirs -T "tests/resources/workspace-001/keycloak-25.0.4/06_advised/keycloak-25.0.4/keycloak-advised-inventory.xlsx" http://ae-scanner/upload/inventory-index/keycloak-25.0.4/keycloak-advised-inventory-$AE_TIMESTAMP.xlsx'
                 }
             }
         }
