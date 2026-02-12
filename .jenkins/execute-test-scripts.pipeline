@@ -120,7 +120,7 @@ pipeline {
 
         stage('Run workspace-001 tests - mongodb_en') {
             steps {
-                catchError(buildResult: 'STABLE', stageResult: 'UNSTABLE', message: '001_mongodb-pipeline_en.sh failed.') {
+                catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE', message: '001_mongodb-pipeline_en.sh failed.') {
                     // run pipeline
                     withMaven(maven: 'maven-3.9.6') {
                         sh './tests/scripts/pipelines/001_mongodb-pipeline_en.sh'
@@ -137,7 +137,7 @@ pipeline {
 
         stage('Run workspace-001 tests - openssl_en') {
             steps {
-                catchError(buildResult: 'STABLE', stageResult: 'UNSTABLE', message: '001_openssl-pipeline_en.sh.') {
+                catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE', message: '001_openssl-pipeline_en.sh.') {
                     // run pipeline
                     withMaven(maven: 'maven-3.9.6') {
                         sh './tests/scripts/pipelines/001_openssl-pipeline_en.sh'
@@ -154,7 +154,7 @@ pipeline {
 
         stage('Run workspace-001 tests - windows11_en') {
             steps {
-                catchError(buildResult: 'STABLE', stageResult: 'UNSTABLE', message: '001_windows11-pipeline_en.sh failed.') {
+                catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE', message: '001_windows11-pipeline_en.sh failed.') {
                     // run pipeline
                     withMaven(maven: 'maven-3.9.6') {
                         sh './tests/scripts/pipelines/001_windows11-pipeline_en.sh'
@@ -173,7 +173,7 @@ pipeline {
 
         stage('Run workspace-001 tests - sample-product_de') {
             steps {
-                catchError(buildResult: 'STABLE', stageResult: 'UNSTABLE', message: '001_sample-product-pipeline_de.sh failed.') {
+                catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE', message: '001_sample-product-pipeline_de.sh failed.') {
                     // run pipeline
                     withMaven(maven: 'maven-3.9.6') {
                         sh './tests/scripts/pipelines/001_sample-product-pipeline_de.sh'
@@ -187,7 +187,7 @@ pipeline {
 
         stage('Run workspace-001 tests - sample-product_en') {
             steps {
-                catchError(buildResult: 'STABLE', stageResult: 'UNSTABLE', message: '001_sample-product-pipeline_en.sh failed.') {
+                catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE', message: '001_sample-product-pipeline_en.sh failed.') {
                     // run pipeline
                     withMaven(maven: 'maven-3.9.6') {
                         sh './tests/scripts/pipelines/001_sample-product-pipeline_en.sh'
@@ -199,7 +199,7 @@ pipeline {
 
         stage('Run workspace-001 tests - react_en') {
             steps {
-                catchError(buildResult: 'STABLE', stageResult: 'UNSTABLE', message: '001_react-pipeline_en.sh failed.') {
+                catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE', message: '001_react-pipeline_en.sh failed.') {
                     // run pipeline
                     withMaven(maven: 'maven-3.9.6') {
                         sh './tests/scripts/pipelines/001_react-pipeline_en.sh'
@@ -216,7 +216,7 @@ pipeline {
 
         stage('Run workspace-001 tests - keycloak_en') {
             steps {
-                catchError(buildResult: 'STABLE', stageResult: 'UNSTABLE', message: '001_react-pipeline_en.sh failed.') {
+                catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE', message: '001_react-pipeline_en.sh failed.') {
                     // run pipeline
                     withMaven(maven: 'maven-3.9.6') {
                         sh './tests/scripts/pipelines/001_keycloak-pipeline_en.sh'
