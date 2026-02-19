@@ -124,7 +124,7 @@ copy_to_grouped() {
 }
 
 create_software_distribution_annex() {
-  OUTPUT_ANNEX_FILE="$REPORTED_DIR/software-distribution-annex-$ENV_LANGUAGE.pdf"
+  OUTPUT_ANNEX_FILE="$REPORTED_DIR/software-distribution-annex/$ENV_LANGUAGE/software-distribution-annex-$ENV_LANGUAGE.pdf"
   OUTPUT_COMPUTED_INVENTORY_DIR="$ADDITIONAL_DIR/report"
 
   PARAM_DOCUMENT_TYPE="SDA"
@@ -163,8 +163,43 @@ create_software_distribution_annex() {
   pass_command_info_to_logger "create_software_distribution_annex"
 }
 
+aggregate_annex_folders() {
+    INPUT_INVENTORY_FILE="$ENV_REPORT_TEMPLATE_DIR/target/tmp/SampleProduct-merged-inventory.xlsx"
+    PARAM_TARGET_COMPONENT_DIR="$GROUPED_SDA_DIR/components"
+    PARAM_TARGET_LICENSE_DIR="$GROUPED_SDA_DIR/licenses"
+
+    CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/report/report_aggregate-annex-folders.xml" verify)
+    [ -n "${AE_CORE_VERSION:-}" ] && CMD+=("-Dae.core.version=$AE_CORE_VERSION")
+    [ -n "${AE_ARTIFACT_ANALYSIS_VERSION:-}" ] && CMD+=("-Dae.artifact.analysis.version=$AE_ARTIFACT_ANALYSIS_VERSION")
+    CMD+=("-Dinput.inventory.file=$INPUT_INVENTORY_FILE")
+
+    CMD+=("-Dparam.reference.inventory.dir=$ENV_REFERENCE_INVENTORY_DIR")
+    CMD+=("-Dparam.target.component.dir=$PARAM_TARGET_COMPONENT_DIR")
+    CMD+=("-Dparam.target.license.dir=$PARAM_TARGET_LICENSE_DIR")
+
+    pass_command_info_to_logger "aggregate_annex_folders"
+}
+
+create_annex_archive() {
+    INPUT_ANNEX_FILE="$REPORTED_DIR/software-distribution-annex/$ENV_LANGUAGE/software-distribution-annex-$ENV_LANGUAGE.pdf"
+    INPUT_INVENTORY_COMPONENTS_DIR="$GROUPED_SDA_DIR/components"
+    INPUT_INVENTORY_LICENSES_DIR="$GROUPED_SDA_DIR/licenses"
+    OUTPUT_ANNEX_ARCHIVE_FILE="$REPORTED_DIR/software-distribution-annex/$ENV_LANGUAGE/software-distribution-annex-$ENV_LANGUAGE.zip"
+
+    CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/report/report_create-annex-archive.xml" verify)
+    [ -n "${AE_CORE_VERSION:-}" ] && CMD+=("-Dae.core.version=$AE_CORE_VERSION")
+    [ -n "${AE_ARTIFACT_ANALYSIS_VERSION:-}" ] && CMD+=("-Dae.artifact.analysis.version=$AE_ARTIFACT_ANALYSIS_VERSION")
+    CMD+=("-Dinput.document.pdf.file=$INPUT_ANNEX_FILE")
+    CMD+=("-Dinput.inventory.components.dir=$INPUT_INVENTORY_COMPONENTS_DIR")
+    CMD+=("-Dinput.inventory.licenses.dir=$INPUT_INVENTORY_LICENSES_DIR")
+
+    CMD+=("-Doutput.annex.archive.file=$OUTPUT_ANNEX_ARCHIVE_FILE")
+
+    pass_command_info_to_logger "create_annex_archive"
+}
+
 create_license_documentation() {
-  OUTPUT_ANNEX_FILE="$REPORTED_DIR/license-documentation-$ENV_LANGUAGE.pdf"
+  OUTPUT_ANNEX_FILE="$REPORTED_DIR/license-documentation/$ENV_LANGUAGE/license-documentation-$ENV_LANGUAGE.pdf"
   OUTPUT_COMPUTED_INVENTORY_DIR="$ADDITIONAL_DIR/report"
 
   PARAM_DOCUMENT_TYPE="LD"
@@ -204,7 +239,7 @@ create_license_documentation() {
 }
 
 create_initial_license_documentation() {
-  OUTPUT_ANNEX_FILE="$REPORTED_DIR/initial-license-documentation-$ENV_LANGUAGE.pdf"
+  OUTPUT_ANNEX_FILE="$REPORTED_DIR/initial-license-documentation/$ENV_LANGUAGE/initial-license-documentation-$ENV_LANGUAGE.pdf"
   OUTPUT_COMPUTED_INVENTORY_DIR="$ADDITIONAL_DIR/report"
 
   PARAM_DOCUMENT_TYPE="ILD"
@@ -244,7 +279,7 @@ create_initial_license_documentation() {
 }
 
 create_custom_annex_document() {
-  OUTPUT_ANNEX_FILE="$REPORTED_DIR/custom-annex-document_$ENV_LANGUAGE.pdf"
+  OUTPUT_ANNEX_FILE="$REPORTED_DIR/custom-annex-document/$ENV_LANGUAGE/custom-annex-document_$ENV_LANGUAGE.pdf"
   OUTPUT_COMPUTED_INVENTORY_DIR="$ADDITIONAL_DIR/report"
 
   PARAM_DOCUMENT_TYPE="CAD"
@@ -284,7 +319,7 @@ create_custom_annex_document() {
 }
 
 create_vulnerability_summary_report() {
-  OUTPUT_VSR_FILE="$REPORTED_DIR/vulnerability-summary-report-$ENV_LANGUAGE.pdf"
+  OUTPUT_VSR_FILE="$REPORTED_DIR/vulnerability-summary-report/$ENV_LANGUAGE/vulnerability-summary-report-$ENV_LANGUAGE.pdf"
   OUTPUT_COMPUTED_INVENTORY_DIR="$ADDITIONAL_DIR/report"
 
   PARAM_DOCUMENT_TYPE="VSR"
@@ -319,7 +354,7 @@ create_vulnerability_summary_report() {
 }
 
 create_vulnerability_report() {
-  OUTPUT_VR_FILE="$REPORTED_DIR/vulnerability-report-$ENV_LANGUAGE.pdf"
+  OUTPUT_VR_FILE="$REPORTED_DIR/vulnerability-report/$ENV_LANGUAGE/vulnerability-report-$ENV_LANGUAGE.pdf"
   OUTPUT_COMPUTED_INVENTORY_DIR="$ADDITIONAL_DIR/report"
 
   PARAM_DOCUMENT_TYPE="VR"
@@ -358,7 +393,7 @@ create_vulnerability_report() {
 }
 
 create_cert_report() {
-  OUTPUT_CR_FILE="$REPORTED_DIR/cert-report-$ENV_LANGUAGE.pdf"
+  OUTPUT_CR_FILE="$REPORTED_DIR/cert-report/$ENV_LANGUAGE/cert-report-$ENV_LANGUAGE.pdf"
   OUTPUT_COMPUTED_INVENTORY_DIR="$ADDITIONAL_DIR/report"
 
   PARAM_DOCUMENT_TYPE="CR"
@@ -431,6 +466,8 @@ main() {
 
   # create annex documents
   create_software_distribution_annex
+  aggregate_annex_folders
+  create_annex_archive
   create_license_documentation
   create_initial_license_documentation
   create_custom_annex_document
