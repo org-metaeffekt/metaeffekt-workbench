@@ -32,7 +32,7 @@ set_global_variables() {
   logger_init "$LOG_DIR/001_sample-product-pipeline_en.log"
   create_workspace_directories "$WORKSPACE_DIR/sample-product-1.0.0" "sample-asset-1.0.0"
 
-  ENV_REFERENCE_INVENTORY_DIR="$WORKBENCH_DIR/inventories/example-reference-inventory"
+  ENV_REFERENCE_INVENTORY_DIR="$WORKBENCH_DIR/inventories/example-reference-inventory/inventory"
   ENV_REFERENCE_LICENSES_DIR="$WORKBENCH_DIR/inventories/example-reference-inventory/licenses"
   ENV_REFERENCE_COMPONENTS_DIR="$WORKBENCH_DIR/inventories/example-reference-inventory/components"
 
