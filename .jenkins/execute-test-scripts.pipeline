@@ -180,7 +180,7 @@ pipeline {
                     }
 
                     // publish inventory (internal)
-                    sh 'export AE_TIMESTAMP=`date +"%Y-%m-%d@%Hh%Mm"` && curl --create-dirs -T "tests/resources/workspace-001/sample-product-1.0.0/06_advised/sample-product-1.0.0/sample-product-advised-inventory.xlsx" http://ae-scanner/upload/inventory-index/sample-product-1.0.0/sample-product-advised-inventory-$AE_TIMESTAMP.xlsx'
+                    sh 'export AE_TIMESTAMP=`date +"%Y-%m-%d@%Hh%Mm"` && curl --create-dirs -T "tests/resources/workspace-001/sample-product-1.0.0/06_advised/sample-asset-1.0.0/sample-product-advised-inventory.xlsx" http://ae-scanner/upload/inventory-index/sample-product-1.0.0/sample-product-advised-inventory-$AE_TIMESTAMP.xlsx'
                 }
             }
         }
