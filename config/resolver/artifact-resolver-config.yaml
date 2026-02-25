@@ -46,7 +46,7 @@ alpinePackageResolverConfig:
           - literal: ".tgz"
 
 debArtifactResolverConfig:
-  ubuntuIndexConfig:
+  debIndexConfig:
     packagesDownloadUrls:
       - http://archive.ubuntu.com/ubuntu/dists/focal/main/binary-amd64/Packages.xz
       - http://archive.ubuntu.com/ubuntu/dists/focal-security/main/binary-amd64/Packages.xz
