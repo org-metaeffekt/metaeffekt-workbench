@@ -40,7 +40,7 @@
 
 	<appendix href="cert-report/de/appendix.dita" >
 		<!-- overall -->
-		<topicref href="cert-report-overall/de/tpc_vulnerability-cert-report.dita" />
+		<topicref href="cert-report/de/tpc_vulnerability-cert-report-appendix.dita" />
 	</appendix>
 
     <backmatter>
