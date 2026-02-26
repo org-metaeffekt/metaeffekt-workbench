@@ -63,7 +63,7 @@ documents:
 
       #parameter for report content references (match with part name)
       vulnerability.statistics.part.name: "statistics-part"
-      vulnerability.statistics.part.all.name: "statistics-part-all"
+      appendix.part.name: "appendix-part"
     parts:
       "summary-part":
         type: VULNERABILITY_SUMMARY_PART
@@ -97,6 +97,15 @@ documents:
 
       "statistics-part-all":
         type: VULNERABILITY_STATISTICS_REPORT
+        params:
+          securityPolicyActiveIds: "cert_configuration"
+        inventories:
+          - inventoryRef: "merged-inventory"
+            assetName: "${asset.name}"
+            assetVersion: "${asset.version}"
+
+      "appendix-part":
+        type: APPENDIX
         params:
           securityPolicyActiveIds: "cert_configuration"
         inventories:
