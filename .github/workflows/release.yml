@@ -82,6 +82,9 @@ jobs:
           AE_CORE_VERSION: ${{ inputs.ae-core-version }}
           AE_ARTIFACT_ANALYSIS_VERSION: ${{ inputs.ae-artifact-analysis-version }}
         run: |
+          ls -l -a .metaeffekt-kontinuum
+          ls -l -a .metaeffekt-kontinuum/processors
+          ls -l -a .metaeffekt-kontinuum/processors/report
           ./tests/scripts/pipelines/001_sample-product-pipeline_de.sh
           ./tests/scripts/pipelines/001_sample-product-pipeline_en.sh
 
@@ -93,12 +96,6 @@ jobs:
           path: |
             .mirror
             .maven-index
-
-      - uses: actions/upload-artifact@v4
-        if: ${{ always() }}
-        with:
-          name: logs
-          path: .logs
 
       - name: Commit changes
         if: ${{ !env.ACT }}
