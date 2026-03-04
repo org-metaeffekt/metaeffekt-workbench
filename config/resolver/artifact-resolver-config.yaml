@@ -46,7 +46,9 @@ alpinePackageResolverConfig:
           - literal: ".tgz"
 
 debArtifactResolverConfig:
-  ubuntuIndexConfig:
+  # incompatibility between branches. On main this has been renamed to debIndexConfig; on 0.153.x it is ubuntuIndexConfig
+  # when releasing against 0.153.x this needs to be replaced
+  debIndexConfig:
     packagesDownloadUrls:
       - http://archive.ubuntu.com/ubuntu/dists/focal/main/binary-amd64/Packages.xz
       - http://archive.ubuntu.com/ubuntu/dists/focal-security/main/binary-amd64/Packages.xz
