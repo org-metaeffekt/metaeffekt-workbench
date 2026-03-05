@@ -15,7 +15,7 @@
 
     <properties>
 
-        <report.period.since>9 months</report.period.since>
+        <report.period.since>1 week</report.period.since>
         <report.period.until>now</report.period.until>
 
         <asset.id>${product.name}</asset.id>
