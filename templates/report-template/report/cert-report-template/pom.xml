@@ -15,7 +15,7 @@
 
     <properties>
 
-        <report.period.since>1 week</report.period.since>
+        <report.period.since>9 months</report.period.since>
         <report.period.until>now</report.period.until>
 
         <asset.id>${product.name}</asset.id>
@@ -160,6 +160,33 @@
                                 </outputDirectory>
 
                                 <overviewActive>true</overviewActive>
+                                <cvssActive>false</cvssActive>
+
+                                <cvssVulnerabilityCountLimit>400</cvssVulnerabilityCountLimit>
+                                <securityPolicy>
+                                    <files>
+                                        <file>${security.policy.file}</file>
+                                    </files>
+                                    <activeIds>cert_extended_configuration</activeIds>
+                                </securityPolicy>
+                            </configuration>
+                        </execution>
+
+                        <execution>
+                            <id>generate-cvss-svg</id>
+                            <goals>
+                                <goal>ae-generate-inventory-report-svg</goal>
+                            </goals>
+                            <phase>generate-sources</phase>
+                            <configuration>
+                                <inventoryInputFile>
+                                    ${param.computed.inventory.dir}/${asset.name}-statistics-report-inventory.xlsx
+                                </inventoryInputFile>
+                                <outputDirectory>
+                                    ${project.basedir}/src/main/dita/${report.module}/gen/cert-advisory-inventory/resources/svg
+                                </outputDirectory>
+
+                                <overviewActive>false</overviewActive>
                                 <cvssActive>true</cvssActive>
 
                                 <cvssVulnerabilityCountLimit>400</cvssVulnerabilityCountLimit>
@@ -187,8 +214,6 @@
 
                                 <overviewActive>true</overviewActive>
                                 <cvssActive>false</cvssActive>
-
-                                <cvssVulnerabilityCountLimit>-1</cvssVulnerabilityCountLimit>
 
                                 <securityPolicy>
                                     <files>
