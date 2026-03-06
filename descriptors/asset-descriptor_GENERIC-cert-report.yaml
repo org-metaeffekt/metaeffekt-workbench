@@ -3,10 +3,10 @@ inventories:
       folder: "${input.inventory.dir}"
       type: INPUT
   - merged-inventory:
-      file: "${param.computed.inventory.dir}/${asset.name}-vulnerability-report-inventory.xlsx"
+      file: "${param.computed.inventory.dir}/${asset.name}-merged-inventory.xlsx"
       type: COMPUTED
   - "cert-advisory-inventory":
-      file: "${param.computed.inventory.dir}/${asset.name}-statistics-report-inventory.xlsx"
+      file: "${param.computed.inventory.dir}/${asset.name}-cert-advisory-inventory.xlsx"
       type: COMPUTED
 
 transformations:
@@ -63,7 +63,7 @@ documents:
 
       #parameter for report content references (match with part name)
       vulnerability.statistics.part.name: "statistics-part"
-      appendix.part.name: "appendix-part"
+      vulnerability.statistics.all.part.name: "statistics-all-part"
     parts:
       "summary-part":
         type: VULNERABILITY_SUMMARY_PART
@@ -80,6 +80,7 @@ documents:
         params:
           securityPolicyActiveIds: "cert_extended_configuration"
           filterAdvisorySummary: "true"
+          svgCvssVulnerabilityCountLimit: "400"
         inventories:
           - inventoryRef: "cert-advisory-inventory"
             assetName: "${asset.name}"
@@ -95,17 +96,8 @@ documents:
             assetName: "${asset.name}"
             assetVersion: "${asset.version}"
 
-      "statistics-part-all":
+      "statistics-all-part":
         type: VULNERABILITY_STATISTICS_REPORT
-        params:
-          securityPolicyActiveIds: "cert_configuration"
-        inventories:
-          - inventoryRef: "merged-inventory"
-            assetName: "${asset.name}"
-            assetVersion: "${asset.version}"
-
-      "appendix-part":
-        type: APPENDIX
         params:
           securityPolicyActiveIds: "cert_configuration"
         inventories:
