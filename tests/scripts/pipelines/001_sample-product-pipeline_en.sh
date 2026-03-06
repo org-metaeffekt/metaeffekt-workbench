@@ -33,8 +33,6 @@ set_global_variables() {
   create_workspace_directories "$WORKSPACE_DIR/sample-product-1.0.0" "sample-asset-1.0.0"
 
   ENV_REFERENCE_INVENTORY_DIR="$WORKBENCH_DIR/inventories/example-reference-inventory/inventory"
-  ENV_REFERENCE_LICENSES_DIR="$WORKBENCH_DIR/inventories/example-reference-inventory/licenses"
-  ENV_REFERENCE_COMPONENTS_DIR="$WORKBENCH_DIR/inventories/example-reference-inventory/components"
 
   ENV_REPORT_TEMPLATE_DIR="$WORKBENCH_DIR/templates/report-template"
   PARAM_SECURITY_POLICY_FILE="$WORKBENCH_DIR/policies/security-policy/security-policy.json"
@@ -120,7 +118,6 @@ copy_to_grouped() {
   CMD+=("-Dparam.asset.name=sample-asset-1.0.0")
 
   pass_command_info_to_logger "group"
-
 }
 
 create_software_distribution_annex() {

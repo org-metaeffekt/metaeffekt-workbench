@@ -227,5 +227,20 @@ pipeline {
                 }
             }
         }
+
+        stage('Run workspace-001 tests - cisco-catalyst-sd-wan-manager_en') {
+            steps {
+                catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE', message: '001_cisco-catalyst-sd-wan-manager-pipeline_en.sh failed.') {
+                    // run pipeline
+                    withMaven(maven: 'maven-3.9.6') {
+                        sh './tests/scripts/pipelines/001_cisco-catalyst-sd-wan-manager-pipeline_en.sh'
+                    }
+
+                    // publish inventory (internal)
+                    sh 'export AE_TIMESTAMP=`date +"%Y-%m-%d@%Hh%Mm"` && curl --create-dirs -T "tests/resources/workspace-001/cisco-catalyst-sd-wan-manager-20.12.5.2/06_advised/cisco-catalyst-sd-wan-manager-20.12.5.2/cisco-catalyst-sd-wan-manager-advised-inventory.xlsx" http://ae-scanner/upload/inventory-index/cisco-catalyst-sd-wan-manager-20.12.5.2/cisco-catalyst-sd-wan-manager-advised-inventory-$AE_TIMESTAMP.xlsx'
+                }
+            }
+        }
+
     }
 }
