@@ -238,6 +238,9 @@ pipeline {
 
                     // publish inventory (internal)
                     sh 'export AE_TIMESTAMP=`date +"%Y-%m-%d@%Hh%Mm"` && curl --create-dirs -T "tests/resources/workspace-001/cisco-catalyst-sd-wan-manager-20.12.5.2/06_advised/cisco-catalyst-sd-wan-manager-20.12.5.2/cisco-catalyst-sd-wan-manager-advised-inventory.xlsx" http://ae-scanner/upload/inventory-index/cisco-catalyst-sd-wan-manager-20.12.5.2/cisco-catalyst-sd-wan-manager-advised-inventory-$AE_TIMESTAMP.xlsx'
+
+                    // publish dashboard
+                    sh 'curl -T "tests/resources/workspace-001/cisco-catalyst-sd-wan-manager-20.12.5.2/06_advised/cisco-catalyst-sd-wan-manager-20.12.5.2/dashboards/cisco-catalyst-sd-wan-manager-20.12.5.2-dashboard.html" "ftp://$FTP_HOST/html/metaeffekt/dashboards/cisco-catalyst-sd-wan-manager-20.12.5.2.html" --user $FTP_USER:$FTP_PASS'
                 }
             }
         }
