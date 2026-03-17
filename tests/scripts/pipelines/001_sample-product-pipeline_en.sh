@@ -80,8 +80,8 @@ enrich_inventory_with_reference() {
 }
 
 enrich_inventory() {
-  ASSESSMENT_DIR="$WORKBENCH_DIR/assessments/assessment-001/sample-product"
-  CONTEXT_DIR="$WORKBENCH_DIR/contexts/example-001"
+  ASSESSMENT_DIR="$WORKBENCH_DIR/assessments/metaeffekt/sample-product-1/local/assessments/generic"
+  CONTEXT_DIR="$WORKBENCH_DIR/assessments/metaeffekt/sample-product-1/local/context"
   CORRELATION_DIR="$WORKBENCH_DIR/correlations/shared"
   ADVISED_INVENTORY_FILE="$ADVISED_DIR/sample-product-advised-inventory.xlsx"
   PROCESSOR_TMP_DIR="$ADDITIONAL_DIR/processor"
@@ -98,9 +98,9 @@ enrich_inventory() {
 
   CMD+=("-Dparam.security.policy.file=$PARAM_SECURITY_POLICY_FILE")
   CMD+=("-Dparam.security.policy.active.ids=$SECURITY_POLICY_ACTIVE_IDS")
-  CMD+=("-Dparam.assessment.dir=$ASSESSMENT_DIR")
+  CMD+=("-Dparam.assessment.dirs=$ASSESSMENT_DIR")
   CMD+=("-Dparam.correlation.dir=$CORRELATION_DIR")
-  CMD+=("-Dparam.context.dir=$CONTEXT_DIR")
+  CMD+=("-Dparam.context.dirs=$CONTEXT_DIR")
   CMD+=("-Dparam.activate.msrc=$ACTIVATE_MSRC")
 
   CMD+=("-Denv.vulnerability.mirror.dir=$EXTERNAL_VULNERABILITY_MIRROR_DIR/.database")

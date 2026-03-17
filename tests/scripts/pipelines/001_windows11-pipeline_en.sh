@@ -58,8 +58,8 @@ update_mirror() {
 enrich_inventory_patched() {
   log_info "Running enrich_inventory process."
   PREPARED_INVENTORY_FILE="$PREPARED_DIR/windows11-inventory_patched.xlsx"
-  ASSESSMENT_DIR="$WORKBENCH_DIR/assessments/assessment-001/windows11"
-  CONTEXT_DIR="$WORKBENCH_DIR/contexts/example-001"
+  ASSESSMENT_DIR="$WORKBENCH_DIR/assessments/metaeffekt/windows-11/local/assessments/generic"
+  CONTEXT_DIR="$WORKBENCH_DIR/assessments/metaeffekt/windows-11/local/context"
   CORRELATION_DIR="$WORKBENCH_DIR/correlations/shared"
   ADVISED_INVENTORY_FILE="$ADVISED_DIR/windows11-advised-inventory_patched.xlsx"
   PROCESSOR_TMP_DIR="$ADDITIONAL_DIR/processor"
@@ -82,9 +82,9 @@ enrich_inventory_patched() {
   CMD+=("-Dparam.dashboard.footer=Windows 11")
 
   # these are params
-  CMD+=("-Dparam.assessment.dir=$ASSESSMENT_DIR")
+  CMD+=("-Dparam.assessment.dirs=$ASSESSMENT_DIR")
   CMD+=("-Dparam.correlation.dir=$CORRELATION_DIR")
-  CMD+=("-Dparam.context.dir=$CONTEXT_DIR")
+  CMD+=("-Dparam.context.dirs=$CONTEXT_DIR")
 
   CMD+=("-Denv.vulnerability.mirror.dir=$EXTERNAL_VULNERABILITY_MIRROR_DIR/.database")
 
@@ -110,8 +110,8 @@ generate_vulnerability_assessment_dashboard_patched() {
 enrich_inventory_unpatched() {
   log_info "Running enrich_inventory process."
   PREPARED_INVENTORY_FILE="$PREPARED_DIR/windows11-inventory_unpatched.xlsx"
-  ASSESSMENT_DIR="$WORKBENCH_DIR/assessments/assessment-001/windows11"
-  CONTEXT_DIR="$WORKBENCH_DIR/contexts/example-001"
+  ASSESSMENT_DIR="$WORKBENCH_DIR/assessments/metaeffekt/windows-11/local/assessments/generic"
+  CONTEXT_DIR="$WORKBENCH_DIR/assessments/metaeffekt/windows-11/local/context"
   CORRELATION_DIR="$WORKBENCH_DIR/correlations/shared"
   ADVISED_INVENTORY_FILE="$ADVISED_DIR/windows11-advised-inventory_unpatched.xlsx"
   PROCESSOR_TMP_DIR="$ADDITIONAL_DIR/processor"
@@ -134,9 +134,9 @@ enrich_inventory_unpatched() {
   CMD+=("-Dparam.dashboard.footer=Windows 11")
 
   # these are params
-  CMD+=("-Dparam.assessment.dir=$ASSESSMENT_DIR")
+  CMD+=("-Dparam.assessment.dirs=$ASSESSMENT_DIR")
   CMD+=("-Dparam.correlation.dir=$CORRELATION_DIR")
-  CMD+=("-Dparam.context.dir=$CONTEXT_DIR")
+  CMD+=("-Dparam.context.dirs=$CONTEXT_DIR")
 
   CMD+=("-Denv.vulnerability.mirror.dir=$EXTERNAL_VULNERABILITY_MIRROR_DIR/.database")
 

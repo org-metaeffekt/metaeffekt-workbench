@@ -27,6 +27,27 @@ product-tree, a mapping to a security zone or conduit, an exposure level or othe
 context is determined by the project structure and simply passed through the system as discriminator or identifier for
 the given assessment context.
 
+The assessment folder structure looks as follows:
+``` text
+.
+└── assessments/
+    ├── <tenant-id>/
+    │   ├── context
+    │   ├── <asset-id> (Based on major version)/
+    │   │   ├── context
+    │   │   ├── <assessment-context>/
+    │   │   │   ├── context
+    │   │   │   └── assessments/
+    │   │   │       ├── generic
+    │   │   │       └── dynamic
+    │   │   └── <assessment-context>/
+    │   │       └── ...
+    │   └── <asset-id> (Based on major version)/
+    │       └── ...
+    └── <tenant-id>/
+        └── ...
+```
+
 ## Asset Manager Service 
 
 The Asset Manager Service can either be deployed centrally or on a local machine. In any case the associated

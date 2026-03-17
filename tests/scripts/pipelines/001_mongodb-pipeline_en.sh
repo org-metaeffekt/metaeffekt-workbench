@@ -60,8 +60,8 @@ enrich_inventory() {
   log_info "Running enrich_inventory process."
 
   PREPARED_INVENTORY_FILE="$PREPARED_DIR/mongodb-inventory.xls"
-  ASSESSMENT_DIR="$WORKBENCH_DIR/assessments/assessment-001/mongodb"
-  CONTEXT_DIR="$WORKBENCH_DIR/contexts/example-001"
+  ASSESSMENT_DIR="$WORKBENCH_DIR/assessments/metaeffekt/mongodb-8/local/assessments/generic"
+  CONTEXT_DIR="$WORKBENCH_DIR/assessments/metaeffekt/mongodb-8/local/context"
   CORRELATION_DIR="$WORKBENCH_DIR/correlations/shared"
   ADVISED_INVENTORY_FILE="$ADVISED_DIR/mongodb-advised-inventory.xlsx"
   PROCESSOR_TMP_DIR="$ADDITIONAL_DIR/processor"
@@ -83,9 +83,9 @@ enrich_inventory() {
   CMD+=("-Dparam.dashboard.title=MongoDB 8.2.2 Assessment")
   CMD+=("-Dparam.dashboard.subtitle=")
   CMD+=("-Dparam.dashboard.footer=MongoDB 8.2.2")
-  CMD+=("-Dparam.assessment.dir=$ASSESSMENT_DIR")
+  CMD+=("-Dparam.assessment.dirs=$ASSESSMENT_DIR")
   CMD+=("-Dparam.correlation.dir=$CORRELATION_DIR")
-  CMD+=("-Dparam.context.dir=$CONTEXT_DIR")
+  CMD+=("-Dparam.context.dirs=$CONTEXT_DIR")
   CMD+=("-Dparam.activate.msrc=$ACTIVATE_MSRC")
 
 
