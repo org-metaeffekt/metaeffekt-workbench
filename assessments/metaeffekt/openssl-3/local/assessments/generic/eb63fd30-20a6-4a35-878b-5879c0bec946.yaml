@@ -1,0 +1,22 @@
+schema-version: '2.2'
+assessments:
+  - scope: inventory
+    events:
+      - rationale: Privileges required.
+        author: DonQuixote
+        authorId: don_quixote
+        date: '2025-10-07 12:45:03'
+        cvss:
+          - rationale: Some form of low level authentication is required
+            modifications:
+              - version: '3.1'
+                type: lower metric
+                metrics: MPR:L
+        creationContext:
+          assetId: AID-OpenSSL
+          custom:
+            createdForVulnerability: ''
+    creationContext:
+      assetId: AID-OpenSSL
+      custom:
+        createdForVulnerability: ''

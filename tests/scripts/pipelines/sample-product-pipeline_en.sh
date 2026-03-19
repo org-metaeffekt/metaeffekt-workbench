@@ -29,7 +29,7 @@ set_global_variables() {
   readonly KONTINUUM_PROCESSORS_DIR="$EXTERNAL_KONTINUUM_DIR/processors"
 
   LOG_DIR="$WORKBENCH_DIR/.logs"
-  logger_init "$LOG_DIR/001_sample-product-pipeline_en.log"
+  logger_init "$LOG_DIR/sample-product-pipeline_en.log"
   create_workspace_directories "$WORKSPACE_DIR/sample-product-1.0.0" "sample-asset-1.0.0"
 
   ENV_REFERENCE_INVENTORY_DIR="$WORKBENCH_DIR/inventories/example-reference-inventory/inventory"
@@ -46,6 +46,10 @@ set_global_variables() {
   ENV_CR_DESCRIPTOR_FILE="$ENV_DESCRIPTOR_DIR/asset-descriptor_GENERIC-cert-report.yaml"
   ENV_VSR_DESCRIPTOR_FILE="$ENV_DESCRIPTOR_DIR/asset-descriptor_GENERIC-vulnerability-summary-report.yaml"
   ENV_LANGUAGE="en"
+
+  TENANT_ID="metaeffekt"
+  ASSET_ID="sample-product-1"
+  ASSESSMENT_CONTEXT="local"
 }
 
 update_mirror() {
@@ -80,8 +84,8 @@ enrich_inventory_with_reference() {
 }
 
 enrich_inventory() {
-  ASSESSMENT_DIR="$WORKBENCH_DIR/assessments/metaeffekt/sample-product-1/local/assessments/generic"
-  CONTEXT_DIR="$WORKBENCH_DIR/assessments/metaeffekt/sample-product-1/local/context"
+  ASSESSMENT_DIR="$WORKBENCH_DIR/assessments/$TENANT_ID/$ASSET_ID/$ASSESSMENT_CONTEXT/assessments/generic"
+  CONTEXT_DIR="$WORKBENCH_DIR/assessments/$TENANT_ID/$ASSET_ID/$ASSESSMENT_CONTEXT/context"
   CORRELATION_DIR="$WORKBENCH_DIR/correlations/shared"
   ADVISED_INVENTORY_FILE="$ADVISED_DIR/sample-product-advised-inventory.xlsx"
   PROCESSOR_TMP_DIR="$ADDITIONAL_DIR/processor"
@@ -441,6 +445,9 @@ create_vulnerability_assessment_dashboard() {
 
   CMD+=("-Dparam.security.policy.file=$PARAM_SECURITY_POLICY_FILE")
   CMD+=("-Dparam.security.policy.active.ids=$SECURITY_POLICY_ACTIVE_IDS")
+  CMD+=("-Dparam.tenant.id=$TENANT_ID")
+  CMD+=("-Dparam.asset.id=$ASSET_ID")
+  CMD+=("-Dparam.assessment.context=$ASSESSMENT_CONTEXT")
 
   CMD+=("-Denv.vulnerability.mirror.dir=$EXTERNAL_VULNERABILITY_MIRROR_DIR/.database")
 

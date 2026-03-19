@@ -30,7 +30,7 @@ set_global_variables() {
   readonly KONTINUUM_PROCESSORS_DIR="$EXTERNAL_KONTINUUM_DIR/processors"
 
   LOG_DIR="$WORKBENCH_DIR/.logs"
-  logger_init "$LOG_DIR/001_react-pipeline_en.log"
+  logger_init "$LOG_DIR/react-pipeline_en.log"
   create_workspace_directories "$WORKSPACE_DIR/react-19.2.0" "react-19.2.0"
 
   ENV_REPORT_TEMPLATE_DIR="$WORKBENCH_DIR/templates/report-template"
@@ -38,6 +38,10 @@ set_global_variables() {
 
   ENV_DESCRIPTOR_DIR="$WORKBENCH_DIR/descriptors"
   ENV_VR_DESCRIPTOR_FILE="$WORKBENCH_DIR/descriptors/asset-descriptor_GENERIC-vulnerability-report.yaml"
+
+  TENANT_ID="metaeffekt"
+  ASSET_ID="react-19"
+  ASSESSMENT_CONTEXT="local"
 }
 
 update_mirror() {
@@ -61,8 +65,8 @@ enrich_inventory() {
   log_info "Running enrich_inventory process."
 
   PREPARED_INVENTORY_FILE="$PREPARED_DIR/react-inventory.xls"
-  ASSESSMENT_DIR="$WORKBENCH_DIR/assessments/metaeffekt/react-19/local/assessments/generic"
-  CONTEXT_DIR="$WORKBENCH_DIR/assessments/metaeffekt/react-19/local/context"
+  ASSESSMENT_DIR="$WORKBENCH_DIR/assessments/$TENANT_ID/$ASSET_ID/$ASSESSMENT_CONTEXT/assessments/generic"
+  CONTEXT_DIR="$WORKBENCH_DIR/assessments/$TENANT_ID/$ASSET_ID/$ASSESSMENT_CONTEXT/context"
   CORRELATION_DIR="$WORKBENCH_DIR/correlations/shared"
   ADVISED_INVENTORY_FILE="$ADVISED_DIR/react-advised-inventory.xlsx"
   PROCESSOR_TMP_DIR="$ADDITIONAL_DIR/processor"
@@ -121,6 +125,9 @@ generate_vulnerability_assessment_dashboard() {
 
   CMD+=("-Dparam.security.policy.file=$PARAM_SECURITY_POLICY_FILE")
   CMD+=("-Dparam.security.policy.active.ids=$SECURITY_POLICY_ACTIVE_IDS")
+  CMD+=("-Dparam.tenant.id=$TENANT_ID")
+  CMD+=("-Dparam.asset.id=$ASSET_ID")
+  CMD+=("-Dparam.assessment.context=$ASSESSMENT_CONTEXT")
 
   CMD+=("-Denv.vulnerability.mirror.dir=$EXTERNAL_VULNERABILITY_MIRROR_DIR/.database")
 

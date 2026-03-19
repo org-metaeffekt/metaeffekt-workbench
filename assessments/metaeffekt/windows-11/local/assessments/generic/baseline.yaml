@@ -1,18 +1,24 @@
-# baseline-assessment; applied to all vulnerabilities provide initial context
-history:
-  - rationale:
-      "<p>
-        The windows workstations are integrated in a dedicated network. No access from external is possible
-        (CVSSv2: AV:A; CVSSv3/CVSSV4: MAV:A).
-      </p>"
-    date: 2024-02-29
-    author: KKL
-
-scope: inventory
-
-cvssV2:
-  lower: AV:A
-cvssV3:
-  lower: MAV:A
-cvssV4:
-  lower: MAV:A
+schema-version: '2.2'
+assessments:
+  - scope: inventory
+    events:
+      - discard prior events: true
+        rationale: '<p> The windows workstations are integrated in a dedicated network. No access from external is possible (CVSSv2: AV:A; CVSSv3/CVSSV4: MAV:A). </p>'
+        author: KKL
+        date: '2024-02-29'
+        cvss:
+          - rationale: Applying only parts that lead to a lower/equal score
+            modifications:
+              - version: '2.0'
+                type: lower score
+                metrics: AV:A
+          - rationale: Applying only parts that lead to a lower/equal score
+            modifications:
+              - version: '3.1'
+                type: lower score
+                metrics: CVSS:3.1/MAV:A
+          - rationale: Applying only parts that lead to a lower/equal score
+            modifications:
+              - version: '4.0'
+                type: lower score
+                metrics: CVSS:4.0/MAV:A

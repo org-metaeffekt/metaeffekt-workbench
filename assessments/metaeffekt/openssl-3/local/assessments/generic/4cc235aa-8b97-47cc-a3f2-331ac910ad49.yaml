@@ -1,0 +1,20 @@
+schema-version: '2.2'
+assessments:
+  - affects:
+      vulnerabilities:
+        - CVE-2024-5535
+    events:
+      - status: not applicable
+        rationale: SSL_select_next_proto function with a 0 length is not used.
+        measures: Regular code reviews specifically focus on the circumstances. The review procedures were enhanced to specifically cover this aspect.
+        author: DonQuixote
+        authorId: don_quixote
+        date: '2025-10-07 05:15:35'
+        creationContext:
+          assetId: AID-OpenSSL
+          custom:
+            createdForVulnerability: CVE-2024-5535
+    creationContext:
+      assetId: AID-OpenSSL
+      custom:
+        createdForVulnerability: CVE-2024-5535

@@ -30,13 +30,17 @@ set_global_variables() {
   readonly KONTINUUM_PROCESSORS_DIR="$EXTERNAL_KONTINUUM_DIR/processors"
 
   LOG_DIR="$WORKBENCH_DIR/.logs"
-  logger_init "$LOG_DIR/001_mongodb-pipeline_en.log"
-  create_workspace_directories "$WORKSPACE_DIR/mongodb-8.2.2" "mongodb-8.2.2"
+  logger_init "$LOG_DIR/openssl-pipeline_en.log"
+  create_workspace_directories "$WORKSPACE_DIR/openssl-3.3.1" "openssl-3.3.1"
 
   ENV_REPORT_TEMPLATE_DIR="$WORKBENCH_DIR/templates/report-template"
   PARAM_SECURITY_POLICY_FILE="$WORKBENCH_DIR/policies/security-policy/security-policy.json"
 
   ENV_VR_DESCRIPTOR_FILE="$WORKBENCH_DIR/descriptors/asset-descriptor_GENERIC-vulnerability-report.yaml"
+
+  TENANT_ID="metaeffekt"
+  ASSET_ID="openssl-3"
+  ASSESSMENT_CONTEXT="local"
 }
 
 update_mirror() {
@@ -59,13 +63,13 @@ update_mirror() {
 enrich_inventory() {
   log_info "Running enrich_inventory process."
 
-  PREPARED_INVENTORY_FILE="$PREPARED_DIR/mongodb-inventory.xls"
-  ASSESSMENT_DIR="$WORKBENCH_DIR/assessments/metaeffekt/mongodb-8/local/assessments/generic"
-  CONTEXT_DIR="$WORKBENCH_DIR/assessments/metaeffekt/mongodb-8/local/context"
+  PREPARED_INVENTORY_FILE="$PREPARED_DIR/openssl-inventory.xls"
+  ASSESSMENT_DIR="$WORKBENCH_DIR/assessments/$TENANT_ID/$ASSET_ID/$ASSESSMENT_CONTEXT/assessments/generic"
+  CONTEXT_DIR="$WORKBENCH_DIR/assessments/$TENANT_ID/$ASSET_ID/$ASSESSMENT_CONTEXT/context"
   CORRELATION_DIR="$WORKBENCH_DIR/correlations/shared"
-  ADVISED_INVENTORY_FILE="$ADVISED_DIR/mongodb-advised-inventory.xlsx"
+  ADVISED_INVENTORY_FILE="$ADVISED_DIR/openssl-advised-inventory.xlsx"
   PROCESSOR_TMP_DIR="$ADDITIONAL_DIR/processor"
-  DASHBOARD_SUBJECT="MongoDB 8.2.2"
+  DASHBOARD_SUBJECT="OpenSSL 3.3.1"
   SECURITY_POLICY_ACTIVE_IDS="assessment_enrichment_configuration"
   ACTIVATE_MSRC="false"
 
@@ -80,9 +84,9 @@ enrich_inventory() {
   CMD+=("-Dparam.security.policy.file=$PARAM_SECURITY_POLICY_FILE")
   CMD+=("-Dparam.security.policy.file=$PARAM_SECURITY_POLICY_FILE")
   CMD+=("-Dparam.security.policy.active.ids=$SECURITY_POLICY_ACTIVE_IDS")
-  CMD+=("-Dparam.dashboard.title=MongoDB 8.2.2 Assessment")
+  CMD+=("-Dparam.dashboard.title=OpenSSL 3.3.1 Assessment")
   CMD+=("-Dparam.dashboard.subtitle=")
-  CMD+=("-Dparam.dashboard.footer=MongoDB 8.2.2")
+  CMD+=("-Dparam.dashboard.footer=OpenSSL 3.3.1")
   CMD+=("-Dparam.assessment.dirs=$ASSESSMENT_DIR")
   CMD+=("-Dparam.correlation.dir=$CORRELATION_DIR")
   CMD+=("-Dparam.context.dirs=$CONTEXT_DIR")
@@ -98,10 +102,10 @@ copy_to_grouped() {
   CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/util/util_transform-inventories.xml" process-resources)
   [ -n "${AE_CORE_VERSION:-}" ] && CMD+=("-Dae.core.version=$AE_CORE_VERSION")
   [ -n "${AE_ARTIFACT_ANALYSIS_VERSION:-}" ] && CMD+=("-Dae.artifact.analysis.version=$AE_ARTIFACT_ANALYSIS_VERSION")
-  CMD+=("-Dinput.inventory.dir=$WORKSPACE_DIR/mongodb-8.2.2")
-  CMD+=("-Doutput.inventory.dir=$WORKSPACE_DIR/mongodb-8.2.2/07_grouped")
+  CMD+=("-Dinput.inventory.dir=$WORKSPACE_DIR/openssl-3.3.1")
+  CMD+=("-Doutput.inventory.dir=$WORKSPACE_DIR/openssl-3.3.1/07_grouped")
   CMD+=("-Dparam.kotlin.script.file=$WORKBENCH_DIR/scripts/group.kts")
-  CMD+=("-Dparam.asset.name=mongodb-8.2.2")
+  CMD+=("-Dparam.asset.name=openssl-3.3.1")
 
   pass_command_info_to_logger "group"
 }
@@ -109,7 +113,7 @@ copy_to_grouped() {
 generate_vulnerability_assessment_dashboard() {
   log_info "Running generate_vulnerability_assessment_dashboard process."
 
-  OUTPUT_DASHBOARD_FILE="$ADVISED_DIR/dashboards/mongodb-8.2.2-dashboard.html"
+  OUTPUT_DASHBOARD_FILE="$ADVISED_DIR/dashboards/openssl-3.3.1-dashboard.html"
   SECURITY_POLICY_ACTIVE_IDS="assessment_enrichment_configuration"
 
   CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/advise/advise_create-dashboard.xml" process-resources)
@@ -121,6 +125,9 @@ generate_vulnerability_assessment_dashboard() {
 
   CMD+=("-Dparam.security.policy.file=$PARAM_SECURITY_POLICY_FILE")
   CMD+=("-Dparam.security.policy.active.ids=$SECURITY_POLICY_ACTIVE_IDS")
+  CMD+=("-Dparam.tenant.id=$TENANT_ID")
+  CMD+=("-Dparam.asset.id=$ASSET_ID")
+  CMD+=("-Dparam.assessment.context=$ASSESSMENT_CONTEXT")
 
   CMD+=("-Denv.vulnerability.mirror.dir=$EXTERNAL_VULNERABILITY_MIRROR_DIR/.database")
 
@@ -130,16 +137,16 @@ generate_vulnerability_assessment_dashboard() {
 generate_vulnerability_report() {
   log_info "Running generate_vulnerability_report process."
 
-  OUTPUT_VR_FILE="$REPORTED_DIR/mongodb-vulnerability-report-de.pdf"
+  OUTPUT_VR_FILE="$REPORTED_DIR/openssl-vulnerability-report-de.pdf"
   OUTPUT_COMPUTED_INVENTORY_DIR="$ADDITIONAL_DIR/report"
 
   PARAM_DOCUMENT_TYPE="VR"
-  PARAM_ASSET_ID="MongoDB"
-  PARAM_ASSET_NAME="MongoDB"
-  PARAM_ASSET_VERSION="8.2.2"
-  PARAM_PRODUCT_NAME="MongoDB"
-  PARAM_PRODUCT_VERSION="8.2.2"
-  PARAM_PRODUCT_WATERMARK="MongoDB"
+  PARAM_ASSET_ID="OpenSSL"
+  PARAM_ASSET_NAME="OpenSSL"
+  PARAM_ASSET_VERSION="3.3.1"
+  PARAM_PRODUCT_NAME="OpenSSL"
+  PARAM_PRODUCT_VERSION="3.3.1"
+  PARAM_PRODUCT_WATERMARK="OpenSSL"
   PARAM_OVERVIEW_ADVISORS="CERT_FR"
 
   CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/report/report_create-document.xml" verify)
