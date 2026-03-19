@@ -82,10 +82,6 @@ jobs:
           AE_CORE_VERSION: ${{ inputs.ae-core-version }}
           AE_ARTIFACT_ANALYSIS_VERSION: ${{ inputs.ae-artifact-analysis-version }}
         run: |
-          ls -l -a .metaeffekt-kontinuum
-          ls -l -a .metaeffekt-kontinuum/processors
-          ls -l -a .metaeffekt-kontinuum/processors/report
-          ./tests/scripts/pipelines/sample-product-pipeline_de.sh
           ./tests/scripts/pipelines/sample-product-pipeline_en.sh
 
       - name: Save vulnerability mirror and maven index cache
