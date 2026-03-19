@@ -85,8 +85,8 @@ jobs:
           ls -l -a .metaeffekt-kontinuum
           ls -l -a .metaeffekt-kontinuum/processors
           ls -l -a .metaeffekt-kontinuum/processors/report
-          ./tests/scripts/pipelines/001_sample-product-pipeline_de.sh
-          ./tests/scripts/pipelines/001_sample-product-pipeline_en.sh
+          ./tests/scripts/pipelines/sample-product-pipeline_de.sh
+          ./tests/scripts/pipelines/sample-product-pipeline_en.sh
 
       - name: Save vulnerability mirror and maven index cache
         uses: actions/cache/save@v4
