@@ -5,6 +5,8 @@ set -euo pipefail
 
 readonly SELF_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
+echo $SELF_DIR
+
 source_preload() {
     if [ -f "$SELF_DIR/../preload.sh" ];then
       source "$SELF_DIR/../preload.sh"
