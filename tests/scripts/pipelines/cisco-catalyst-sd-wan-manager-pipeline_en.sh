@@ -187,3 +187,5 @@ main() {
   generate_vulnerability_assessment_dashboard
   generate_vulnerability_report
 }
+
+main "$@"
