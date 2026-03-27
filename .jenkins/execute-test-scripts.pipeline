@@ -241,7 +241,17 @@ pipeline {
 
                     // publish dashboard
                     sh 'curl -T "tests/resources/workspace-001/cisco-catalyst-sd-wan-manager-20.12.5.2/06_advised/cisco-catalyst-sd-wan-manager-20.12.5.2/dashboards/cisco-catalyst-sd-wan-manager-20.12.5.2-dashboard.html" "ftp://$FTP_HOST/html/metaeffekt/dashboards/cisco-catalyst-sd-wan-manager-20.12.5.2.html" --user $FTP_USER:$FTP_PASS'
+
+                    // delay for curl to finish
+                    sh 'sleep 5s'
                 }
+            }
+        }
+
+        stage('Close resources') {
+            steps {
+                // delay for curl to finish
+                sh 'sleep 5s'
             }
         }
 
