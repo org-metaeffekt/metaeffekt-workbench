@@ -56,7 +56,7 @@ pipeline {
                     sh 'mkdir -p .metaeffekt-core'
                     dir ('.metaeffekt-core') {
                         withCredentials([usernamePassword(credentialsId: 'JenkinsGithubAccess', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                            git url: 'https://github.com/org-metaeffekt/metaeffekt-core.git', branch: 'AE-1681-enable-svg-generation-in-asset-descriptor', credentialsId: 'JenkinsGithubAccess'
+                            git url: 'https://github.com/org-metaeffekt/metaeffekt-core.git', branch: 'master', credentialsId: 'JenkinsGithubAccess'
                         }
                     }
                 }
@@ -78,7 +78,7 @@ pipeline {
                     sh 'mkdir -p .metaeffekt-artifact-analysis'
                     dir ('.metaeffekt-artifact-analysis') {
                         withCredentials([usernamePassword(credentialsId: 'JenkinsGithubAccess', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                            git url: 'https://github.com/org-metaeffekt/metaeffekt-artifact-analysis.git', branch: 'AE-1681-revise-svg-generation-in-asset-descriptor', credentialsId: 'JenkinsGithubAccess'
+                            git url: 'https://github.com/org-metaeffekt/metaeffekt-artifact-analysis.git', branch: 'main', credentialsId: 'JenkinsGithubAccess'
                         }
                     }
                 }
@@ -241,7 +241,17 @@ pipeline {
 
                     // publish dashboard
                     sh 'curl -T "tests/resources/workspace-001/cisco-catalyst-sd-wan-manager-20.12.5.2/06_advised/cisco-catalyst-sd-wan-manager-20.12.5.2/dashboards/cisco-catalyst-sd-wan-manager-20.12.5.2-dashboard.html" "ftp://$FTP_HOST/html/metaeffekt/dashboards/cisco-catalyst-sd-wan-manager-20.12.5.2.html" --user $FTP_USER:$FTP_PASS'
+
+                    // delay for curl to finish
+                    sh 'sleep 5s'
                 }
+            }
+        }
+
+        stage('Close resources') {
+            steps {
+                // delay for curl to finish
+                sh 'sleep 5s'
             }
         }
 
