@@ -6,6 +6,11 @@ pipeline {
         label 'metaeffekt-astronaut'
     }
 
+    tools {
+        jdk 'ZULU17'
+        maven 'MAVEN3912'
+    }
+
     environment {
         FTP_HOST = 'web39.alfahosting-server.de'
         FTP_PASS = credentials('ftp-credential')
@@ -65,7 +70,7 @@ pipeline {
         stage('Build metaeffekt-core (skipping tests and javadoc)') {
             steps {
                 dir ('.metaeffekt-core') {
-                    withMaven(jdk: 'ZULU8_mac_mini', maven: 'maven-3.9.6') {
+                    withMaven(maven: 'MAVEN3912') {
                         sh 'mvn -B clean install -DskipTests -Dmaven.javadoc.skip=true'
                     }
                 }
@@ -87,7 +92,7 @@ pipeline {
         stage('Build metaeffekt-artifact-analysis (skipping tests)') {
             steps {
                 dir ('.metaeffekt-artifact-analysis') {
-                    withMaven(jdk: 'ZULU8_mac_mini', maven: 'maven-3.9.6') {
+                    withMaven(maven: 'MAVEN3912') {
                         sh 'mvn -B clean install -DskipTests  -Dmaven.javadoc.skip=true'
                     }
                 }
@@ -122,7 +127,7 @@ pipeline {
             steps {
                 catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE', message: 'mongodb-pipeline_en.sh failed.') {
                     // run pipeline
-                    withMaven(maven: 'maven-3.9.6') {
+                    withMaven(maven: 'MAVEN3912') {
                         sh './tests/scripts/pipelines/mongodb-pipeline_en.sh'
                     }
 
@@ -139,7 +144,7 @@ pipeline {
             steps {
                 catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE', message: 'openssl-pipeline_en.sh.') {
                     // run pipeline
-                    withMaven(maven: 'maven-3.9.6') {
+                    withMaven(maven: 'MAVEN3912') {
                         sh './tests/scripts/pipelines/openssl-pipeline_en.sh'
                     }
 
@@ -156,7 +161,7 @@ pipeline {
             steps {
                 catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE', message: 'windows11-pipeline_en.sh failed.') {
                     // run pipeline
-                    withMaven(maven: 'maven-3.9.6') {
+                    withMaven(maven: 'MAVEN3912') {
                         sh './tests/scripts/pipelines/windows11-pipeline_en.sh'
                     }
 
@@ -175,7 +180,7 @@ pipeline {
             steps {
                 catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE', message: 'sample-product-pipeline_de.sh failed.') {
                     // run pipeline
-                    withMaven(maven: 'maven-3.9.6') {
+                    withMaven(maven: 'MAVEN3912') {
                         sh './tests/scripts/pipelines/sample-product-pipeline_de.sh'
                     }
 
@@ -189,7 +194,7 @@ pipeline {
             steps {
                 catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE', message: 'sample-product-pipeline_en.sh failed.') {
                     // run pipeline
-                    withMaven(maven: 'maven-3.9.6') {
+                    withMaven(maven: 'MAVEN3912') {
                         sh './tests/scripts/pipelines/sample-product-pipeline_en.sh'
                     }
                 }
@@ -201,7 +206,7 @@ pipeline {
             steps {
                 catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE', message: 'react-pipeline_en.sh failed.') {
                     // run pipeline
-                    withMaven(maven: 'maven-3.9.6') {
+                    withMaven(maven: 'MAVEN3912') {
                         sh './tests/scripts/pipelines/react-pipeline_en.sh'
                     }
 
@@ -218,7 +223,7 @@ pipeline {
             steps {
                 catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE', message: 'react-pipeline_en.sh failed.') {
                     // run pipeline
-                    withMaven(maven: 'maven-3.9.6') {
+                    withMaven(maven: 'MAVEN3912') {
                         sh './tests/scripts/pipelines/keycloak-pipeline_en.sh'
                     }
 
@@ -232,7 +237,7 @@ pipeline {
             steps {
                 catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE', message: 'cisco-catalyst-sd-wan-manager-pipeline_en.sh failed.') {
                     // run pipeline
-                    withMaven(maven: 'maven-3.9.6') {
+                    withMaven(maven: 'MAVEN3912') {
                         sh './tests/scripts/pipelines/cisco-catalyst-sd-wan-manager-pipeline_en.sh'
                     }
 
