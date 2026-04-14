@@ -1,0 +1,17 @@
+projectProperties:
+  project:
+    name: "example-project"
+    version: "1.0.0"
+  assets:
+    - name: "example-asset"
+      version: "1.0.0"
+      urlResolver:
+        url: "https://example-url/example-asset-1.0.0.zip"
+        urlPattern: "https://example-url/${name}-${version}.zip"
+    - name: "another-asset"
+      version: "1.0.0"
+      mavenResolver:
+        groupId: "example-group-id"
+        artifactId: "example-artifact-id"
+        artifactVersion: "example-artifact-version"
+

@@ -1,0 +1,11 @@
+projectProperties:
+  project:
+    name: "sample-product"
+    version: "1.0.0"
+  assets:
+    - name: "cmux"
+      version: "0.63.2"
+      urlResolver:
+        url:
+        urlPattern: "https://github.com/manaflow-ai/${name}/archive/refs/tags/v${version}.zip"
+
