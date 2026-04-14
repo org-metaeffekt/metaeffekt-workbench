@@ -53,13 +53,13 @@ fi
 if [ -n "${AE_CORE_VERSION:-}" ]; then
   log_info "Core version specified: $AE_CORE_VERSION"
 else
-  log_info "No AE_CORE_VERSION specified in external.rc file, using HEAD-SNAPSHOT."
+  log_info "No AE_CORE_VERSION specified in external.rc file, using 0.153-SNAPSHOT."
 fi
 
 if [ -n "${AE_ARTIFACT_ANALYSIS_VERSION:-}" ]; then
   log_info "Artifact analysis version specified: $AE_ARTIFACT_ANALYSIS_VERSION"
 else
-  log_info "No AE_ARTIFACT_ANALYSIS_VERSION specified in external.rc file, using HEAD-SNAPSHOT"
+  log_info "No AE_ARTIFACT_ANALYSIS_VERSION specified in external.rc file, using 0.156-SNAPSHOT"
 fi
 
 

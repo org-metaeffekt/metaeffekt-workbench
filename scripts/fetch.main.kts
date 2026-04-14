@@ -4,8 +4,8 @@
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
-import org.jetbrains.kotlin.com.google.common.io.Files
 import java.io.File
+import java.nio.file.Files
 
 
 val propertiesFile = args[0]
@@ -23,26 +23,27 @@ fun main() {
 }
 
 fun fetchAssets(projectProperties: ProjectProperties) {
-    var targetFile: File = File("")
+    var targetDir: File = File("")
     var url: String? = null
 
     for (asset in projectProperties.assets) {
         if (!asset.urlResolver?.url.isNullOrBlank()) {
-            targetFile = craftTargetFile(projectProperties.project, asset)
+            targetDir = craftTargetDir(projectProperties.project, asset)
             url = asset.urlResolver.url
         } else if (!asset.urlResolver?.urlPattern.isNullOrBlank()) {
-            targetFile = craftTargetFile(projectProperties.project, asset)
+            targetDir = craftTargetDir(projectProperties.project, asset)
             url = craftAssetUrl(asset)
         } else {
             throw IllegalArgumentException("Missing required information in properties file.")
         }
-        Files.createParentDirs(targetFile);
-        downloadAsset(url, targetFile)
+        Files.createDirectories(targetDir.toPath())
+        downloadAsset(url, targetDir)
     }
 }
 
-fun downloadAsset(url: String, targetFile: File) {
-    val command = mutableListOf("curl", "-L", "-o", targetFile.path, "-f", url)
+fun downloadAsset(url: String, targetDir: File) {
+    println(targetDir.path + url)
+    val command = mutableListOf("curl", "-L", "-O", "--output-dir", targetDir.path, "-f", url)
     for (curlArgument in curlArguments) {
         command += curlArgument
     }
@@ -77,7 +78,7 @@ fun craftAssetUrl(asset: Asset): String {
     return result
 }
 
-fun craftTargetFile(project: Project, asset: Asset): File {
+fun craftTargetDir(project: Project, asset: Asset): File {
     val sb = StringBuilder(workspaceDir).append("/")
 
     val projectPart = buildNameVersionString(project.name, project.version)
@@ -88,13 +89,6 @@ fun craftTargetFile(project: Project, asset: Asset): File {
 
     val assetPart = buildNameVersionString(asset.name, asset.version)
     sb.appendIfExists(assetPart)
-
-    if (!assetPart.isNullOrBlank()) {
-        sb.append("/")
-        sb.append(assetPart).append(".zip")
-    } else {
-        sb.append("unknown_asset.zip")
-    }
 
     return File(sb.toString())
 }
