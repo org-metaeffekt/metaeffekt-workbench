@@ -10,10 +10,8 @@ import java.nio.file.Files
 
 val propertiesFile = args[0]
 val workspaceDir = args[1]
-val curlArguments = args.getOrNull(2)
-    ?.takeIf { it.isNotBlank() }
-    ?.split(",")
-    ?: emptyList()
+
+val curlArguments = args.sliceArray(2 until args.size).toList()?: emptyList()
 
 fun main() {
     val mapper = ObjectMapper(YAMLFactory()).registerKotlinModule()
@@ -47,7 +45,7 @@ fun downloadAsset(url: String, targetDir: File) {
     for (curlArgument in curlArguments) {
         command += curlArgument
     }
-
+    println("----------------------" + command)
     val process = ProcessBuilder(command).inheritIO().start()
     val exitCode = process.waitFor()
     if (exitCode != 0) {
