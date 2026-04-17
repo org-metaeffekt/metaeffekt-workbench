@@ -4,48 +4,47 @@
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
+import org.jetbrains.kotlin.com.google.common.io.Files
 import java.io.File
-import java.nio.file.Files
 
 
 val propertiesFile = args[0]
 val workspaceDir = args[1]
-
-val curlArguments = args.sliceArray(2 until args.size).toList()?: emptyList()
+val curlArguments = args.drop(2)
+    .flatMap { argument -> argument.split(Regex("\\s+")).filter { it.isNotBlank() } }
 
 fun main() {
     val mapper = ObjectMapper(YAMLFactory()).registerKotlinModule()
     val configFile = File(propertiesFile)
-    val config: PropertiesFile = mapper.readValue(configFile, PropertiesFile::class.java)
-    fetchAssets(config.projectProperties)
+    val root: RootProperties = mapper.readValue(configFile, RootProperties::class.java)
+    fetchAssets(root.projectProperties)
 }
 
 fun fetchAssets(projectProperties: ProjectProperties) {
-    var targetDir: File = File("")
+    var targetFile: File = File("")
     var url: String? = null
 
     for (asset in projectProperties.assets) {
         if (!asset.urlResolver?.url.isNullOrBlank()) {
-            targetDir = craftTargetDir(projectProperties.project, asset)
+            targetFile = craftTargetFile(projectProperties.project, asset)
             url = asset.urlResolver.url
         } else if (!asset.urlResolver?.urlPattern.isNullOrBlank()) {
-            targetDir = craftTargetDir(projectProperties.project, asset)
+            targetFile = craftTargetFile(projectProperties.project, asset)
             url = craftAssetUrl(asset)
         } else {
             throw IllegalArgumentException("Missing required information in properties file.")
         }
-        Files.createDirectories(targetDir.toPath())
-        downloadAsset(url, targetDir)
+        Files.createParentDirs(targetFile);
+        downloadAsset(url, targetFile)
     }
 }
 
-fun downloadAsset(url: String, targetDir: File) {
-    println(targetDir.path + url)
-    val command = mutableListOf("curl", "-L", "-O", "--output-dir", targetDir.path, "-f", url)
-    for (curlArgument in curlArguments) {
-        command += curlArgument
-    }
-    println("----------------------" + command)
+fun downloadAsset(url: String, targetFile: File) {
+    println("Downloading $url -> ${targetFile.absolutePath}")
+    val command = mutableListOf<String>("curl", "-L", "-f", "-o", targetFile.path)
+    command.addAll(curlArguments)
+    command.add(url)
+
     val process = ProcessBuilder(command).inheritIO().start()
     val exitCode = process.waitFor()
     if (exitCode != 0) {
@@ -76,7 +75,7 @@ fun craftAssetUrl(asset: Asset): String {
     return result
 }
 
-fun craftTargetDir(project: Project, asset: Asset): File {
+fun craftTargetFile(project: Project, asset: Asset): File {
     val sb = StringBuilder(workspaceDir).append("/")
 
     val projectPart = buildNameVersionString(project.name, project.version)
@@ -87,6 +86,13 @@ fun craftTargetDir(project: Project, asset: Asset): File {
 
     val assetPart = buildNameVersionString(asset.name, asset.version)
     sb.appendIfExists(assetPart)
+
+    if (!assetPart.isNullOrBlank()) {
+        sb.append("/")
+        sb.append(assetPart).append(".zip")
+    } else {
+        sb.append("unknown_asset.zip")
+    }
 
     return File(sb.toString())
 }
@@ -103,6 +109,8 @@ fun buildNameVersionString(name: String?, version: String?): String? {
     }
 }
 
+main()
+
 fun StringBuilder.appendIfExists(value: String?): StringBuilder {
     if (!value.isNullOrBlank()) append(value)
     return this
@@ -113,8 +121,8 @@ data class ProjectProperties(
     val assets: List<Asset>,
 )
 
-data class PropertiesFile(
-    val projectProperties: ProjectProperties,
+data class RootProperties(
+    val projectProperties: ProjectProperties
 )
 
 data class Project(
@@ -139,5 +147,3 @@ data class MavenResolver(
     val artifactGroup: String?,
     val artifactVersion: String?,
 )
-
-main()
