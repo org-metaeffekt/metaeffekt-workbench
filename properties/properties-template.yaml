@@ -1,16 +1,17 @@
 projectProperties:
   project:
-    name: "example-project"
-    version: "1.0.0"
-  assets:
-    - name: "example-asset"
-      version: "1.0.0"
-      urlResolver:
-        url: "https://example-url/example-asset-1.0.0.zip"
-        urlPattern: "https://example-url/${name}-${version}.zip"
+    name: "example-project" # The name of the project containing all assets listed below.
+    version: "1.0.0" # The version of the project containing all assets listed below.
+  assets: # A list of different assets contained within this project, for now this should only contain a single asset
+    - name: "example-asset" # The name of the asset
+      version: "1.0.0" # The version of the asset (optional)
+      urlResolver: # URL Resolver which downloads the assset from a specified URL or URL pattern.
+        url: "https://example-url/example-asset-1.0.0.zip" # The fully qualified URL (optional, if set ignores the URL pattern)
+        urlPattern: "https://example-url/${name}-${version}.zip" # The URL pattern with placeholders which will be resolved dynamically. (optional)
+
     - name: "another-asset"
       version: "1.0.0"
-      mavenResolver:
+      mavenResolver: # Not implemented yet, for demonstration purposes only.
         groupId: "example-group-id"
         artifactId: "example-artifact-id"
         artifactVersion: "example-artifact-version"
