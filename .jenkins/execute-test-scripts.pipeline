@@ -125,10 +125,10 @@ pipeline {
 
         stage('Run workspace-001 tests - mongodb_en') {
             steps {
-                catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE', message: 'mongodb-pipeline_en.sh failed.') {
+                catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE', message: '001_mongodb-pipeline_en.sh failed.') {
                     // run pipeline
                     withMaven(maven: 'MAVEN3912') {
-                        sh './tests/scripts/pipelines/mongodb-pipeline_en.sh'
+                        sh './tests/scripts/pipelines/001_mongodb-pipeline_en.sh'
                     }
 
                     // publish inventory (internal)
@@ -159,10 +159,10 @@ pipeline {
 
         stage('Run workspace-001 tests - openssl_en') {
             steps {
-                catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE', message: 'openssl-pipeline_en.sh.') {
+                catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE', message: '001_openssl-pipeline_en.sh.') {
                     // run pipeline
                     withMaven(maven: 'MAVEN3912') {
-                        sh './tests/scripts/pipelines/openssl-pipeline_en.sh'
+                        sh './tests/scripts/pipelines/001_openssl-pipeline_en.sh'
                     }
 
                     // publish inventory (internal)
@@ -176,10 +176,10 @@ pipeline {
 
         stage('Run workspace-001 tests - windows11_en') {
             steps {
-                catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE', message: 'windows11-pipeline_en.sh failed.') {
+                catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE', message: '001_windows11-pipeline_en.sh failed.') {
                     // run pipeline
                     withMaven(maven: 'MAVEN3912') {
-                        sh './tests/scripts/pipelines/windows11-pipeline_en.sh'
+                        sh './tests/scripts/pipelines/001_windows11-pipeline_en.sh'
                     }
 
                     // publish inventory (internal) (patched and unpatched)
@@ -195,10 +195,10 @@ pipeline {
 
         stage('Run workspace-001 tests - sample-product_de') {
             steps {
-                catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE', message: 'sample-product-pipeline_de.sh failed.') {
+                catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE', message: '001_sample-product-pipeline_de.sh failed.') {
                     // run pipeline
                     withMaven(maven: 'MAVEN3912') {
-                        sh './tests/scripts/pipelines/sample-product-pipeline_de.sh'
+                        sh './tests/scripts/pipelines/001_sample-product-pipeline_de.sh'
                     }
 
                     // publish inventory (internal)
@@ -209,10 +209,10 @@ pipeline {
 
         stage('Run workspace-001 tests - sample-product_en') {
             steps {
-                catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE', message: 'sample-product-pipeline_en.sh failed.') {
+                catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE', message: '001_sample-product-pipeline_en.sh failed.') {
                     // run pipeline
                     withMaven(maven: 'MAVEN3912') {
-                        sh './tests/scripts/pipelines/sample-product-pipeline_en.sh'
+                        sh './tests/scripts/pipelines/001_sample-product-pipeline_en.sh'
                     }
                 }
             }
@@ -221,10 +221,10 @@ pipeline {
 
         stage('Run workspace-001 tests - react_en') {
             steps {
-                catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE', message: 'react-pipeline_en.sh failed.') {
+                catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE', message: '001_react-pipeline_en.sh failed.') {
                     // run pipeline
                     withMaven(maven: 'MAVEN3912') {
-                        sh './tests/scripts/pipelines/react-pipeline_en.sh'
+                        sh './tests/scripts/pipelines/001_react-pipeline_en.sh'
                     }
 
                     // publish inventory (internal)
@@ -238,10 +238,10 @@ pipeline {
 
         stage('Run workspace-001 tests - keycloak_en') {
             steps {
-                catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE', message: 'react-pipeline_en.sh failed.') {
+                catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE', message: '001_keycloak-pipeline_en.sh failed.') {
                     // run pipeline
                     withMaven(maven: 'MAVEN3912') {
-                        sh './tests/scripts/pipelines/keycloak-pipeline_en.sh'
+                        sh './tests/scripts/pipelines/001_keycloak-pipeline_en.sh'
                     }
 
                     // publish inventory (internal)
@@ -252,10 +252,10 @@ pipeline {
 
         stage('Run workspace-001 tests - cisco-catalyst-sd-wan-manager_en') {
             steps {
-                catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE', message: 'cisco-catalyst-sd-wan-manager-pipeline_en.sh failed.') {
+                catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE', message: '001_cisco-catalyst-sd-wan-manager-pipeline_en.sh failed.') {
                     // run pipeline
                     withMaven(maven: 'MAVEN3912') {
-                        sh './tests/scripts/pipelines/cisco-catalyst-sd-wan-manager-pipeline_en.sh'
+                        sh './tests/scripts/pipelines/001_cisco-catalyst-sd-wan-manager-pipeline_en.sh'
                     }
 
                     // publish inventory (internal)

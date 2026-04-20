@@ -1,5 +1,19 @@
 #!/bin/bash
 
+# Copyright 2009-2026 the original author or authors.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 # Exit on any error
 set -euo pipefail
 
@@ -37,6 +51,10 @@ set_global_variables() {
   PARAM_SECURITY_POLICY_FILE="$WORKBENCH_DIR/policies/security-policy/security-policy.json"
 
   ENV_VR_DESCRIPTOR_FILE="$WORKBENCH_DIR/descriptors/asset-descriptor_GENERIC-vulnerability-report.yaml"
+
+  TENANT_ID="metaeffekt"
+  ASSET_ID="crypto-bom"
+  ASSESSMENT_CONTEXT="local"
 }
 
 update_mirror() {
@@ -60,8 +78,8 @@ enrich_inventory() {
   log_info "Running enrich_inventory process."
 
   PREPARED_INVENTORY_FILE="$PREPARED_DIR/crypto-bom-inventory.xlsx"
-  ASSESSMENT_DIR="$WORKBENCH_DIR/assessments/assessment-001/crypto-bom"
-  CONTEXT_DIR="$WORKBENCH_DIR/contexts/example-001"
+  ASSESSMENT_DIR="$WORKBENCH_DIR/assessments/$TENANT_ID/$ASSET_ID/$ASSESSMENT_CONTEXT/assessments/generic"
+  CONTEXT_DIR="$WORKBENCH_DIR/assessments/$TENANT_ID/$ASSET_ID/$ASSESSMENT_CONTEXT/context"
   CORRELATION_DIR="$WORKBENCH_DIR/correlations/shared"
   ADVISED_INVENTORY_FILE="$ADVISED_DIR/crypto-bom-advised-inventory.xlsx"
   PROCESSOR_TMP_DIR="$ADDITIONAL_DIR/processor"
@@ -83,9 +101,9 @@ enrich_inventory() {
   CMD+=("-Dparam.dashboard.title=CryptoBOM SNAPSHOT Assessment")
   CMD+=("-Dparam.dashboard.subtitle=")
   CMD+=("-Dparam.dashboard.footer=CryptoBOM SNAPSHOT")
-  CMD+=("-Dparam.assessment.dir=$ASSESSMENT_DIR")
+  CMD+=("-Dparam.assessment.dirs=$ASSESSMENT_DIR")
   CMD+=("-Dparam.correlation.dir=$CORRELATION_DIR")
-  CMD+=("-Dparam.context.dir=$CONTEXT_DIR")
+  CMD+=("-Dparam.context.dirs=$CONTEXT_DIR")
   CMD+=("-Dparam.activate.msrc=$ACTIVATE_MSRC")
 
 
@@ -121,6 +139,9 @@ generate_vulnerability_assessment_dashboard() {
 
   CMD+=("-Dparam.security.policy.file=$PARAM_SECURITY_POLICY_FILE")
   CMD+=("-Dparam.security.policy.active.ids=$SECURITY_POLICY_ACTIVE_IDS")
+  CMD+=("-Dparam.tenant.id=$TENANT_ID")
+  CMD+=("-Dparam.asset.id=$ASSET_ID")
+  CMD+=("-Dparam.assessment.context=$ASSESSMENT_CONTEXT")
 
   CMD+=("-Denv.vulnerability.mirror.dir=$EXTERNAL_VULNERABILITY_MIRROR_DIR/.database")
 
@@ -178,7 +199,7 @@ main() {
   copy_to_grouped
 
   generate_vulnerability_assessment_dashboard
-  generate_vulnerability_report
+  # generate_vulnerability_report
 }
 
 main "$@"
