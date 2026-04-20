@@ -26,7 +26,7 @@ pipeline {
                     cleanWs()
 
                     // additionally clean the vulnerability mirror if update should be forced
-                    // sh 'rm -rf ../.vulnerability-mirror_gen5'
+                    // sh 'rm -rf ../.vulnerability-mirror_gen6'
                 }
             }
         }
@@ -103,11 +103,11 @@ pipeline {
             steps {
                 sh 'echo "EXTERNAL_KONTINUUM_DIR=\"$(pwd)/.metaeffekt-kontinuum\"" > external.rc'
 
-                // this is effectively workspace/.vulnerability-mirror_gen5; so next to the jobs workspace; reconsider as shared
-                sh 'echo "EXTERNAL_VULNERABILITY_MIRROR_DIR=\"$(dirname $(pwd))/.vulnerability-mirror_gen5\"" >> external.rc'
+                // this is effectively workspace/.vulnerability-mirror_gen6; so next to the jobs workspace; reconsider as shared
+                sh 'echo "EXTERNAL_VULNERABILITY_MIRROR_DIR=\"$(dirname $(pwd))/.vulnerability-mirror_gen6\"" >> external.rc'
 
                 // specify mirror source
-                sh 'echo "EXTERNAL_VULNERABILITY_MIRROR_URL=\"http://ae-scanner/mirror/index/ae-mirror-index_gen5.tar.gz\"" >> external.rc'
+                sh 'echo "EXTERNAL_VULNERABILITY_MIRROR_URL=\"http://ae-scanner/mirror/index/ae-mirror-index_gen6.tar.gz\"" >> external.rc'
             }
         }
 
