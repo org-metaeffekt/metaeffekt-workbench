@@ -140,6 +140,23 @@ pipeline {
             }
         }
 
+        stage('Run workspace-001 tests - crypto-bom_en') {
+            steps {
+                catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE', message: 'crypto-bom-pipeline_en.sh.') {
+                    // run pipeline
+                    withMaven(maven: 'MAVEN3912') {
+                        sh './tests/scripts/pipelines/crypto-bom-pipeline_en.sh'
+                    }
+
+                    // publish inventory (internal)
+                    sh 'export AE_TIMESTAMP=`date +"%Y-%m-%d@%Hh%Mm"` && curl --create-dirs -T "tests/resources/workspace-001/crypto-bom-SNAPSHOT/06_advised/crypto-bom-SNAPSHOT/dashboards/crypto-bom-SNAPSHOT-dashboard.html" http://ae-scanner/upload/inventory-index/crypto-bom-SNAPSHOT/crypto-bom-inventory-$AE_TIMESTAMP.xlsx'
+
+                    // publish dashboard
+                    sh 'curl -T "tests/resources/workspace-001/crypto-bom-SNAPSHOT/06_advised/crypto-bom-SNAPSHOT/dashboards/crypto-bom-SNAPSHOT-dashboard.html" "ftp://$FTP_HOST/html/metaeffekt/dashboards/crypto-bom-SNAPSHOT-dashboard.html" --user $FTP_USER:$FTP_PASS'
+                }
+            }
+        }
+
         stage('Run workspace-001 tests - openssl_en') {
             steps {
                 catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE', message: 'openssl-pipeline_en.sh.') {
