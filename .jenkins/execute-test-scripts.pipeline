@@ -132,7 +132,7 @@ pipeline {
                     }
 
                     // use the STRIDE-LM catalog (for all dashboards)
-                    sh 'cp -f .metaeffekt-threat-catalog/catalog/threat-catalog-stridelm_optimized.yaml config/threat-catalog/default-catalog.yaml'
+                    sh 'cp -f .metaeffekt-threat-catalog/catalogs/threat-catalog-stridelm_optimized.yaml config/threat-catalog/default-catalog.yaml'
                 }
             }
         }
