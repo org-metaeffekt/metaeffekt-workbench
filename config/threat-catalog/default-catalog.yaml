@@ -1,0 +1,6 @@
+# Empty Threat Catalog
+#
+
+id: "TC-EMPTY"
+description: "An empty threat catalog for testing purposes."
+threats:

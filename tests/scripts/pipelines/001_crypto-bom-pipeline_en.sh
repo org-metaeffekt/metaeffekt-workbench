@@ -106,6 +106,8 @@ enrich_inventory() {
   CMD+=("-Dparam.context.dirs=$CONTEXT_DIR")
   CMD+=("-Dparam.activate.msrc=$ACTIVATE_MSRC")
 
+  CMD+=("-Dparam.activate.threat=true")
+  CMD+=("-Dparam.threat.catalog.file=$WORKBENCH_DIR/config/threat-catalog/default-catalog.yaml")
 
   CMD+=("-Denv.vulnerability.mirror.dir=$EXTERNAL_VULNERABILITY_MIRROR_DIR/.database")
 
