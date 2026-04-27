@@ -45,7 +45,7 @@ set_global_variables() {
 
   LOG_DIR="$WORKBENCH_DIR/.logs"
   logger_init "$LOG_DIR/keycloak-pipeline_en.log"
-  create_workspace_directories "$WORKSPACE_DIR/keycloak-25.0.4" "keycloak-25.0.4"
+  create_workspace_variables "$WORKSPACE_DIR/keycloak-25.0.4" "keycloak-25.0.4"
 
   ENV_REPORT_TEMPLATE_DIR="$WORKBENCH_DIR/templates/report-template"
   PARAM_SECURITY_POLICY_FILE="$WORKBENCH_DIR/policies/security-policy/security-policy.json"
@@ -105,7 +105,6 @@ enrich_inventory() {
   CMD+=("-Dparam.correlation.dir=$CORRELATION_DIR")
   CMD+=("-Dparam.context.dirs=$CONTEXT_DIR")
   CMD+=("-Dparam.activate.msrc=$ACTIVATE_MSRC")
-
 
   CMD+=("-Denv.vulnerability.mirror.dir=$EXTERNAL_VULNERABILITY_MIRROR_DIR/.database")
 

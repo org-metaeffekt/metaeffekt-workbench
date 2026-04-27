@@ -45,7 +45,7 @@ set_global_variables() {
 
   LOG_DIR="$WORKBENCH_DIR/.logs"
   logger_init "$LOG_DIR/cisco-catalyst-sd-wan-manager-pipeline_en.log"
-  create_workspace_directories "$WORKSPACE_DIR/cisco-catalyst-sd-wan-manager-20.12.5.2" "cisco-catalyst-sd-wan-manager-20.12.5.2"
+  create_workspace_variables "$WORKSPACE_DIR/cisco-catalyst-sd-wan-manager-20.12.5.2" "cisco-catalyst-sd-wan-manager-20.12.5.2"
 
   ENV_REPORT_TEMPLATE_DIR="$WORKBENCH_DIR/templates/report-template"
   PARAM_SECURITY_POLICY_FILE="$WORKBENCH_DIR/policies/security-policy/security-policy.json"

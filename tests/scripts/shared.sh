@@ -45,7 +45,7 @@ pass_command_info_to_logger() {
   fi
 }
 
-create_workspace_directories() {
+create_workspace_variables() {
   local TARGET_BASE_DIR="$1"
   local ASSET_NAME="$2"
 
@@ -68,14 +68,4 @@ create_workspace_directories() {
   readonly GROUPED_SDA_DIR="$GROUPED_DIR/software-distribution-annex"
   readonly GROUPED_VR_DIR="$GROUPED_DIR/vulnerability-report"
   readonly GROUPED_VSR_DIR="$GROUPED_DIR/vulnerability-summary-report"
-
-  if ! mkdir -p "$ADDITIONAL_DIR" "$FETCHED_DIR" "$EXTRACTED_DIR" "$PREPARED_DIR" "$AGGREGATED_DIR" "$RESOLVED_DIR" "$SCANNED_DIR" "$ADVISED_DIR" "$GROUPED_DIR" "$REPORTED_DIR" "$SUMMARIZED_DIR" ; then
-      log_error "Failed to create target directories"
-      exit 1
-  fi
-
-  if ! mkdir -p "$GROUPED_CR_DIR" "$GROUPED_CA_DIR" "$GROUPED_ILD_DIR" "$GROUPED_LD_DIR" "$GROUPED_SDA_DIR" "$GROUPED_VR_DIR" "$GROUPED_VSR_DIR" ; then
-    log_error "Failed to create grouped sub-directories."
-    exit 1
-  fi
 }
