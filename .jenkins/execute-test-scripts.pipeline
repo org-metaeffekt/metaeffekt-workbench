@@ -123,6 +123,20 @@ pipeline {
             }
         }
 
+        stage('Checkout metaeffekt-threat-catalog') {
+            steps {
+                script {
+                    sh 'mkdir -p .metaeffekt-threat-catalog'
+                    dir ('.metaeffekt-threat-catalog') {
+                        git url: "http://ae-server:7990/scm/ae/metaeffekt-threat-catalog.git", branch: 'main', credentialsId: 'bitbucket-credentials'
+                    }
+
+                    // use the STRIDE-LM catalog (for all dashboards)
+                    sh 'cp -f .metaeffekt-threat-catalog/catalogs/threat-catalog-stridelm_optimized.yaml config/threat-catalog/default-catalog.yaml'
+                }
+            }
+        }
+
         stage('Run workspace-001 tests - mongodb_en') {
             steps {
                 catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE', message: '001_mongodb-pipeline_en.sh failed.') {
