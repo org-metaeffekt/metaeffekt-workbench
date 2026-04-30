@@ -166,7 +166,7 @@ pipeline {
                     sh 'export AE_TIMESTAMP=`date +"%Y-%m-%d@%Hh%Mm"` && curl --create-dirs -T "tests/resources/workspace-001/crypto-bom-SNAPSHOT/06_advised/crypto-bom-SNAPSHOT/dashboards/crypto-bom-SNAPSHOT-dashboard.html" http://ae-scanner/upload/inventory-index/crypto-bom-SNAPSHOT/crypto-bom-inventory-$AE_TIMESTAMP.xlsx'
 
                     // publish dashboard
-                    sh 'curl -T "tests/resources/workspace-001/crypto-bom-SNAPSHOT/06_advised/crypto-bom-SNAPSHOT/dashboards/crypto-bom-SNAPSHOT-dashboard.html" "ftp://$FTP_HOST/html/metaeffekt/dashboards/crypto-bom-SNAPSHOT-dashboard.html" --user $FTP_USER:$FTP_PASS'
+                    sh 'curl --ssl-reqd -T "tests/resources/workspace-001/crypto-bom-SNAPSHOT/06_advised/crypto-bom-SNAPSHOT/dashboards/crypto-bom-SNAPSHOT-dashboard.html" "ftps://$FTP_HOST/html/metaeffekt/dashboards/crypto-bom-SNAPSHOT-dashboard.html" --user $FTP_USER:$FTP_PASS'
                 }
             }
         }
