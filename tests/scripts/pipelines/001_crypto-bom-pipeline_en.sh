@@ -45,7 +45,7 @@ set_global_variables() {
 
   LOG_DIR="$WORKBENCH_DIR/.logs"
   logger_init "$LOG_DIR/001_crypto-bom-pipeline_en.log"
-  create_workspace_directories "$WORKSPACE_DIR/crypto-bom-SNAPSHOT" "crypto-bom-SNAPSHOT"
+  create_workspace_variables "$WORKSPACE_DIR/crypto-bom-SNAPSHOT" "crypto-bom-SNAPSHOT"
 
   ENV_REPORT_TEMPLATE_DIR="$WORKBENCH_DIR/templates/report-template"
   PARAM_SECURITY_POLICY_FILE="$WORKBENCH_DIR/policies/security-policy/security-policy.json"
@@ -106,6 +106,8 @@ enrich_inventory() {
   CMD+=("-Dparam.context.dirs=$CONTEXT_DIR")
   CMD+=("-Dparam.activate.msrc=$ACTIVATE_MSRC")
 
+  CMD+=("-Dparam.activate.threat=true")
+  CMD+=("-Dparam.threat.catalog.file=$WORKBENCH_DIR/config/threat-catalog/default-catalog.yaml")
 
   CMD+=("-Denv.vulnerability.mirror.dir=$EXTERNAL_VULNERABILITY_MIRROR_DIR/.database")
 

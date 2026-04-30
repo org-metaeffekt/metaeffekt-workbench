@@ -45,7 +45,7 @@ set_global_variables() {
 
   LOG_DIR="$WORKBENCH_DIR/.logs"
   logger_init "$LOG_DIR/openssl-pipeline_en.log"
-  create_workspace_directories "$WORKSPACE_DIR/openssl-3.3.1" "openssl-3.3.1"
+  create_workspace_variables "$WORKSPACE_DIR/openssl-3.3.1" "openssl-3.3.1"
 
   ENV_REPORT_TEMPLATE_DIR="$WORKBENCH_DIR/templates/report-template"
   PARAM_SECURITY_POLICY_FILE="$WORKBENCH_DIR/policies/security-policy/security-policy.json"

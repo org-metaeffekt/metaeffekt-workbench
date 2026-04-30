@@ -38,13 +38,13 @@ source_preload() {
 
 set_global_variables() {
   readonly WORKBENCH_DIR="$(realpath "$SELF_DIR/../../..")"
-  readonly WORKSPACE_DIR="$WORKBENCH_DIR/tests/resources/workspace-001"
+  readonly WORKSPACE_DIR="$WORKBENCH_DIR/tests/resources/workspace-002"
   readonly PROCESSORS_DIR="$WORKBENCH_DIR/processors"
   readonly KONTINUUM_PROCESSORS_DIR="$EXTERNAL_KONTINUUM_DIR/processors"
 
   LOG_DIR="$WORKBENCH_DIR/.logs"
   logger_init "$LOG_DIR/sample-product-pipeline_de.log"
-  create_workspace_directories "$WORKSPACE_DIR/sample-product-1.0.0" "sample-asset-1.0.0"
+  create_workspace_variables "$WORKSPACE_DIR/sample-product-1.0.0" "sample-asset-1.0.0"
 
   ENV_REFERENCE_INVENTORY_DIR="$WORKBENCH_DIR/inventories/example-reference-inventory/inventory"
 

@@ -45,7 +45,7 @@ set_global_variables() {
 
   LOG_DIR="$WORKBENCH_DIR/.logs"
   logger_init "$LOG_DIR/react-pipeline_en.log"
-  create_workspace_directories "$WORKSPACE_DIR/react-19.2.0" "react-19.2.0"
+  create_workspace_variables "$WORKSPACE_DIR/react-19.2.0" "react-19.2.0"
 
   ENV_REPORT_TEMPLATE_DIR="$WORKBENCH_DIR/templates/report-template"
   PARAM_SECURITY_POLICY_FILE="$WORKBENCH_DIR/policies/security-policy/security-policy.json"

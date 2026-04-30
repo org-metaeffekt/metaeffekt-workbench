@@ -44,7 +44,7 @@ set_global_variables() {
 
   LOG_DIR="$WORKBENCH_DIR/.logs"
   logger_init "$LOG_DIR/windows11-pipeline_en.log"
-  create_workspace_directories "$WORKSPACE_DIR/windows11" "windows11"
+  create_workspace_variables "$WORKSPACE_DIR/windows11" "windows11"
 
   ENV_REFERENCE_INVENTORY_DIR="$WORKBENCH_DIR/inventories/example-reference-inventory/inventory"
   ENV_REFERENCE_LICENSES_DIR="$WORKBENCH_DIR/inventories/example-reference-inventory/licenses"
