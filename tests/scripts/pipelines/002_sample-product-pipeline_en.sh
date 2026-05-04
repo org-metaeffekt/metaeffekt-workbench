@@ -126,6 +126,10 @@ enrich_inventory() {
   pass_command_info_to_logger "enrich_inventory"
 }
 
+copy_to_scanned() {
+  cp "$PREPARED_DIR/sample-asset-1.0.0-inventory.xls" "$SCANNED_DIR"
+}
+
 copy_to_grouped() {
   CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/util/util_transform-inventories.xml" process-resources)
   [ -n "${AE_CORE_VERSION:-}" ] && CMD+=("-Dae.core.version=$AE_CORE_VERSION")
@@ -478,6 +482,9 @@ main() {
   # enrichment
   enrich_inventory_with_reference
   enrich_inventory
+
+  # necessary as the group stage expects and inventory to be present in 05_scanned for license reports
+  copy_to_scanned
 
   # copy inventories to grouped
   copy_to_grouped

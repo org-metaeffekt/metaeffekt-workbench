@@ -24,16 +24,18 @@ else
   exit 1
 fi
 
-if [ -n "${EXTERNAL_KONTINUUM_DIR:-}" ]; then
-    if [ -f "$EXTERNAL_KONTINUUM_DIR/tests/scripts/processors/log.sh" ]; then
-      source "$EXTERNAL_KONTINUUM_DIR/tests/scripts/processors/log.sh"
-      echo "Successfully sourced log.sh file"
-    else
-      echo "Terminating: log.sh not found in $EXTERNAL_KONTINUUM_DIR/tests/scripts/processors/"
-      exit 1
-    fi
+if [ -f "$PRELOAD_SELF_DIR/log.sh" ];then
+  source "$PRELOAD_SELF_DIR/log.sh"
+  echo "Successfully sourced log.sh file"
 else
-  echo "Terminating: EXTERNAL_KONTINUUM_DIR in external.rc is not set."
+  echo "Terminating: log.sh not found in $PRELOAD_SELF_DIR"
+  exit 1
+fi
+
+if [ -n "${EXTERNAL_KONTINUUM_DIR:-}" ]; then
+  log_info "Found external kontinuum at $EXTERNAL_KONTINUUM_DIR"
+else
+  log_error "Terminating: EXTERNAL_KONTINUUM_DIR in external.rc is not set."
   exit 1
 fi
 
