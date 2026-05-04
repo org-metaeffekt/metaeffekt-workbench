@@ -166,7 +166,7 @@ pipeline {
                     sh 'export AE_TIMESTAMP=`date +"%Y-%m-%d@%Hh%Mm"` && curl --create-dirs -T "tests/resources/workspace-001/crypto-bom-SNAPSHOT/06_advised/crypto-bom-SNAPSHOT/dashboards/crypto-bom-SNAPSHOT-dashboard.html" http://ae-scanner/upload/inventory-index/crypto-bom-SNAPSHOT/crypto-bom-inventory-$AE_TIMESTAMP.xlsx'
 
                     // publish dashboard
-                    sh 'curl -T "tests/resources/workspace-001/crypto-bom-SNAPSHOT/06_advised/crypto-bom-SNAPSHOT/dashboards/crypto-bom-SNAPSHOT-dashboard.html" "ftp://$FTP_HOST/html/metaeffekt/dashboards/crypto-bom-SNAPSHOT-dashboard.html" --user $FTP_USER:$FTP_PASS'
+                    sh 'curl --ssl-reqd -T "tests/resources/workspace-001/crypto-bom-SNAPSHOT/06_advised/crypto-bom-SNAPSHOT/dashboards/crypto-bom-SNAPSHOT-dashboard.html" "ftps://$FTP_HOST/html/metaeffekt/dashboards/crypto-bom-SNAPSHOT-dashboard.html" --user $FTP_USER:$FTP_PASS'
                 }
             }
         }
@@ -207,26 +207,26 @@ pipeline {
             }
         }
 
-        stage('Run workspace-001 tests - sample-product_de') {
+        stage('Run workspace-002 tests - sample-product_de') {
             steps {
-                catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE', message: '001_sample-product-pipeline_de.sh failed.') {
+                catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE', message: '002_sample-product-pipeline_de.sh failed.') {
                     // run pipeline
                     withMaven(maven: 'MAVEN3912') {
-                        sh './tests/scripts/pipelines/001_sample-product-pipeline_de.sh'
+                        sh './tests/scripts/pipelines/002_sample-product-pipeline_de.sh'
                     }
 
                     // publish inventory (internal)
-                    sh 'export AE_TIMESTAMP=`date +"%Y-%m-%d@%Hh%Mm"` && curl --create-dirs -T "tests/resources/workspace-001/sample-product-1.0.0/06_advised/sample-asset-1.0.0/sample-product-advised-inventory.xlsx" http://ae-scanner/upload/inventory-index/sample-product-1.0.0/sample-product-advised-inventory-$AE_TIMESTAMP.xlsx'
+                    sh 'export AE_TIMESTAMP=`date +"%Y-%m-%d@%Hh%Mm"` && curl --create-dirs -T "tests/resources/workspace-002/sample-product-1.0.0/06_advised/sample-asset-1.0.0/sample-product-advised-inventory.xlsx" http://ae-scanner/upload/inventory-index/sample-product-1.0.0/sample-product-advised-inventory-$AE_TIMESTAMP.xlsx'
                 }
             }
         }
 
-        stage('Run workspace-001 tests - sample-product_en') {
+        stage('Run workspace-002 tests - sample-product_en') {
             steps {
-                catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE', message: '001_sample-product-pipeline_en.sh failed.') {
+                catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE', message: '002_sample-product-pipeline_en.sh failed.') {
                     // run pipeline
                     withMaven(maven: 'MAVEN3912') {
-                        sh './tests/scripts/pipelines/001_sample-product-pipeline_en.sh'
+                        sh './tests/scripts/pipelines/002_sample-product-pipeline_en.sh'
                     }
                 }
             }
