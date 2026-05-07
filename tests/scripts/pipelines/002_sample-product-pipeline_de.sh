@@ -127,6 +127,7 @@ enrich_inventory() {
 }
 
 copy_to_scanned() {
+  mkdir -p "$SCANNED_DIR"
   cp "$PREPARED_DIR/sample-asset-1.0.0-inventory.xls" "$SCANNED_DIR"
 }
 
