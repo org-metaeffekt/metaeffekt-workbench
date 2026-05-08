@@ -156,6 +156,7 @@ pipeline {
                     // also upload with curl for put provider to check what is going wrong
                     sh 'curl --version'
                     sh 'curl -v -T "tests/resources/workspace-001/crypto-bom-SNAPSHOT/06_advised/crypto-bom-SNAPSHOT/dashboards/crypto-bom-SNAPSHOT-dashboard.html" "ftp://$FTP_HOST/html/metaeffekt/dashboards/crypto-bom-SNAPSHOT-dashboard_cURL.html" --user $FTP_USER:$FTP_PASS'
+                    sh 'curl -v --ssl-reqd --ftp-pasv -T "tests/resources/workspace-001/crypto-bom-SNAPSHOT/06_advised/crypto-bom-SNAPSHOT/dashboards/crypto-bom-SNAPSHOT-dashboard.html" "ftp://$FTP_HOST/html/metaeffekt/dashboards/crypto-bom-SNAPSHOT-dashboard_cURL_ssl-reqd_ftp-pasv.html" --user $FTP_USER:$FTP_PASS'
                 }
             }
         }
