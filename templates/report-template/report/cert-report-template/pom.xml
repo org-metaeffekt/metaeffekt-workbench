@@ -175,8 +175,8 @@
                             <configuration>
                                 <files>
                                     <!-- read the report properties, the path of these properties depends on the descriptor properties thus needing a separate execution -->
-                                    <file>${project.basedir}/src/main/dita/${report.module}/gen/${vulnerability.report.properties.reference}/vulnerability-report.properties</file>
-                                    <file>${project.basedir}/src/main/dita/${report.module}/gen/${vulnerability.summary.properties.reference}/vulnerability-summary.properties</file>
+                                    <file>${project.basedir}/src/main/dita/${report.module}/gen/${part.vulnerability.report.identifier}/vulnerability-report.properties</file>
+                                    <file>${project.basedir}/src/main/dita/${report.module}/gen/${part.vulnerability.summary.part.identifier}/vulnerability-summary.properties</file>
                                 </files>
                             </configuration>
                         </execution>

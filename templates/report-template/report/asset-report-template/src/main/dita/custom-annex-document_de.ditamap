@@ -36,10 +36,10 @@
     </chapter>
 
     <chapter href="asset-report/de/tpc_asset-overview.dita">
-        <topicref format="ditamap" href="asset-report/gen/parts/map_initial-license-documentation-initial-license-documentation.ditamap" />
+        <topicref format="ditamap" href="asset-report/gen/part-ditamaps/map_initial-license-documentation-initial-license-documentation.ditamap" />
     </chapter>
 
-    <topicref format="ditamap" href="asset-report/gen/parts/map_software-distribution-annex-annex.ditamap" />
+    <topicref format="ditamap" href="asset-report/gen/part-ditamaps/map_software-distribution-annex-annex.ditamap" />
 
     <backmatter>
         <booklists>
