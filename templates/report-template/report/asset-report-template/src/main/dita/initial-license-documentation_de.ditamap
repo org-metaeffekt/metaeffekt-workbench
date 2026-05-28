@@ -21,7 +21,7 @@
 
     <frontmatter>
         <topicref href="asset-report/gen/imprint/tpc_imprint.dita" />
-        <topicref href="asset-report/de/tpc_notice.dita" />
+        <topicref href="asset-report/static/de/tpc_notice.dita" />
         <booklists>
             <toc/>
         </booklists>
@@ -35,7 +35,7 @@
                 <topicref format="ditamap" href="glossary/gen/glossary/de/gmap_glossary.ditamap" />
             </glossarylist>
         </booklists>
-        <topicref href="asset-report/de/tpc_report-history.dita" />
+        <topicref href="asset-report/static/de/tpc_report-history.dita" />
     </backmatter>
 
 </bookmap>

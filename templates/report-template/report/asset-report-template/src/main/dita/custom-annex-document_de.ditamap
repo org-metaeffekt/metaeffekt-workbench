@@ -21,7 +21,7 @@
 
     <frontmatter>
         <topicref href="asset-report/gen/imprint/tpc_imprint.dita" />
-        <topicref href="asset-report/de/tpc_notice.dita" />
+        <topicref href="asset-report/static/de/tpc_notice.dita" />
         <booklists>
             <toc/>
         </booklists>
@@ -32,14 +32,14 @@
         <topicref href="ae-common-content/components/de/tpc_proprietary-components.dita" />
         <topicref href="ae-common-content/components/de/tpc_oss-components.dita" />
         <topicref href="ae-common-content/components/de/tpc_public-domain-components.dita" />
-        <topicref href="asset-report/de/tpc_import-export-information.dita" />
+        <topicref href="asset-report/static/de/tpc_import-export-information.dita" />
     </chapter>
 
-    <chapter href="asset-report/de/tpc_asset-overview.dita">
-        <topicref format="ditamap" href="asset-report/gen/part-ditamaps/map_initial-license-documentation-initial-license-documentation.ditamap" />
+    <chapter href="asset-report/static/de/tpc_asset-overview.dita">
+        <topicref format="ditamap" href="asset-report/gen/parts/${part.initial.license.documentation.identifier}/map_${part.initial.license.documentation.identifier}.ditamap" />
     </chapter>
 
-    <topicref format="ditamap" href="asset-report/gen/part-ditamaps/map_software-distribution-annex-annex.ditamap" />
+    <topicref format="ditamap" href="asset-report/gen/parts/${part.annex.identifier}/map_${part.annex.identifier}.ditamap" />
 
     <backmatter>
         <booklists>
@@ -47,7 +47,7 @@
                 <topicref format="ditamap" href="glossary/gen/glossary/de/gmap_glossary.ditamap" />
             </glossarylist>
         </booklists>
-        <topicref href="asset-report/de/tpc_report-history.dita" />
+        <topicref href="asset-report/static/de/tpc_report-history.dita" />
     </backmatter>
 
 </bookmap>
