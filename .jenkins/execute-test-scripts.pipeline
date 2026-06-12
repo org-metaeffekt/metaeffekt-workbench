@@ -22,22 +22,17 @@ pipeline {
         stage('Cleanup') {
             steps {
                 script {
-                    // clear the full workspace to start from scratch (except vulnerability mirror data and other indexes)
-                    cleanWs()
+                    // NOTE: clearWs is not applicable for multibranch/single pipeline shared configuration; delete specifically
 
-                    // additionally clean the vulnerability mirror if update should be forced
                     // sh 'rm -rf ../.vulnerability-mirror_gen6'
-                }
-            }
-        }
 
-        stage('Checkout metaeffekt-workbench') {
-            steps {
-                script {
-                    // after clearWs we have to re-checkout the workbench (is there a better way to do this?)
-                    withCredentials([usernamePassword(credentialsId: 'JenkinsGithubAccess', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                        git url: 'https://github.com/org-metaeffekt/metaeffekt-workbench.git', branch: '$BRANCH_NAME', credentialsId: 'JenkinsGithubAccess'
-                    }
+                    sh 'rm -rf .metaeffekt-core'
+                    sh 'rm -rf .metaeffekt-kontinuum'
+                    sh 'rm -rf .metaeffekt-artifact-analysis'
+                    sh 'rm -rf .metaeffekt-vulnerability-correlation'
+                    sh 'rm -rf .metaeffekt-threat-catalog'
+
+                    sh 'rm -rf .logs'
                 }
             }
         }
