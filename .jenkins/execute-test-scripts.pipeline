@@ -36,7 +36,7 @@ pipeline {
                 script {
                     // after clearWs we have to re-checkout the workbench (is there a better way to do this?)
                     withCredentials([usernamePassword(credentialsId: 'JenkinsGithubAccess', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                        git url: 'https://github.com/org-metaeffekt/metaeffekt-workbench.git', branch: 'main', credentialsId: 'JenkinsGithubAccess'
+                        git url: 'https://github.com/org-metaeffekt/metaeffekt-workbench.git', branch: '$BRANCH_NAME', credentialsId: 'JenkinsGithubAccess'
                     }
                 }
             }
@@ -61,7 +61,7 @@ pipeline {
                     sh 'mkdir -p .metaeffekt-core'
                     dir ('.metaeffekt-core') {
                         withCredentials([usernamePassword(credentialsId: 'JenkinsGithubAccess', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                            git url: 'https://github.com/org-metaeffekt/metaeffekt-core.git', branch: 'AE-2204-report-modularization', credentialsId: 'JenkinsGithubAccess'
+                            git url: 'https://github.com/org-metaeffekt/metaeffekt-core.git', branch: 'master', credentialsId: 'JenkinsGithubAccess'
                         }
                     }
                 }
@@ -83,7 +83,7 @@ pipeline {
                     sh 'mkdir -p .metaeffekt-artifact-analysis'
                     dir ('.metaeffekt-artifact-analysis') {
                         withCredentials([usernamePassword(credentialsId: 'JenkinsGithubAccess', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                            git url: 'https://github.com/org-metaeffekt/metaeffekt-artifact-analysis.git', branch: 'AE-2204-report-modularization', credentialsId: 'JenkinsGithubAccess'
+                            git url: 'https://github.com/org-metaeffekt/metaeffekt-artifact-analysis.git', branch: 'main', credentialsId: 'JenkinsGithubAccess'
                         }
                     }
                 }
