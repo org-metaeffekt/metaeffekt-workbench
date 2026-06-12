@@ -48,22 +48,7 @@ documents:
     type: PERIODIC_VULNERABILITY_REPORT
     language: "${document.language}"
     params:
-      #parameters for generated parts
       securityPolicyFile: "${security.policy.file}"
-
-      #parameters for generated properties
-      vulnerability.report.properties.reference: "cert-advisory-inventory"
-      vulnerability.summary.properties.reference: "cert-advisory-inventory"
-
-      #parameters for report content references (match with inventoryRef)
-      vulnerability.summary.part.content.reference: "cert-advisory-inventory"
-      vulnerability.report.content.reference: "cert-advisory-inventory"
-      vulnerability.statistics.report.content.reference: "cert-advisory-inventory"
-      vulnerability.statistics.report.all.content.reference: "merged-inventory"
-
-      #parameter for report content references (match with part name)
-      vulnerability.statistics.part.name: "statistics-part"
-      vulnerability.statistics.all.part.name: "statistics-all-part"
     parts:
       "summary-part":
         type: VULNERABILITY_SUMMARY_PART
@@ -75,7 +60,7 @@ documents:
             assetName: "${asset.name}"
             assetVersion: "${asset.version}"
 
-      "vulnerability-part":
+      "vulnerability-report":
         type: VULNERABILITY_REPORT
         params:
           securityPolicyActiveIds: "cert_extended_configuration"
@@ -86,7 +71,7 @@ documents:
             assetName: "${asset.name}"
             assetVersion: "${asset.version}"
 
-      "statistics-part":
+      "statistics-report":
         type: VULNERABILITY_STATISTICS_REPORT
         params:
           securityPolicyActiveIds: "cert_configuration"
@@ -96,10 +81,11 @@ documents:
             assetName: "${asset.name}"
             assetVersion: "${asset.version}"
 
-      "statistics-all-part":
+      "statistics-all-report":
         type: VULNERABILITY_STATISTICS_REPORT
         params:
           securityPolicyActiveIds: "cert_configuration"
+          statisticsReportAll: "true"
         inventories:
           - inventoryRef: "merged-inventory"
             assetName: "${asset.name}"
