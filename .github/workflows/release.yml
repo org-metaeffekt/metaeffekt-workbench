@@ -21,7 +21,7 @@ on:
         required: false
         type: string
 env:
-  MIRROR_URL: "https://metaeffekt.com/mirror/ae-vulnerability-mirror/ae-mirror-index_gen5-external.tar.gz"
+  MIRROR_URL: "https://metaeffekt.com/mirror/ae-vulnerability-mirror/ae-mirror-index_gen6-external.tar.gz"
 
 permissions:
   contents: write
