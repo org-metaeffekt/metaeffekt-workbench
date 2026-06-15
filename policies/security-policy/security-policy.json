@@ -41,7 +41,7 @@
       "configuration": {
         "insignificantThreshold": 0.0,
         "vulnerabilityStatusDisplayMapperName": "abstracted",
-        "includeVulnerabilitiesWithAdvisoryProviders": [{"name":"CERT_FR"}]
+        "includeVulnerabilitiesWithAdvisoryProviders": [ {"src":"CERT_FR", "st": "sa"} ]
       }
     },
     {
@@ -79,8 +79,8 @@
       "id": "cert_configuration",
       "extends": ["base_configuration"],
       "configuration": {
-        "includeAdvisoryProviders": [{"name":"CERT_FR"}],
-        "generateOverviewTablesForAdvisories": [{"name":"CERT_FR"}],
+        "includeAdvisoryProviders": [ {"src":"CERT_FR", "st": "sa"} ],
+        "generateOverviewTablesForAdvisories": [ {"src":"CERT_FR", "st": "sa"} ],
         "includeAdvisoryTypes": [ "alert", "news", "notice" ],
         "priorityScoreConfiguration": {
           "vulnerabilityStatus": {
