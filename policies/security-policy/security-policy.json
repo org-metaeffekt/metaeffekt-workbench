@@ -15,7 +15,7 @@
               "void": 0.0,
               "not applicable": 0.0
             },
-            "add":{
+            "add": {
               "applicable": 0.5
             }
           },
@@ -41,12 +41,12 @@
       "configuration": {
         "insignificantThreshold": 0.0,
         "vulnerabilityStatusDisplayMapperName": "abstracted",
-        "includeVulnerabilitiesWithAdvisoryProviders": [ {"src":"CERT_FR", "st": "sa"} ]
+        "includeVulnerabilitiesWithAdvisoryProviders": [ { "src": "CERT_FR", "impl": "CERT_FR", "st": "sa" } ]
       }
     },
     {
       "id": "vulnerability_configuration",
-      "extends": ["base_configuration"],
+      "extends": [ "base_configuration" ],
       "configuration": {
         "priorityScoreConfiguration": {
           "vulnerabilityStatus": {
@@ -54,7 +54,7 @@
               "void": 0.0,
               "not applicable": 0.0
             },
-            "add":{
+            "add": {
               "applicable": 0.5
             }
           },
@@ -77,10 +77,10 @@
     },
     {
       "id": "cert_configuration",
-      "extends": ["base_configuration"],
+      "extends": [ "base_configuration" ],
       "configuration": {
-        "includeAdvisoryProviders": [ {"src":"CERT_FR", "st": "sa"} ],
-        "generateOverviewTablesForAdvisories": [ {"src":"CERT_FR", "st": "sa"} ],
+        "includeAdvisoryProviders": [ { "src": "CERT_FR", "impl": "CERT_FR", "st": "sa" } ],
+        "generateOverviewTablesForAdvisories": [ { "src": "CERT_FR", "impl": "CERT_FR", "st": "sa" } ],
         "includeAdvisoryTypes": [ "alert", "news", "notice" ],
         "priorityScoreConfiguration": {
           "vulnerabilityStatus": {
@@ -88,12 +88,12 @@
               "void": 0.0,
               "not applicable": 0.0
             },
-            "add":{
+            "add": {
               "applicable": 0.0
             }
           },
           "epss": {
-            "min":0.5,
+            "min": 0.5,
             "f": 0.0,
             "F": 0.0
           },
@@ -120,9 +120,9 @@
     },
     {
       "id": "cert_extended_configuration",
-      "extends": ["cert_configuration"],
+      "extends": [ "cert_configuration" ],
       "configuration": {
-        "includeVulnerabilitiesWithAdvisoryReviewStatus": ["new", "in review", "reviewed"]
+        "includeVulnerabilitiesWithAdvisoryReviewStatus": [ "new", "in review", "reviewed" ]
       }
     },
     {
