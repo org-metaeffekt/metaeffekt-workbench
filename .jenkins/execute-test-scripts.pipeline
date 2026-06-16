@@ -308,7 +308,7 @@ pipeline {
                     find tests/resources -path "*/08_reported/*" -type f -name "*.pdf" | while read -r file; do
                         PIPELINE=$(echo "$file" | awk -F'/' '{print $4}')
                         DOC_NAME=$(basename "$file" .pdf)
-                        curl --create-dirs -T "$file" "http://ae-scanner/examples/$PIPELINE/documents/${DOC_NAME}-${WEEK}.pdf"
+                        curl --create-dirs -T "$file" "http://ae-scanner/upload/examples/$PIPELINE/documents/${DOC_NAME}-${WEEK}.pdf"
                     done
                 '''
             }
