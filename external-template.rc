@@ -3,5 +3,11 @@ EXTERNAL_VULNERABILITY_MIRROR_DIR="/PATH/TO/MIRROR"
 EXTERNAL_VULNERABILITY_MIRROR_URL="https://MIRROR_URL/mirror.tar.gz"
 
 # Controls the versions of core and artifact-analysis. Only applicable for scripts run in this repository.
-AE_CORE_VERSION=HEAD-SNAPSHOT
-AE_ARTIFACT_ANALYSIS_VERSION=HEAD-SNAPSHOT
+AE_CORE_VERSION="0.153-SNAPSHOT"
+AE_ARTIFACT_ANALYSIS_VERSION="0.156-SNAPSHOT"
+
+# Debug options
+# If true, enabled the maven debug flag providing additional log information
+#DEBUG=true
+# If true, dumps all entries written to the log file onto the console
+#DUMP_LOGS=true
