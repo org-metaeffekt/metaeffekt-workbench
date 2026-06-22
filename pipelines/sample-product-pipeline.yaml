@@ -1,0 +1,40 @@
+projectProperties:
+  project:
+    name: "metaeffekt-workbench"
+    version: "0.6.0"
+    tenant: "metaeffekt"
+  assets:
+    - id: "sample-asset"
+      name: "sample-asset"
+      version: "1.0.0"
+      reference: "inventories/example-reference-inventory/inventory"
+      assessmentId: "sample-product-1"
+      context: "local"
+      urlResolver:
+        url: "file:./pipelines/.workspace/metaeffekt-workbench/01_fetched/sample-asset-1.0.0/sample-asset-1.0.0.xls"
+
+reports:
+  - assetId: "sample-asset"
+    types: ["SDA", "CA", "VR", "VSR", "CR", "LD", "ILD"]
+
+# Dashboards define which assets should have vulnerability dashboards generated.
+dashboards:
+  - assetId: "sample-asset"
+
+# Optional: global pipeline configuration
+options:
+  global:
+    documentLanguage: "en"
+    enableResolve: true
+    enableSpdxBom: true
+    enableCycloneDxBom: true
+  enrichment:
+    securityPolicyFile: "policies/security-policy/security-policy.json"
+    securityPolicyActiveIds: ["base_configuration"]
+    activateCsaf: false
+    activateMsrc: false
+  document:
+    organization: "metaeffekt"
+    classificationRating: "DEFAULT"
+    controlRating: "DEFAULT"
+    watermark: "Sample"
