@@ -82,7 +82,7 @@ jobs:
           AE_CORE_VERSION: ${{ inputs.ae-core-version }}
           AE_ARTIFACT_ANALYSIS_VERSION: ${{ inputs.ae-artifact-analysis-version }}
         run: |
-          ./tests/scripts/pipelines/sample-product-pipeline_en.sh
+          ./tests/scripts/pipelines/002_sample-product-pipeline_en.sh
 
       - name: Save vulnerability mirror and maven index cache
         uses: actions/cache/save@v4
