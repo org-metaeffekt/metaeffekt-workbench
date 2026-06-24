@@ -1,0 +1,19 @@
+schema-version: '2.2'
+assessments:
+  - scope: inventory
+    events:
+      - rationale: '<p>The setup environment is only available with local administrative access.</p>'
+        author: KKL
+        date: '2026-06-18'
+        cvss:
+          - rationale: '<p>Usage requires local access (CVSSv2: AV:L; CVSSv3/CVSSV4: MAV:L). </p>'
+            modifications:
+              - version: '2.0'
+                type: lower score
+                metrics: AV:L
+              - version: '3.1'
+                type: lower score
+                metrics: CVSS:3.1/MAV:L
+              - version: '4.0'
+                type: lower score
+                metrics: CVSS:4.0/MAV:L

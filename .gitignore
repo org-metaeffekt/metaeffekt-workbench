@@ -33,5 +33,8 @@
 **/workspace-002/*/08_*
 **/workspace-002/*/09_*
 
+# workspace-003 is fully recreated when executing the pipeline
+**/workspace-003
+
 external.rc
 .project.properties
