@@ -203,6 +203,19 @@
                             </goals>
                         </execution>
                         <execution>
+                            <id>generate-glossary</id>
+                            <phase>compile</phase>
+                            <goals>
+                                <goal>generate-glossary</goal>
+                            </goals>
+                            <configuration>
+                                <language>${document.language}</language>
+                                <ditaMap>${document.ditamap}</ditaMap>
+                                <ditaSourceGenDir>${project.build.directory}/dita/${report.module}/gen</ditaSourceGenDir>
+                                <ditaSourceDir>${project.build.directory}/dita</ditaSourceDir>
+                            </configuration>
+                        </execution>
+                        <execution>
                             <id>generate-documentation</id>
                             <phase>compile</phase>
                             <goals>
@@ -219,17 +232,6 @@
                                 <ditaBuildDir>${project.build.directory}/dita</ditaBuildDir>
                                 <enableGrammarCache>${dita.enableGrammarCache}</enableGrammarCache>
                                 <ditaCustomizationDir>${project.build.directory}/branding/ae-dita-branding</ditaCustomizationDir>
-                            </configuration>
-                        </execution>
-                        <execution>
-                            <id>generate-glossary</id>
-                            <phase>generate-resources</phase>
-                            <goals>
-                                <goal>generate-glossary</goal>
-                            </goals>
-                            <configuration>
-                                <language>${document.language}</language>
-                                <ditaMap>${document.ditamap}</ditaMap>
                             </configuration>
                         </execution>
                     </executions>
