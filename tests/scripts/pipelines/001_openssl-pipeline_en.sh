@@ -50,7 +50,11 @@ set_global_variables() {
   ENV_REPORT_TEMPLATE_DIR="$WORKBENCH_DIR/templates/report-template"
   PARAM_SECURITY_POLICY_FILE="$WORKBENCH_DIR/policies/security-policy/security-policy.json"
 
-  ENV_VR_DESCRIPTOR_FILE="$WORKBENCH_DIR/descriptors/asset-descriptor_GENERIC-vulnerability-report.yaml"
+  ENV_DESCRIPTOR_DIR="$WORKBENCH_DIR/descriptors"
+  ENV_VR_DESCRIPTOR_FILE="$ENV_DESCRIPTOR_DIR/asset-descriptor_GENERIC-vulnerability-report.yaml"
+  ENV_CR_DESCRIPTOR_FILE="$ENV_DESCRIPTOR_DIR/asset-descriptor_GENERIC-cert-report.yaml"
+
+  ENV_LANGUAGE="en"
 
   TENANT_ID="metaeffekt"
   ASSET_ID="openssl-3"
@@ -96,7 +100,6 @@ enrich_inventory() {
   CMD+=("-Doutput.tmp.dir=$PROCESSOR_TMP_DIR")
 
   CMD+=("-Dparam.security.policy.file=$PARAM_SECURITY_POLICY_FILE")
-  CMD+=("-Dparam.security.policy.file=$PARAM_SECURITY_POLICY_FILE")
   CMD+=("-Dparam.security.policy.active.ids=$SECURITY_POLICY_ACTIVE_IDS")
   CMD+=("-Dparam.dashboard.title=OpenSSL 3.3.1 Assessment")
   CMD+=("-Dparam.dashboard.subtitle=")
@@ -105,7 +108,6 @@ enrich_inventory() {
   CMD+=("-Dparam.correlation.dir=$CORRELATION_DIR")
   CMD+=("-Dparam.context.dirs=$CONTEXT_DIR")
   CMD+=("-Dparam.activate.msrc=$ACTIVATE_MSRC")
-
 
   CMD+=("-Denv.vulnerability.mirror.dir=$EXTERNAL_VULNERABILITY_MIRROR_DIR/.database")
 
@@ -151,7 +153,7 @@ generate_vulnerability_assessment_dashboard() {
 generate_vulnerability_report() {
   log_info "Running generate_vulnerability_report process."
 
-  OUTPUT_VR_FILE="$REPORTED_DIR/openssl-vulnerability-report-de.pdf"
+  OUTPUT_VR_FILE="$REPORTED_DIR/vulnerability-report/$ENV_LANGUAGE/vulnerability-report-$ENV_LANGUAGE.pdf"
   OUTPUT_COMPUTED_INVENTORY_DIR="$ADDITIONAL_DIR/report"
 
   PARAM_DOCUMENT_TYPE="VR"
@@ -188,6 +190,45 @@ generate_vulnerability_report() {
   pass_command_info_to_logger "generate_vulnerability-report"
 }
 
+generate_cert_report() {
+  OUTPUT_CR_FILE="$REPORTED_DIR/cert-report/$ENV_LANGUAGE/cert-report-$ENV_LANGUAGE.pdf"
+  OUTPUT_COMPUTED_INVENTORY_DIR="$ADDITIONAL_DIR/report"
+
+  PARAM_DOCUMENT_TYPE="CR"
+  PARAM_ASSET_ID="OpenSSL"
+  PARAM_ASSET_NAME="OpenSSL"
+  PARAM_ASSET_VERSION="3.3.1"
+  PARAM_PRODUCT_NAME="OpenSSL"
+  PARAM_PRODUCT_VERSION="3.3.1"
+  PARAM_PRODUCT_WATERMARK="OpenSSL"
+  PARAM_OVERVIEW_ADVISORS="CERT_FR"
+
+  CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/report/report_create-document.xml" verify)
+  [ -n "${AE_CORE_VERSION:-}" ] && CMD+=("-Dae.core.version=$AE_CORE_VERSION")
+  [ -n "${AE_ARTIFACT_ANALYSIS_VERSION:-}" ] && CMD+=("-Dae.artifact.analysis.version=$AE_ARTIFACT_ANALYSIS_VERSION")
+  CMD+=("-Dinput.inventory.dir=$GROUPED_CR_DIR")
+
+  CMD+=("-Doutput.document.file=$OUTPUT_CR_FILE")
+
+  CMD+=("-Dparam.asset.descriptor.file=$ENV_CR_DESCRIPTOR_FILE")
+  CMD+=("-Dparam.asset.id=$PARAM_ASSET_ID")
+  CMD+=("-Dparam.asset.name=$PARAM_ASSET_NAME")
+  CMD+=("-Dparam.asset.version=$PARAM_ASSET_VERSION")
+  CMD+=("-Dparam.product.version=$PARAM_PRODUCT_VERSION")
+  CMD+=("-Dparam.product.name=$PARAM_PRODUCT_NAME")
+  CMD+=("-Dparam.product.watermark=$PARAM_PRODUCT_WATERMARK")
+  CMD+=("-Dparam.document.type=$PARAM_DOCUMENT_TYPE")
+  CMD+=("-Dparam.document.language=$ENV_LANGUAGE")
+  CMD+=("-Dparam.overview.advisors=$PARAM_OVERVIEW_ADVISORS")
+  CMD+=("-Dparam.property.selector.organization=metaeffekt")
+
+  CMD+=("-Denv.vulnerability.mirror.dir=$EXTERNAL_VULNERABILITY_MIRROR_DIR/.database")
+  CMD+=("-Denv.workbench.dir=$WORKBENCH_DIR")
+  CMD+=("-Denv.kontinuum.dir=$EXTERNAL_KONTINUUM_DIR")
+
+  pass_command_info_to_logger "create_cert_report"
+}
+
 main() {
   source_preload
   set_global_variables
@@ -198,6 +239,7 @@ main() {
 
   copy_to_grouped
 
+  generate_cert_report
   generate_vulnerability_assessment_dashboard
   generate_vulnerability_report
 }

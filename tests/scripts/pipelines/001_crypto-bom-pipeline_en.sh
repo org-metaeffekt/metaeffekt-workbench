@@ -51,8 +51,7 @@ set_global_variables() {
   PARAM_SECURITY_POLICY_FILE="$WORKBENCH_DIR/policies/security-policy/security-policy-cert-eu.json"
 
   ENV_DESCRIPTOR_DIR="$WORKBENCH_DIR/descriptors"
-  ENV_VR_DESCRIPTOR_FILE="$WORKBENCH_DIR/asset-descriptor_GENERIC-vulnerability-report.yaml"
-  ENV_CR_DESCRIPTOR_FILE="$ENV_DESCRIPTOR_DIR/asset-descriptor_GENERIC-cert-report.yaml"
+  ENV_VR_DESCRIPTOR_FILE="$ENV_DESCRIPTOR_DIR/asset-descriptor_GENERIC-vulnerability-report.yaml"
 
   ENV_LANGUAGE="en"
 
@@ -193,45 +192,6 @@ generate_vulnerability_report() {
   pass_command_info_to_logger "generate_vulnerability-report"
 }
 
-generate_cert_report() {
-  OUTPUT_CR_FILE="$REPORTED_DIR/cert-report/$ENV_LANGUAGE/cert-report-$ENV_LANGUAGE.pdf"
-  OUTPUT_COMPUTED_INVENTORY_DIR="$ADDITIONAL_DIR/report"
-
-  PARAM_DOCUMENT_TYPE="CR"
-  PARAM_ASSET_ID="CryptoBOM"
-  PARAM_ASSET_NAME="CryptoBOM"
-  PARAM_ASSET_VERSION="SNAPSHOT"
-  PARAM_PRODUCT_NAME="CryptoBOM"
-  PARAM_PRODUCT_VERSION="SNAPSHOT"
-  PARAM_PRODUCT_WATERMARK="CryptoBOM"
-  PARAM_OVERVIEW_ADVISORS="CERT_EU"
-
-  CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/report/report_create-document.xml" verify)
-  [ -n "${AE_CORE_VERSION:-}" ] && CMD+=("-Dae.core.version=$AE_CORE_VERSION")
-  [ -n "${AE_ARTIFACT_ANALYSIS_VERSION:-}" ] && CMD+=("-Dae.artifact.analysis.version=$AE_ARTIFACT_ANALYSIS_VERSION")
-  CMD+=("-Dinput.inventory.dir=$GROUPED_CR_DIR")
-
-  CMD+=("-Doutput.document.file=$OUTPUT_CR_FILE")
-
-  CMD+=("-Dparam.asset.descriptor.file=$ENV_CR_DESCRIPTOR_FILE")
-  CMD+=("-Dparam.asset.id=$PARAM_ASSET_ID")
-  CMD+=("-Dparam.asset.name=$PARAM_ASSET_NAME")
-  CMD+=("-Dparam.asset.version=$PARAM_ASSET_VERSION")
-  CMD+=("-Dparam.product.version=$PARAM_PRODUCT_VERSION")
-  CMD+=("-Dparam.product.name=$PARAM_PRODUCT_NAME")
-  CMD+=("-Dparam.product.watermark=$PARAM_PRODUCT_WATERMARK")
-  CMD+=("-Dparam.document.type=$PARAM_DOCUMENT_TYPE")
-  CMD+=("-Dparam.document.language=$ENV_LANGUAGE")
-  CMD+=("-Dparam.overview.advisors=$PARAM_OVERVIEW_ADVISORS")
-  CMD+=("-Dparam.property.selector.organization=metaeffekt")
-
-  CMD+=("-Denv.vulnerability.mirror.dir=$EXTERNAL_VULNERABILITY_MIRROR_DIR/.database")
-  CMD+=("-Denv.workbench.dir=$WORKBENCH_DIR")
-  CMD+=("-Denv.kontinuum.dir=$EXTERNAL_KONTINUUM_DIR")
-
-  pass_command_info_to_logger "create_cert_report"
-}
-
 main() {
   source_preload
   set_global_variables
@@ -242,7 +202,6 @@ main() {
 
   copy_to_grouped
 
-  generate_cert_report
   generate_vulnerability_report
   generate_vulnerability_assessment_dashboard
 
