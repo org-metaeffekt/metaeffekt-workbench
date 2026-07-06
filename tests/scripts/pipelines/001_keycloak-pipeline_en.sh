@@ -154,6 +154,7 @@ generate_vulnerability_report() {
   log_info "Running generate_vulnerability_report process."
 
   OUTPUT_VR_FILE="$REPORTED_DIR/vulnerability-report/$ENV_LANGUAGE/vulnerability-report-$ENV_LANGUAGE.pdf"
+  OUTPUT_COMPUTED_INVENTORY_DIR="$ADDITIONAL_DIR/report"
 
   PARAM_DOCUMENT_TYPE="VR"
   PARAM_ASSET_ID="Keycloak"
@@ -238,8 +239,9 @@ main() {
 
   copy_to_grouped
 
-  c
+  generate_cert_report
   generate_vulnerability_report
+  generate_vulnerability_assessment_dashboard
 }
 
 main "$@"

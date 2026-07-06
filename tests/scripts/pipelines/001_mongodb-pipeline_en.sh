@@ -100,7 +100,6 @@ enrich_inventory() {
   CMD+=("-Doutput.tmp.dir=$PROCESSOR_TMP_DIR")
 
   CMD+=("-Dparam.security.policy.file=$PARAM_SECURITY_POLICY_FILE")
-  CMD+=("-Dparam.security.policy.file=$PARAM_SECURITY_POLICY_FILE")
   CMD+=("-Dparam.security.policy.active.ids=$SECURITY_POLICY_ACTIVE_IDS")
   CMD+=("-Dparam.dashboard.title=MongoDB 8.2.2 Assessment")
   CMD+=("-Dparam.dashboard.subtitle=")
@@ -109,7 +108,6 @@ enrich_inventory() {
   CMD+=("-Dparam.correlation.dir=$CORRELATION_DIR")
   CMD+=("-Dparam.context.dirs=$CONTEXT_DIR")
   CMD+=("-Dparam.activate.msrc=$ACTIVATE_MSRC")
-
 
   CMD+=("-Denv.vulnerability.mirror.dir=$EXTERNAL_VULNERABILITY_MIRROR_DIR/.database")
 
