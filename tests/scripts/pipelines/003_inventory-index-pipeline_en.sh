@@ -236,39 +236,69 @@ main() {
   # fetch
 
   # extract
-#  extractInventoryFromAsset $WORKSPACE_DIR/00_fetched/ae-inventory-index-setup $WORKSPACE_DIR/01_extract/scan_setup $WORKSPACE_DIR/01_extract/ae-inventory-index-setup-inventory-$INVENTORY_INDEX_VERSION.xlsx
-#  extractInventoryFromAsset $WORKSPACE_DIR/00_fetched/ae-inventory-importer-service $WORKSPACE_DIR/01_extract/scan_ae-inventory-importer-service $WORKSPACE_DIR/01_extract/ae-inventory-importer-service-inventory-$INVENTORY_INDEX_VERSION.xlsx
-#  extractInventoryFromAsset $WORKSPACE_DIR/00_fetched/ae-inventory-query-service $WORKSPACE_DIR/01_extract/scan_ae-inventory-query-service $WORKSPACE_DIR/01_extract/ae-inventory-query-service-inventory-$INVENTORY_INDEX_VERSION.xlsx
+  extractInventoryFromAsset $WORKSPACE_DIR/00_fetched/ae-inventory-index-setup $WORKSPACE_DIR/01_extracted/scan_setup $WORKSPACE_DIR/01_extracted/ae-inventory-index-setup-inventory-$INVENTORY_INDEX_VERSION.xlsx
+  extractInventoryFromAsset $WORKSPACE_DIR/00_fetched/ae-inventory-importer-service $WORKSPACE_DIR/01_extracted/scan_ae-inventory-importer-service $WORKSPACE_DIR/01_extracted/ae-inventory-importer-service-inventory-$INVENTORY_INDEX_VERSION.xlsx
+  extractInventoryFromAsset $WORKSPACE_DIR/00_fetched/ae-inventory-query-service $WORKSPACE_DIR/01_extracted/scan_ae-inventory-query-service $WORKSPACE_DIR/01_extracted/ae-inventory-query-service-inventory-$INVENTORY_INDEX_VERSION.xlsx
 
-#  attachAssetMetadata $WORKSPACE_DIR/01_extract/ae-inventory-index-setup-inventory-$INVENTORY_INDEX_VERSION.xlsx ii-setup "Inventory Index - Setup" "$INVENTORY_INDEX_VERSION" "" ""
-#  attachAssetMetadata $WORKSPACE_DIR/01_extract/ae-inventory-importer-service-inventory-$INVENTORY_INDEX_VERSION.xlsx ii-importer "Inventory Index - Importer" "$INVENTORY_INDEX_VERSION" "" ""
-#  attachAssetMetadata $WORKSPACE_DIR/01_extract/ae-inventory-query-service-inventory-$INVENTORY_INDEX_VERSION.xlsx ii-query-service "Inventory Index - Query Service" "$INVENTORY_INDEX_VERSION" "" ""
+  attachAssetMetadata $WORKSPACE_DIR/01_extracted/ae-inventory-index-setup-inventory-$INVENTORY_INDEX_VERSION.xlsx ii-setup "Inventory Index - Setup" "$INVENTORY_INDEX_VERSION" "" ""
+  attachAssetMetadata $WORKSPACE_DIR/01_extracted/ae-inventory-importer-service-inventory-$INVENTORY_INDEX_VERSION.xlsx ii-importer "Inventory Index - Importer" "$INVENTORY_INDEX_VERSION" "" ""
+  attachAssetMetadata $WORKSPACE_DIR/01_extracted/ae-inventory-query-service-inventory-$INVENTORY_INDEX_VERSION.xlsx ii-query-service "Inventory Index - Query Service" "$INVENTORY_INDEX_VERSION" "" ""
 
-#  prepareInventories $WORKSPACE_DIR/01_extract/ae-inventory-index-setup-inventory-$INVENTORY_INDEX_VERSION.xlsx $WORKSPACE_DIR/02_prepare/ae-inventory-index-setup-inventory-$INVENTORY_INDEX_VERSION.xlsx $WORKBENCH_DIR/scripts/prepare.kts
-#  prepareInventories $WORKSPACE_DIR/01_extract/ae-inventory-query-service-inventory-$INVENTORY_INDEX_VERSION.xlsx $WORKSPACE_DIR/02_prepare/ae-inventory-query-service-inventory-$INVENTORY_INDEX_VERSION.xlsx $WORKBENCH_DIR/scripts/prepare.kts
-#  prepareInventories $WORKSPACE_DIR/01_extract/ae-inventory-importer-service-inventory-$INVENTORY_INDEX_VERSION.xlsx $WORKSPACE_DIR/02_prepare/ae-inventory-importer-service-inventory-$INVENTORY_INDEX_VERSION.xlsx $WORKBENCH_DIR/scripts/prepare.kts
+  prepareInventories $WORKSPACE_DIR/01_extracted/ae-inventory-index-setup-inventory-$INVENTORY_INDEX_VERSION.xlsx $WORKSPACE_DIR/02_prepared/ae-inventory-index-setup-inventory-$INVENTORY_INDEX_VERSION.xlsx $WORKBENCH_DIR/scripts/prepare.kts
+  prepareInventories $WORKSPACE_DIR/01_extracted/ae-inventory-query-service-inventory-$INVENTORY_INDEX_VERSION.xlsx $WORKSPACE_DIR/02_prepared/ae-inventory-query-service-inventory-$INVENTORY_INDEX_VERSION.xlsx $WORKBENCH_DIR/scripts/prepare.kts
+  prepareInventories $WORKSPACE_DIR/01_extracted/ae-inventory-importer-service-inventory-$INVENTORY_INDEX_VERSION.xlsx $WORKSPACE_DIR/02_prepared/ae-inventory-importer-service-inventory-$INVENTORY_INDEX_VERSION.xlsx $WORKBENCH_DIR/scripts/prepare.kts
 
-#  enrichInventory \
-#    $WORKSPACE_DIR/02_prepare/ae-inventory-index-setup-inventory-$INVENTORY_INDEX_VERSION.xlsx \
-#    $WORKSPACE_DIR/04_advised/ae-inventory-index-setup-advised-inventory-$INVENTORY_INDEX_VERSION.xlsx \
-#    $WORKSPACE_DIR/04_advised/tmp \
-#    setup \
-#    default
+  enrichInventory \
+    $WORKSPACE_DIR/02_prepared/ae-inventory-index-setup-inventory-$INVENTORY_INDEX_VERSION.xlsx \
+    $WORKSPACE_DIR/04_advised/ae-inventory-index-setup-advised-inventory-$INVENTORY_INDEX_VERSION.xlsx \
+    $WORKSPACE_DIR/04_advised/tmp \
+    ii-setup \
+    default
 
-#  enrichInventory $WORKSPACE_DIR/02_prepare/ae-inventory-query-service-inventory-$INVENTORY_INDEX_VERSION.xlsx $WORKSPACE_DIR/04_advised/ae-inventory-query-service-advised-inventory-$INVENTORY_INDEX_VERSION.xlsx $WORKSPACE_DIR/04_advised/tmp
-#  enrichInventory $WORKSPACE_DIR/02_prepare/ae-inventory-importer-service-inventory-$INVENTORY_INDEX_VERSION.xlsx $WORKSPACE_DIR/04_advised/ae-inventory-importer-service-advised-inventory-$INVENTORY_INDEX_VERSION.xlsx $WORKSPACE_DIR/04_advised/tmp
+  enrichInventory  \
+    $WORKSPACE_DIR/02_prepared/ae-inventory-query-service-inventory-$INVENTORY_INDEX_VERSION.xlsx  \
+    $WORKSPACE_DIR/04_advised/ae-inventory-query-service-advised-inventory-$INVENTORY_INDEX_VERSION.xlsx \
+    $WORKSPACE_DIR/04_advised/tmp \
+    ii-query-service \
+    default
 
-#  createVulnerabilityAssessmentDashboard \
-#    $WORKSPACE_DIR/04_advised/ae-inventory-index-setup-advised-inventory-$INVENTORY_INDEX_VERSION.xlsx \
-#    $WORKSPACE_DIR/04_advised/ae-inventory-index-setup-advised-inventory-$INVENTORY_INDEX_VERSION.html \
-#    ii-setup \
-#    default
+  enrichInventory  \
+    $WORKSPACE_DIR/02_prepared/ae-inventory-importer-service-inventory-$INVENTORY_INDEX_VERSION.xlsx  \
+    $WORKSPACE_DIR/04_advised/ae-inventory-importer-service-advised-inventory-$INVENTORY_INDEX_VERSION.xlsx \
+    $WORKSPACE_DIR/04_advised/tmp \
+    ii-importer-service \
+    default
 
-#  createVulnerabilityAssessmentDashboard $WORKSPACE_DIR/04_advised/ae-inventory-query-service-advised-inventory-$INVENTORY_INDEX_VERSION.xlsx $WORKSPACE_DIR/04_advised/ae-inventory-query-service-advised-inventory-$INVENTORY_INDEX_VERSION.html
-#  createVulnerabilityAssessmentDashboard $WORKSPACE_DIR/04_advised/ae-inventory-importer-service-advised-inventory-$INVENTORY_INDEX_VERSION.xlsx $WORKSPACE_DIR/04_advised/ae-inventory-importer-service-advised-inventory-$INVENTORY_INDEX_VERSION.html
+  createVulnerabilityAssessmentDashboard \
+    $WORKSPACE_DIR/04_advised/ae-inventory-index-setup-advised-inventory-$INVENTORY_INDEX_VERSION.xlsx \
+    $WORKSPACE_DIR/04_advised/ae-inventory-index-setup-advised-inventory-$INVENTORY_INDEX_VERSION.html \
+    ii-setup \
+    default
 
-  createOverview $WORKSPACE_DIR/08_overview 01_input 02_advised 03_dashboards 04_reports $WORKSPACE_DIR/08_overview/overview.html
+  createVulnerabilityAssessmentDashboard \
+    $WORKSPACE_DIR/04_advised/ae-inventory-query-service-advised-inventory-$INVENTORY_INDEX_VERSION.xlsx \
+    $WORKSPACE_DIR/04_advised/ae-inventory-query-service-advised-inventory-$INVENTORY_INDEX_VERSION.html  \
+    ii-query-service \
+    default
 
+  createVulnerabilityAssessmentDashboard \
+    $WORKSPACE_DIR/04_advised/ae-inventory-importer-service-advised-inventory-$INVENTORY_INDEX_VERSION.xlsx \
+    $WORKSPACE_DIR/04_advised/ae-inventory-importer-service-advised-inventory-$INVENTORY_INDEX_VERSION.html \
+    ii-importer-service \
+    default
+
+  # TODO: consider how this is done in a more aligned fashion; the target folders may be combined from different sources
+  rm -rf $WORKSPACE_DIR/08_summarized
+  mkdir -p $WORKSPACE_DIR/08_summarized
+  mkdir -p $WORKSPACE_DIR/08_summarized/01_input
+  mkdir -p $WORKSPACE_DIR/08_summarized/02_advised
+  mkdir -p $WORKSPACE_DIR/08_summarized/03_dashboards
+  cp $WORKSPACE_DIR/02_prepared/ae-*.xlsx $WORKSPACE_DIR/08_summarized/01_input
+  cp $WORKSPACE_DIR/04_advised/ae-*.xlsx $WORKSPACE_DIR/08_summarized/02_advised
+  cp $WORKSPACE_DIR/04_advised/ae-*.html $WORKSPACE_DIR/08_summarized/03_dashboards
+#  cp $WORKSPACE_DIR/05_reported/ae-*.html $WORKSPACE_DIR/08_summarized/04_reports
+
+  createOverview $WORKSPACE_DIR/08_summarized 01_input 02_advised 03_dashboards 04_reports $WORKSPACE_DIR/08_summarized/overview.html
 }
 
 main "$@"

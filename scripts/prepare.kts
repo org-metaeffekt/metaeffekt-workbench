@@ -42,6 +42,16 @@ fun processInventories() {
 
     // remove detected descriptors
     ISL.selectArtifacts().idEndsWith(".pom").remove();
+    ISL.selectArtifacts().idEndsWith(".sql").remove();
+    ISL.selectArtifacts().idEndsWith(".md").remove();
+    ISL.selectArtifacts().idEndsWith("env.rc").remove();
+
+    ISL.selectArtifacts().idEquals("ae-inventory-index-deployer-HEAD-SNAPSHOT").remove();
+    ISL.selectArtifacts().idEquals("inventory-index-deployment-HEAD-SNAPSHOT.zip").remove();
+
+    ISL.selectArtifacts().pathInAssetContains("[inventory-index-deployment-HEAD-SNAPSHOT.zip]/01_setup/sql/").remove();
+    ISL.selectArtifacts().pathInAssetContains("[inventory-index-deployment-HEAD-SNAPSHOT.zip]/02_services/").remove();
+    ISL.selectArtifacts().pathInAssetContains("[inventory-index-deployment-HEAD-SNAPSHOT.zip]/03_test/").remove();
 
     println(ISL.getReport());
 

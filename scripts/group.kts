@@ -90,7 +90,7 @@ fun processInventories() {
 }
 
 /**
- * Copies the selected source files from different directories to their respective sub directories in the grouped dir.
+ * Copies the selected source files from different directories to their respective subdirectories in the grouped dir.
  *
  * @param sourceDirectory the inventory source directory
  * @param targetDirectory the grouped directory in which to copy all inventories found at the sourceLocation
