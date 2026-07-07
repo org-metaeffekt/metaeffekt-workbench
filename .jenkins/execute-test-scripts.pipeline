@@ -132,6 +132,33 @@ pipeline {
             }
         }
 
+        stage('Run workspace-001 tests - inventory-index') {
+            steps {
+                catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE', message: '003_inventory-index-pipeline_en.sh failed.') {
+                    // run pipeline
+                    withMaven(maven: 'MAVEN3912') {
+                        sh './tests/scripts/pipelines/003_inventory-index-pipeline_en.sh'
+                    }
+
+                    // publish inventory (internal)
+                    sh 'export AE_TIMESTAMP=`date +"%Y-%m-%d@%Hh%Mm"` && curl --create-dirs -T "tests/resources/workspace-003/inventory-index/08_summarized/02_advised/ae-inventory-importer-service-advised-inventory-HEAD-SNAPSHOT.xlsx" http://ae-scanner/upload/inventory-index/inventory-index-HEAD-SNAPSHOT/ae-inventory-importer-service-advised-inventory-$AE_TIMESTAMP.xlsx'
+                    sh 'export AE_TIMESTAMP=`date +"%Y-%m-%d@%Hh%Mm"` && curl --create-dirs -T "tests/resources/workspace-003/inventory-index/08_summarized/02_advised/ae-inventory-query-service-advised-inventory-HEAD-SNAPSHOT.xlsx" http://ae-scanner/upload/inventory-index/inventory-index-HEAD-SNAPSHOT/ae-inventory-query-service-advised-inventory-$AE_TIMESTAMP.xlsx'
+                    sh 'export AE_TIMESTAMP=`date +"%Y-%m-%d@%Hh%Mm"` && curl --create-dirs -T "tests/resources/workspace-003/inventory-index/08_summarized/02_advised/ae-inventory-index-setup-advised-inventory-HEAD-SNAPSHOT.xlsx" http://ae-scanner/upload/inventory-index/inventory-index-HEAD-SNAPSHOT/ae-inventory-index-setup-advised-inventory-$AE_TIMESTAMP.xlsx'
+
+                    // publish dashboard
+                    uploadToWebsite(
+                            'tests/resources/workspace-003/inventory-index/04_advised/ae-inventory-importer-service-advised-inventory-HEAD-SNAPSHOT.html',
+                            '/html/metaeffekt/dashboards/ae-inventory-importer-service-advised-inventory-HEAD-SNAPSHOT.html')
+                    uploadToWebsite(
+                            'tests/resources/workspace-003/inventory-index/04_advised/ae-inventory-index-setup-advised-inventory-HEAD-SNAPSHOT.html',
+                            '/html/metaeffekt/dashboards/ae-inventory-index-setup-advised-inventory-HEAD-SNAPSHOT.html')
+                    uploadToWebsite(
+                            'tests/resources/workspace-003/inventory-index/04_advised/ae-inventory-query-service-advised-inventory-HEAD-SNAPSHOT.html',
+                            '/html/metaeffekt/dashboards/ae-inventory-query-service-advised-inventory-HEAD-SNAPSHOT.html')
+                }
+            }
+        }
+
         stage('Run workspace-001 tests - crypto-bom_en') {
             steps {
                 catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE', message: '001_crypto-bom-pipeline_en.sh.') {

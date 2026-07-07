@@ -234,6 +234,18 @@ main() {
   update_mirror
 
   # fetch
+  rm -rf $WORKSPACE_DIR/00_fetched/ae-inventory-index-setup
+  mkdir -p $WORKSPACE_DIR/00_fetched/ae-inventory-index-setup
+  curl -O -J --output-dir $WORKSPACE_DIR/00_fetched/ae-inventory-index-setup http://ae-scanner/repository/org/metaeffekt/inventory-index/inventory-index-deployment-HEAD-SNAPSHOT.zip
+
+  rm -rf $WORKSPACE_DIR/00_fetched/ae-inventory-importer-service
+  mkdir -p $WORKSPACE_DIR/00_fetched/ae-inventory-importer-service
+  curl -O -J --output-dir $WORKSPACE_DIR/00_fetched/ae-inventory-importer-service http://ae-scanner/repository/org/metaeffekt/inventory-index/ae-inventory-importer-service-HEAD-SNAPSHOT-exec.jar
+
+  rm -rf $WORKSPACE_DIR/00_fetched/ae-inventory-query-service
+  mkdir -p $WORKSPACE_DIR/00_fetched/ae-inventory-query-service
+  curl -O -J --output-dir $WORKSPACE_DIR/00_fetched/ae-inventory-query-service http://ae-scanner/repository/org/metaeffekt/inventory-index/ae-inventory-query-service-HEAD-SNAPSHOT-exec.jar
+
 
   # extract
   extractInventoryFromAsset $WORKSPACE_DIR/00_fetched/ae-inventory-index-setup $WORKSPACE_DIR/01_extracted/scan_setup $WORKSPACE_DIR/01_extracted/ae-inventory-index-setup-inventory-$INVENTORY_INDEX_VERSION.xlsx
