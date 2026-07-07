@@ -1,14 +1,11 @@
-@file:DependsOn("com.fasterxml.jackson.module:jackson-module-kotlin:2.17.0")
-@file:DependsOn("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.17.0")
-
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import java.io.File
 
 
-val propertiesFile = args[0]
-val envFile = args[1]
+val propertiesFile = params.getValue("input.properties.file")
+val envFile = params.getValue("output.env.file")
 
 fun main() {
     val mapper = ObjectMapper(YAMLFactory()).registerKotlinModule()
@@ -28,7 +25,7 @@ fun writeEnvFile(projectProperties: ProjectProperties) {
     val assetName = asset.name ?: ""
     val assetVersion = asset.version ?: ""
     val assetId = buildNameVersionString(assetName, assetVersion)
-    
+
     val lines = mutableListOf<String>()
 
     lines.add("DEFAULT_PARAM_PROJECT_NAME=$projectName")

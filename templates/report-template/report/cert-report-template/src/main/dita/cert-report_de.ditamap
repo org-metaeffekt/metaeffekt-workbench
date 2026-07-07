@@ -46,7 +46,7 @@
     <backmatter>
 	    <booklists>
             <glossarylist>
-                <topicref format="ditamap" href="glossary/gen/glossary/de/gmap_glossary.ditamap" />
+                <topicref format="ditamap" href="${report.module}/gen/glossary/de/gmap_glossary.ditamap" />
             </glossarylist>
         </booklists>
         <topicref href="cert-report/static/de/tpc_vulnerability-report-notice.dita" />

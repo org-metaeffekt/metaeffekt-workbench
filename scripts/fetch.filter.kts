@@ -1,17 +1,13 @@
-@file:DependsOn("com.fasterxml.jackson.module:jackson-module-kotlin:2.17.0")
-@file:DependsOn("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.17.0")
-
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
-import org.jetbrains.kotlin.com.google.common.io.Files
 import java.io.File
 
 
-val propertiesFile = args[0]
-val workspaceDir = args[1]
-val curlArguments = args.drop(2)
-    .flatMap { argument -> argument.split(Regex("\\s+")).filter { it.isNotBlank() } }
+val propertiesFile = params.getValue("input.properties.file")
+val workspaceDir = params.getValue("input.workspace.dir")
+val curlArguments = params.getValue("param.curl.arguments")
+    .split(Regex("\\s+")).filter { it.isNotBlank() }
 
 fun main() {
     val mapper = ObjectMapper(YAMLFactory()).registerKotlinModule()
@@ -34,7 +30,7 @@ fun fetchAssets(projectProperties: ProjectProperties) {
         } else {
             throw IllegalArgumentException("Missing required information in properties file.")
         }
-        Files.createParentDirs(targetFile);
+        targetFile.parentFile?.mkdirs()
         downloadAsset(url, targetFile)
     }
 }
