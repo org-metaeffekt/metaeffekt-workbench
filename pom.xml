@@ -68,6 +68,13 @@
                             <workspaceDir>${project.basedir}/.workspace/</workspaceDir>
                             <kontinuumDir>${kontinuum.dir}</kontinuumDir>
                             <executionEnvironment>UNIX</executionEnvironment>
+
+                            <portfolioManagerClientKeystoreFile>config/portfolio/pm-client-TEST-keystore.p12</portfolioManagerClientKeystoreFile>
+                            <portfolioManagerClientTruststoreFile>config/portfolio/pm-client-TEST-truststore.p12</portfolioManagerClientTruststoreFile>
+                            <portfolioManagerClientKeystorePassword>${portfolio.manager.client.keystore.password}</portfolioManagerClientKeystorePassword>
+                            <portfolioManagerClientTruststorePassword>${portfolio.manager.client.truststore.password}</portfolioManagerClientTruststorePassword>
+                            <portfolioManagerToken>${portfolio.manager.token}</portfolioManagerToken>
+                            <portfolioManagerUrl>https://192.168.178.54:8444</portfolioManagerUrl>
                         </configuration>
                     </execution>
                 </executions>

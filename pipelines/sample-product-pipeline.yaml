@@ -11,11 +11,15 @@ projectProperties:
       assessmentId: "sample-product-1"
       context: "local"
       urlResolver:
-        url: "file:./pipelines/.workspace/metaeffekt-workbench/01_fetched/sample-asset-1.0.0/sample-asset-1.0.0.xls"
+        url: "file:/home/goose/Projects/metaeffekt/metaeffekt-workbench/tests/resources/workspace-002/sample-product-1.0.0/02_prepared/sample-asset-1.0.0/sample-asset-1.0.0.xlsx"
 
 reports:
   - assetId: "sample-asset"
     types: ["SDA", "CA", "VR", "VSR", "CR", "LD", "ILD"]
+    organization: "metaeffekt"
+    classificationRating: "DEFAULT"
+    controlRating: "DEFAULT"
+    watermark: "Sample"
 
 # Dashboards define which assets should have vulnerability dashboards generated.
 dashboards:
@@ -25,7 +29,6 @@ dashboards:
 options:
   global:
     documentLanguage: "en"
-    enableResolve: true
     enableSpdxBom: true
     enableCycloneDxBom: true
   enrichment:
@@ -33,8 +36,3 @@ options:
     securityPolicyActiveIds: ["base_configuration"]
     activateCsaf: false
     activateMsrc: false
-  document:
-    organization: "metaeffekt"
-    classificationRating: "DEFAULT"
-    controlRating: "DEFAULT"
-    watermark: "Sample"
