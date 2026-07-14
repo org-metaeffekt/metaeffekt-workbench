@@ -155,6 +155,14 @@ pipeline {
                     uploadToWebsite(
                             'tests/resources/workspace-003/inventory-index/04_advised/ae-inventory-query-service-advised-inventory-HEAD-SNAPSHOT.html',
                             '/html/metaeffekt/dashboards/ae-inventory-query-service-advised-inventory-HEAD-SNAPSHOT.html')
+
+                    // upload overview to internal file server
+                    sh '''
+                        find tests/resources -path "tests/resources/workspace-003/inventory-index/08_summarized/*" -type f | while read -r file; do
+                            relativeFilePath=$(echo "${file#tests/resources/workspace-003/inventory-index/08_summarized/}")
+                            curl --create-dirs -T "$file" "http://ae-scanner/upload/examples/inventory-index-HEAD-SNAPSHOT/$relativeFilePath"
+                        done
+                    '''
                 }
             }
         }
@@ -168,7 +176,7 @@ pipeline {
                     }
 
                     // publish inventory (internal)
-                    sh 'export AE_TIMESTAMP=`date +"%Y-%m-%d@%Hh%Mm"` && curl --create-dirs -T "tests/resources/workspace-001/crypto-bom-SNAPSHOT/06_advised/crypto-bom-SNAPSHOT/dashboards/crypto-bom-SNAPSHOT-dashboard.html" http://ae-scanner/upload/inventory-index/crypto-bom-SNAPSHOT/crypto-bom-inventory-$AE_TIMESTAMP.xlsx'
+                    sh 'export AE_TIMESTAMP=`date +"%Y-%m-%d@%Hh%Mm"` && curl --create-dirs -T "tests/resources/workspace-001/crypto-bom-SNAPSHOT/06_advised/crypto-bom-SNAPSHOT/dashboards/crypto-bom-SNAPSHOT-dashboard.xslx" http://ae-scanner/upload/inventory-index/crypto-bom-SNAPSHOT/crypto-bom-inventory-$AE_TIMESTAMP.xlsx'
 
                     // publish dashboard
                     uploadToWebsite(

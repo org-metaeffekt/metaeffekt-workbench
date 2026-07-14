@@ -41,16 +41,23 @@ fun processInventories() {
     val ISL = InventoryScriptingLanguage(inventory);
 
     // remove detected descriptors
+    ISL.selectArtifacts().idEndsWith(".idx").remove();
+    ISL.selectArtifacts().idEndsWith(".txt").remove();
+    ISL.selectArtifacts().idEndsWith(".MF").remove();
+    ISL.selectArtifacts().idEndsWith(".xml").remove();
     ISL.selectArtifacts().idEndsWith(".pom").remove();
+    ISL.selectArtifacts().idEndsWith(".class").remove();
     ISL.selectArtifacts().idEndsWith(".sql").remove();
     ISL.selectArtifacts().idEndsWith(".md").remove();
-    ISL.selectArtifacts().idEndsWith("env.rc").remove();
+    ISL.selectArtifacts().idEndsWith(".jks").remove();
+    ISL.selectArtifacts().idEndsWith(".yaml").remove();
+    ISL.selectArtifacts().idEquals("env.rc").remove();
+    ISL.selectArtifacts().idEquals("java.nio.file.spi.FileSystemProvider").remove();
 
     ISL.selectArtifacts().idEquals("ae-inventory-index-deployer-HEAD-SNAPSHOT").remove();
     ISL.selectArtifacts().idEquals("inventory-index-deployment-HEAD-SNAPSHOT.zip").remove();
 
     ISL.selectArtifacts().pathInAssetContains("[inventory-index-deployment-HEAD-SNAPSHOT.zip]/01_setup/sql/").remove();
-    ISL.selectArtifacts().pathInAssetContains("[inventory-index-deployment-HEAD-SNAPSHOT.zip]/02_services/").remove();
     ISL.selectArtifacts().pathInAssetContains("[inventory-index-deployment-HEAD-SNAPSHOT.zip]/03_test/").remove();
 
     println(ISL.getReport());
