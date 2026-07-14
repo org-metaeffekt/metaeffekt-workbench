@@ -156,6 +156,10 @@ enrichInventory() {
   CMD+=("-Dparam.dashboard.subtitle=$7")
   CMD+=("-Dparam.dashboard.footer=$8")
 
+  # enable threat catalog
+  CMD+=("-Dparam.activate.threat=true")
+  CMD+=("-Dparam.threat.catalog.file=$WORKBENCH_DIR/config/threat-catalog/default-catalog.yaml")
+
   CMD+=("-Denv.vulnerability.mirror.dir=$EXTERNAL_VULNERABILITY_MIRROR_DIR/.database")
 
   pass_command_info_to_logger "enrich_inventory"
@@ -328,4 +332,24 @@ main() {
   createOverview $WORKSPACE_DIR/08_summarized 01_input 02_advised 03_dashboards 04_reports $WORKSPACE_DIR/08_summarized/overview.html
 }
 
-main "$@"
+part() {
+  source_preload
+  set_global_variables
+
+  enrichInventory  \
+    $WORKSPACE_DIR/02_prepared/ae-inventory-importer-service-inventory-$INVENTORY_INDEX_VERSION.xlsx  \
+    $WORKSPACE_DIR/04_advised/ae-inventory-importer-service-advised-inventory-$INVENTORY_INDEX_VERSION.xlsx \
+    $WORKSPACE_DIR/04_advised/tmp \
+    importer-service \
+    default \
+    "Inventory Index - HEAD-SNAPSHOT" "Importer Service" ""
+
+  createVulnerabilityAssessmentDashboard \
+    $WORKSPACE_DIR/04_advised/ae-inventory-importer-service-advised-inventory-$INVENTORY_INDEX_VERSION.xlsx \
+    $WORKSPACE_DIR/04_advised/ae-inventory-importer-service-advised-inventory-$INVENTORY_INDEX_VERSION.html \
+    ii-importer-service \
+    default
+}
+
+#main "$@"
+part "$@"
