@@ -351,5 +351,5 @@ part() {
     default
 }
 
-#main "$@"
-part "$@"
+main "$@"
+#part "$@"
