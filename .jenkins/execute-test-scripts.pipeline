@@ -176,7 +176,7 @@ pipeline {
                     }
 
                     // publish inventory (internal)
-                    sh 'export AE_TIMESTAMP=`date +"%Y-%m-%d@%Hh%Mm"` && curl --create-dirs -T "tests/resources/workspace-001/crypto-bom-SNAPSHOT/06_advised/crypto-bom-SNAPSHOT/dashboards/crypto-bom-SNAPSHOT-dashboard.xslx" http://ae-scanner/upload/inventory-index/crypto-bom-SNAPSHOT/crypto-bom-inventory-$AE_TIMESTAMP.xlsx'
+                    sh 'export AE_TIMESTAMP=`date +"%Y-%m-%d@%Hh%Mm"` && curl --create-dirs -T "tests/resources/workspace-001/crypto-bom-SNAPSHOT/06_advised/crypto-bom-SNAPSHOT/crypto-bom-advised-inventory.xlsx" http://ae-scanner/upload/inventory-index/crypto-bom-SNAPSHOT/crypto-bom-inventory-$AE_TIMESTAMP.xlsx'
 
                     // publish dashboard
                     uploadToWebsite(
