@@ -1,0 +1,26 @@
+properties:
+  host01: "maven.repository.redhat.com"
+  host02: "repo1.maven.org"
+
+sourceUrls:
+  - "https://[host02]]/maven2/$[artifact.namespace]/$[artifact.namespace]/$[artifact.version]/$[artifact.id]"
+  - "https://$[host01]/maven2/$[artifact.namespace]/$[artifact.namespace]/$[artifact.version]/$[artifact.id]"
+
+targetFolderMappings:
+  - urlPattern: ".*apache.*"
+    targetFolder: "apache"
+#
+exclude:
+  patterns:
+    - "/^org\\.apache\\.commons.*/"
+    - "com.google.guava"
+    - "io.netty"
+  licenses:
+      - "MIT License"
+
+include:
+  licenses:
+    - "Apache-2.0"
+
+defaultImplicitInclusion: true
+defaultNoLicenseExclusion: false
