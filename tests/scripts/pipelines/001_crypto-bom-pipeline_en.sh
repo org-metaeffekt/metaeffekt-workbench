@@ -50,7 +50,10 @@ set_global_variables() {
   ENV_REPORT_TEMPLATE_DIR="$WORKBENCH_DIR/templates/report-template"
   PARAM_SECURITY_POLICY_FILE="$WORKBENCH_DIR/policies/security-policy/security-policy.json"
 
-  ENV_VR_DESCRIPTOR_FILE="$WORKBENCH_DIR/descriptors/asset-descriptor_GENERIC-vulnerability-report.yaml"
+  ENV_DESCRIPTOR_DIR="$WORKBENCH_DIR/descriptors"
+  ENV_VR_DESCRIPTOR_FILE="$ENV_DESCRIPTOR_DIR/asset-descriptor_GENERIC-vulnerability-report.yaml"
+
+  ENV_LANGUAGE="en"
 
   TENANT_ID="metaeffekt"
   ASSET_ID="crypto-bom"
@@ -95,7 +98,6 @@ enrich_inventory() {
   CMD+=("-Doutput.inventory.file=$ADVISED_INVENTORY_FILE")
   CMD+=("-Doutput.tmp.dir=$PROCESSOR_TMP_DIR")
 
-  CMD+=("-Dparam.security.policy.file=$PARAM_SECURITY_POLICY_FILE")
   CMD+=("-Dparam.security.policy.file=$PARAM_SECURITY_POLICY_FILE")
   CMD+=("-Dparam.security.policy.active.ids=$SECURITY_POLICY_ACTIVE_IDS")
   CMD+=("-Dparam.dashboard.title=CryptoBOM SNAPSHOT Assessment")
@@ -200,8 +202,9 @@ main() {
 
   copy_to_grouped
 
+  generate_vulnerability_report
   generate_vulnerability_assessment_dashboard
-  # generate_vulnerability_report
+
 }
 
 main "$@"
