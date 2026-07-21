@@ -77,6 +77,28 @@
                             <portfolioManagerUrl>https://192.168.178.54:8444</portfolioManagerUrl>
                         </configuration>
                     </execution>
+
+                    <execution>
+                        <id>generate-custom-pipeline</id>
+                        <goals>
+                            <goal>generate-local-pipeline</goal>
+                        </goals>
+                        <configuration>
+                            <pipelineConfigPath>${project.basedir}/pipelines/custom-pipeline.yaml</pipelineConfigPath>
+                            <outputFile>${project.basedir}/custom-pipeline.sh</outputFile>
+                            <kosmosPassword>${kosmos.password}</kosmosPassword>
+                            <userkeysFile>${project.basedir}/config/kosmos/kosmos.consumer.keys</userkeysFile>
+                            <artifactResolverConfigFile>${project.basedir}/config/resolver/artifact-resolver-config.yaml</artifactResolverConfigFile>
+                            <artifactResolverProxyFile>${project.basedir}/config/resolver/artifact-resolver-proxy.yaml</artifactResolverProxyFile>
+                            <scanPropertiesFile>${project.basedir}/config/scanner/scan-control.properties</scanPropertiesFile>
+                            <vulnerabilityMirrorDir>${vulnerability.mirror.dir}</vulnerabilityMirrorDir>
+                            <vulnerabilityMirrorUrl>${vulnerability.mirror.url}</vulnerabilityMirrorUrl>
+                            <workbenchDir>${project.basedir}</workbenchDir>
+                            <workspaceDir>${project.basedir}/.workspace/</workspaceDir>
+                            <kontinuumDir>${kontinuum.dir}</kontinuumDir>
+                            <executionEnvironment>UNIX</executionEnvironment>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
         </plugins>

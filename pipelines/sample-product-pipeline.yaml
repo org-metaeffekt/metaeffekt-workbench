@@ -25,6 +25,10 @@ reports:
 dashboards:
   - assetId: "sample-asset"
 
+portfolioManager:
+  project: "metaeffekt-workbench"
+  assetGroup: "metaeffekt-workbench:0.1.0"
+
 # Optional: global pipeline configuration
 options:
   global:
