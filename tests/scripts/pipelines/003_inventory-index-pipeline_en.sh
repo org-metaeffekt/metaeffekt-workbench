@@ -237,21 +237,6 @@ createOverview() {
   pass_command_info_to_logger "create_overview"
 }
 
-aggregateSources() {
-  CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/util/util_aggregate-sources.xml" process-resources)
-    [ "${DEBUG:-}" = "true" ] && CMD+=("-X")
-    [ -n "${AE_CORE_VERSION:-}" ] && CMD+=("-Dae.core.version=$AE_CORE_VERSION")
-    [ -n "${AE_ARTIFACT_ANALYSIS_VERSION:-}" ] && CMD+=("-Dae.artifact.analysis.version=$AE_ARTIFACT_ANALYSIS_VERSION")
-    [ -n "${LOCAL_MAVEN_REPO:-}" ] && CMD+=("-Dmaven.repo.local=$LOCAL_MAVEN_REPO")
-    CMD+=("-Dinput.inventory.file=$1")
-    CMD+=("-Doutput.target.dir=$2")
-    CMD+=("-Dparam.config.file=$WORKBENCH_DIR/config/source-aggregation/config.yaml")
-    CMD+=("-Dparam.protocol.file=$3")
-    CMD+=("-Doutput.target.dir=$4")
-
-    pass_command_info_to_logger "aggregate_sources"
-}
-
 enrichInventoryWithReference() {
 
   CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/advise/advise_enrich-with-reference.xml" process-resources)
@@ -316,13 +301,6 @@ main() {
     $WORKSPACE_DIR/02_prepared/ae-inventory-importer-service-inventory-$INVENTORY_INDEX_VERSION.xlsx \
     $WORKSPACE_DIR/03_aggregated/ \
     ae-inventory-importer-service-inventory-$INVENTORY_INDEX_VERSION.xlsx \
-
-
-  aggregateSources \
-    $WORKSPACE_DIR/03_aggregated/ae-inventory-index-setup-inventory-$INVENTORY_INDEX_VERSION.xlsx \
-    $WORKSPACE_DIR/03_aggregated/ \
-    $WORKSPACE_DIR/03_aggregated/source-aggregation/ae-inventory-index-setup-inventory-$INVENTORY_INDEX_VERSION-protocol.log \
-    $WORKSPACE_DIR/03_aggregated/source-aggregation/ae-inventory-index-setup-inventory-$INVENTORY_INDEX_VERSION/ \
 
 
   enrichInventory \

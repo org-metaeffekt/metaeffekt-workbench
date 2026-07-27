@@ -9,7 +9,7 @@ sourceUrls:
 targetFolderMappings:
   - urlPattern: ".*apache.*"
     targetFolder: "apache"
-#
+
 exclude:
   patterns:
     - "/^org\\.apache\\.commons.*/"
