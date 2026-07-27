@@ -515,11 +515,13 @@ main() {
   # copy inventories to grouped
   copy_to_grouped
 
-  # create annex documents
+  # create software distribution annex
   create_software_distribution_annex
   aggregate_licenses
   aggregate_sources
   create_annex_archive
+
+   # create other annex documents
   create_license_documentation
   create_initial_license_documentation
   create_custom_annex_document
