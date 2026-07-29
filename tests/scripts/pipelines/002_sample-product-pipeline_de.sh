@@ -187,8 +187,8 @@ aggregate_licenses() {
     INPUT_INVENTORY_FILE="$GROUPED_SDA_DIR/sample-asset-1.0.0-inventory.xls"
     PARAM_TARGET_COMPONENT_DIR="$GROUPED_SDA_DIR/components"
     PARAM_TARGET_LICENSE_DIR="$GROUPED_SDA_DIR/licenses"
-    ENV_KOSMOS_PASSWORD="EuBsVvcjIElWdXVVtHmPJdsE"
-    ENV_KOSMOS_USERKEYS_FILE="$WORKBENCH_DIR/config/kosmos/kosmos.consumer.keys"
+    ENV_TMD_PASSWORD="EuBsVvcjIElWdXVVtHmPJdsE"
+    ENV_TMD_USERKEYS_FILE="$WORKBENCH_DIR/config/kosmos/kosmos.consumer.keys"
 
     CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/util/util_aggregate-licenses.xml" verify)
     [ -n "${AE_CORE_VERSION:-}" ] && CMD+=("-Dae.core.version=$AE_CORE_VERSION")
@@ -198,8 +198,9 @@ aggregate_licenses() {
     CMD+=("-Dparam.reference.inventory.dir=$ENV_REFERENCE_INVENTORY_DIR")
     CMD+=("-Dparam.target.component.dir=$PARAM_TARGET_COMPONENT_DIR")
     CMD+=("-Dparam.target.license.dir=$PARAM_TARGET_LICENSE_DIR")
-    CMD+=("-Denv.kosmos.password=$ENV_KOSMOS_PASSWORD")
-    CMD+=("-Denv.kosmos.userkeys.file=$ENV_KOSMOS_USERKEYS_FILE")
+
+    CMD+=("-Denv.tmd.password=$ENV_TMD_PASSWORD")
+    CMD+=("-Denv.tmd.userkeys.file=$ENV_TMD_USERKEYS_FILE")
 
     pass_command_info_to_logger "aggregate_annex_folders_with_tmd"
 }
