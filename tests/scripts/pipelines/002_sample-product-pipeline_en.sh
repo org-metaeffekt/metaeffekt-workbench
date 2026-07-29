@@ -183,12 +183,14 @@ create_software_distribution_annex() {
   pass_command_info_to_logger "create_software_distribution_annex"
 }
 
-aggregate_annex_folders() {
-    INPUT_INVENTORY_FILE="$ENV_REPORT_TEMPLATE_DIR/target/tmp/SampleProduct-merged-inventory.xlsx"
+aggregate_licenses() {
+    INPUT_INVENTORY_FILE="$GROUPED_SDA_DIR/sample-asset-1.0.0-inventory.xls"
     PARAM_TARGET_COMPONENT_DIR="$GROUPED_SDA_DIR/components"
     PARAM_TARGET_LICENSE_DIR="$GROUPED_SDA_DIR/licenses"
+    ENV_TMD_PASSWORD="EuBsVvcjIElWdXVVtHmPJdsE"
+    ENV_TMD_USERKEYS_FILE="$WORKBENCH_DIR/config/kosmos/kosmos.consumer.keys"
 
-    CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/report/report_aggregate-annex-folders.xml" verify)
+    CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/util/util_aggregate-licenses.xml" verify)
     [ -n "${AE_CORE_VERSION:-}" ] && CMD+=("-Dae.core.version=$AE_CORE_VERSION")
     [ -n "${AE_ARTIFACT_ANALYSIS_VERSION:-}" ] && CMD+=("-Dae.artifact.analysis.version=$AE_ARTIFACT_ANALYSIS_VERSION")
     CMD+=("-Dinput.inventory.file=$INPUT_INVENTORY_FILE")
@@ -197,11 +199,34 @@ aggregate_annex_folders() {
     CMD+=("-Dparam.target.component.dir=$PARAM_TARGET_COMPONENT_DIR")
     CMD+=("-Dparam.target.license.dir=$PARAM_TARGET_LICENSE_DIR")
 
-    pass_command_info_to_logger "aggregate_annex_folders"
+    CMD+=("-Denv.tmd.password=$ENV_TMD_PASSWORD")
+    CMD+=("-Denv.tmd.userkeys.file=$ENV_TMD_USERKEYS_FILE")
+
+    pass_command_info_to_logger "aggregate_annex_folders_with_tmd"
+}
+
+aggregate_sources() {
+  INPUT_INVENTORY_FILE="$GROUPED_SDA_DIR/sample-asset-1.0.0-inventory.xls"
+  OUTPUT_TARGET_DIR="$GROUPED_SDA_DIR"
+  PARAM_CONFIG_FILE="$WORKBENCH_DIR/config/source-aggregation/config.yaml"
+  PARAM_PROTOCOL_FILE="$GROUPED_SDA_DIR/source-aggregation.log"
+
+  CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/util/util_aggregate-sources.xml" process-resources)
+    [ "${DEBUG:-}" = "true" ] && CMD+=("-X")
+    [ -n "${AE_CORE_VERSION:-}" ] && CMD+=("-Dae.core.version=$AE_CORE_VERSION")
+    [ -n "${AE_ARTIFACT_ANALYSIS_VERSION:-}" ] && CMD+=("-Dae.artifact.analysis.version=$AE_ARTIFACT_ANALYSIS_VERSION")
+    [ -n "${LOCAL_MAVEN_REPO:-}" ] && CMD+=("-Dmaven.repo.local=$LOCAL_MAVEN_REPO")
+    CMD+=("-Dinput.inventory.file=$INPUT_INVENTORY_FILE")
+    CMD+=("-Doutput.target.dir=$OUTPUT_TARGET_DIR")
+    CMD+=("-Dparam.config.file=$PARAM_CONFIG_FILE")
+    CMD+=("-Dparam.protocol.file=$PARAM_PROTOCOL_FILE")
+
+    pass_command_info_to_logger "aggregate_sources"
 }
 
 create_annex_archive() {
     INPUT_ANNEX_FILE="$REPORTED_DIR/software-distribution-annex/$ENV_LANGUAGE/software-distribution-annex-$ENV_LANGUAGE.pdf"
+    INPUT_INVENTORY_SOURCES_DIR="$GROUPED_SDA_DIR/sources"
     INPUT_INVENTORY_COMPONENTS_DIR="$GROUPED_SDA_DIR/components"
     INPUT_INVENTORY_LICENSES_DIR="$GROUPED_SDA_DIR/licenses"
     OUTPUT_ANNEX_ARCHIVE_FILE="$REPORTED_DIR/software-distribution-annex/$ENV_LANGUAGE/software-distribution-annex-$ENV_LANGUAGE.zip"
@@ -209,7 +234,8 @@ create_annex_archive() {
     CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/report/report_create-annex-archive.xml" verify)
     [ -n "${AE_CORE_VERSION:-}" ] && CMD+=("-Dae.core.version=$AE_CORE_VERSION")
     [ -n "${AE_ARTIFACT_ANALYSIS_VERSION:-}" ] && CMD+=("-Dae.artifact.analysis.version=$AE_ARTIFACT_ANALYSIS_VERSION")
-    CMD+=("-Dinput.document.pdf.file=$INPUT_ANNEX_FILE")
+    CMD+=("-Dinput.document.en.pdf.file=$INPUT_ANNEX_FILE")
+    CMD+=("-Dinput.inventory.sources.dir=$INPUT_INVENTORY_SOURCES_DIR")
     CMD+=("-Dinput.inventory.components.dir=$INPUT_INVENTORY_COMPONENTS_DIR")
     CMD+=("-Dinput.inventory.licenses.dir=$INPUT_INVENTORY_LICENSES_DIR")
 
@@ -490,10 +516,13 @@ main() {
   # copy inventories to grouped
   copy_to_grouped
 
-  # create annex documents
+  # create software distribution annex
   create_software_distribution_annex
-  aggregate_annex_folders
+  aggregate_licenses
+  aggregate_sources
   create_annex_archive
+
+   # create other annex documents
   create_license_documentation
   create_initial_license_documentation
   create_custom_annex_document
