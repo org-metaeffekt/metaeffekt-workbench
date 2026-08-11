@@ -239,12 +239,11 @@ createOverview() {
 
 enrichInventoryWithReference() {
 
-  CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/advise/advise_enrich-with-reference.xml" process-resources)
+  CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/util/util_enrich-inventory-with-reference.xml" process-resources)
   [ -n "${AE_CORE_VERSION:-}" ] && CMD+=("-Dae.core.version=$AE_CORE_VERSION")
   [ -n "${AE_ARTIFACT_ANALYSIS_VERSION:-}" ] && CMD+=("-Dae.artifact.analysis.version=$AE_ARTIFACT_ANALYSIS_VERSION")
   CMD+=("-Dinput.inventory.file=$1")
-  CMD+=("-Doutput.inventory.dir=$2")
-  CMD+=("-Doutput.inventory.path=$3")
+  CMD+=("-Doutput.inventory.file=$2/$3")
   CMD+=("-Dparam.reference.inventory.dir=$ENV_REFERENCE_INVENTORY_DIR")
 
   pass_command_info_to_logger "enrich_inventory_with_reference"

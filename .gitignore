@@ -24,6 +24,9 @@
 **/workspace-001/*/08_*
 **/workspace-001/*/09_*
 
+# exclude samples which are full covered by pipeline
+**/workspace-001/alpine-latest/
+
 **/workspace-002/*/xx_*
 **/workspace-002/*/03_*
 **/workspace-002/*/04_*

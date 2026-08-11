@@ -85,14 +85,11 @@ enrich_inventory_with_reference() {
   AGGREGATED_INVENTORY_DIR="$AGGREGATED_DIR"
   AGGREGATED_INVENTORY_PATH="sample-asset-1.0.0-inventory.xls"
 
-  CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/advise/advise_enrich-with-reference.xml" process-resources)
+  CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/util/util_enrich-inventory-with-reference.xml" process-resources)
   [ -n "${AE_CORE_VERSION:-}" ] && CMD+=("-Dae.core.version=$AE_CORE_VERSION")
   [ -n "${AE_ARTIFACT_ANALYSIS_VERSION:-}" ] && CMD+=("-Dae.artifact.analysis.version=$AE_ARTIFACT_ANALYSIS_VERSION")
   CMD+=("-Dinput.inventory.file=$PREPARED_INVENTORY_FILE")
-
-  CMD+=("-Doutput.inventory.dir=$AGGREGATED_INVENTORY_DIR")
-  CMD+=("-Doutput.inventory.path=$AGGREGATED_INVENTORY_PATH")
-
+  CMD+=("-Doutput.inventory.file=$AGGREGATED_INVENTORY_DIR/$AGGREGATED_INVENTORY_PATH")
   CMD+=("-Dparam.reference.inventory.dir=$ENV_REFERENCE_INVENTORY_DIR")
   pass_command_info_to_logger "enrich_inventory_with_reference"
 }
