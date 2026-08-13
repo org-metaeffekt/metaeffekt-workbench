@@ -85,7 +85,7 @@ enrich_inventory_with_reference() {
   AGGREGATED_INVENTORY_DIR="$AGGREGATED_DIR"
   AGGREGATED_INVENTORY_PATH="sample-asset-1.0.0-inventory.xls"
 
-  CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/util/util_enrich-inventory-with-reference.xml" process-resources)
+  CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/util/util_enrich-with-reference.xml" process-resources)
   [ -n "${AE_CORE_VERSION:-}" ] && CMD+=("-Dae.core.version=$AE_CORE_VERSION")
   [ -n "${AE_ARTIFACT_ANALYSIS_VERSION:-}" ] && CMD+=("-Dae.artifact.analysis.version=$AE_ARTIFACT_ANALYSIS_VERSION")
   CMD+=("-Dinput.inventory.file=$PREPARED_INVENTORY_FILE")
