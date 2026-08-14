@@ -80,7 +80,7 @@ update_mirror() {
   pass_command_info_to_logger "update_mirror"
 }
 
-enrich_inventory_with_reference() {
+enrich-with-reference() {
   PREPARED_INVENTORY_FILE="$PREPARED_DIR/sample-asset-1.0.0-inventory.xls"
   AGGREGATED_INVENTORY_DIR="$AGGREGATED_DIR"
   AGGREGATED_INVENTORY_PATH="sample-asset-1.0.0-inventory.xls"
@@ -91,7 +91,7 @@ enrich_inventory_with_reference() {
   CMD+=("-Dinput.inventory.file=$PREPARED_INVENTORY_FILE")
   CMD+=("-Doutput.inventory.file=$AGGREGATED_INVENTORY_DIR/$AGGREGATED_INVENTORY_PATH")
   CMD+=("-Dparam.reference.inventory.dir=$ENV_REFERENCE_INVENTORY_DIR")
-  pass_command_info_to_logger "enrich_inventory_with_reference"
+  pass_command_info_to_logger "enrich-with-reference"
 }
 
 enrich_inventory() {
@@ -504,7 +504,7 @@ main() {
   update_mirror
 
   # enrichment
-  enrich_inventory_with_reference
+  enrich-with-reference
   enrich_inventory
 
   # necessary as the group stage expects and inventory to be present in 05_scanned for license reports
