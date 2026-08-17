@@ -96,13 +96,13 @@ pipeline {
 
         stage('Configure metaeffekt-workbench') {
             steps {
-                sh 'echo "EXTERNAL_KONTINUUM_DIR=\"$(pwd)/.metaeffekt-kontinuum\"" > external.rc'
+                sh 'echo "ae.kontinuum.dir=\\"$(pwd)/.metaeffekt-kontinuum\\"" > .project.properties'
 
                 // this is effectively workspace/.vulnerability-mirror_gen6; so next to the jobs workspace; reconsider as shared
-                sh 'echo "EXTERNAL_VULNERABILITY_MIRROR_DIR=\"$(dirname $(pwd))/.vulnerability-mirror_gen6\"" >> external.rc'
+                sh 'echo "vulnerability.mirror.dir=\\"$(dirname $(pwd))/.vulnerability-mirror_gen6\\"" >> .project.properties'
 
                 // specify mirror source
-                sh 'echo "EXTERNAL_VULNERABILITY_MIRROR_URL=\"http://ae-scanner/mirror/index/ae-mirror-index_gen6.tar.gz\"" >> external.rc'
+                sh 'echo "vulnerability.mirror.url=\\"http://ae-scanner/mirror/index/ae-mirror-index_gen6.tar.gz\\"" >> .project.properties'
             }
         }
 

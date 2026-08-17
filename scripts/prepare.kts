@@ -30,7 +30,7 @@ processInventories()
  * Main script entrypoint, which defines the flow of how the script processes the given input directories and how they
  * are written to the output directory.
  *
- * In this case, input inventories are gathered from different stages in the workspace and copies to their respective
+ * In this case, input inventories are gathered from different stages in the workspace and copied to their respective
  * target subdirectories in the 07_grouped stage. This is a pre-processing step, necessary for dashboard and report creation.
  */
 fun processInventories() {

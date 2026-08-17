@@ -54,6 +54,9 @@ set_global_variables() {
   ENV_REPORT_TEMPLATE_DIR="$WORKBENCH_DIR/templates/report-template"
   PARAM_SECURITY_POLICY_FILE="$WORKBENCH_DIR/policies/security-policy/security-policy.json"
 
+  KEYSTORE_CONFIG_FILE="$WORKBENCH_DIR/config/portfolio/pm-client-TEST-keystore.p12"
+  TRUSTSTORE_CONFIG_FILE="$WORKBENCH_DIR/config/portfolio/pm-client-TEST-truststore.p12"
+
   ENV_DESCRIPTOR_DIR="$WORKBENCH_DIR/descriptors"
   ENV_SDA_DESCRIPTOR_FILE="$ENV_DESCRIPTOR_DIR/asset-descriptor_GENERIC-software-distribution-annex.yaml"
   ENV_ILD_DESCRIPTOR_FILE="$ENV_DESCRIPTOR_DIR/asset-descriptor_GENERIC-initial-license-documentation.yaml"
@@ -120,6 +123,69 @@ prepareInventories() {
   CMD+=("-Dparam.kotlin.script.file=$3")
 
   pass_command_info_to_logger "prepare"
+}
+
+# $1: input file
+# $2: project name
+# $3: asset group id
+# $4: asset name
+# $5: asset version
+portfolioUpload() {
+  CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/prepare/prepare_portfolio-upload.xml" process-resources)
+  [ "${DEBUG:-}" = "true" ] && CMD+=("-X")
+  [ -n "${AE_CORE_VERSION:-}" ] && CMD+=("-Dae.core.version=$AE_CORE_VERSION")
+  [ -n "${AE_ARTIFACT_ANALYSIS_VERSION:-}" ] && CMD+=("-Dae.artifact.analysis.version=$AE_ARTIFACT_ANALYSIS_VERSION")
+  [ -n "${AE_PORTFOLIO_MANAGER_VERSION:-}" ] && CMD+=("-Dae.portfolio.manager.version=$AE_PORTFOLIO_MANAGER_VERSION")
+  [ -n "${LOCAL_MAVEN_REPO:-}" ] && CMD+=("-Dmaven.repo.local=$LOCAL_MAVEN_REPO")
+  CMD+=("-Dinput.file=$1")
+  CMD+=("-Dparam.project.name=$2")
+  CMD+=("-Dparam.asset.group.id=$3")
+  CMD+=("-Dparam.asset.name=$4")
+  CMD+=("-Dparam.asset.version=$5")
+  CMD+=("-Dparam.portfolio.manager.url=$PORTFOLIO_MANAGER_URL")
+  CMD+=("-Dparam.portfolio.manager.token=$PORTFOLIO_MANAGER_TOKEN")
+  CMD+=("-Dparam.keystore.config.file=$KEYSTORE_CONFIG_FILE")
+  CMD+=("-Dparam.truststore.config.file=$TRUSTSTORE_CONFIG_FILE")
+  CMD+=("-Dparam.keystore.password=$PORTFOLIO_MANAGER_CLIENT_KEYSTORE_PASSWORD")
+  CMD+=("-Dparam.truststore.password=$PORTFOLIO_MANAGER_CLIENT_TRUSTSTORE_PASSWORD")
+
+  pass_command_info_to_logger "portfolio_upload"
+}
+
+# $1: output inventory dir
+# $2: project name
+# $3: asset group id
+# $4: asset id
+# $5: inventory modifier
+portfolioDownload() {
+  CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/aggregate/aggregate_portfolio-download.xml" process-resources)
+  [ "${DEBUG:-}" = "true" ] && CMD+=("-X")
+  [ -n "${AE_CORE_VERSION:-}" ] && CMD+=("-Dae.core.version=$AE_CORE_VERSION")
+  [ -n "${AE_ARTIFACT_ANALYSIS_VERSION:-}" ] && CMD+=("-Dae.artifact.analysis.version=$AE_ARTIFACT_ANALYSIS_VERSION")
+  [ -n "${AE_PORTFOLIO_MANAGER_VERSION:-}" ] && CMD+=("-Dae.portfolio.manager.version=$AE_PORTFOLIO_MANAGER_VERSION")
+  [ -n "${LOCAL_MAVEN_REPO:-}" ] && CMD+=("-Dmaven.repo.local=$LOCAL_MAVEN_REPO")
+  CMD+=("-Doutput.inventory.dir=$1")
+  CMD+=("-Dparam.project.name=$2")
+  CMD+=("-Dparam.asset.group.id=$3")
+  CMD+=("-Dparam.asset.id=$4")
+  CMD+=("-Dparam.inventory.modifier=$5")
+  CMD+=("-Dparam.portfolio.manager.url=$PORTFOLIO_MANAGER_URL")
+  CMD+=("-Dparam.portfolio.manager.token=$PORTFOLIO_MANAGER_TOKEN")
+  CMD+=("-Dparam.keystore.config.file=$KEYSTORE_CONFIG_FILE")
+  CMD+=("-Dparam.truststore.config.file=$TRUSTSTORE_CONFIG_FILE")
+  CMD+=("-Dparam.keystore.password=$PORTFOLIO_MANAGER_CLIENT_KEYSTORE_PASSWORD")
+  CMD+=("-Dparam.truststore.password=$PORTFOLIO_MANAGER_CLIENT_TRUSTSTORE_PASSWORD")
+
+  pass_command_info_to_logger "portfolio_download"
+
+  find $WORKSPACE_DIR/03_aggregated/ -type f -name "*.zip" -print0 | while IFS= read -r -d '' zip_file; do
+      zip_dir=$(dirname "$zip_file")
+      unzip -q -j "$zip_file" "*_report.xlsx" "*_report.xls" -d "$zip_dir" || true
+      extracted_file=$(find "$zip_dir" -maxdepth 1 -type f \( -name "*_report.xlsx" -o -name "*_report.xls" \) | head -n 1)
+      if [ -n "$extracted_file" ]; then
+          mv "$extracted_file" "$WORKSPACE_DIR/03_aggregated/inventory-index-portfolio-reference.xlsx"
+      fi
+  done
 }
 
 # $1: input inventory file
@@ -243,8 +309,8 @@ enrichInventoryWithReference() {
   [ -n "${AE_CORE_VERSION:-}" ] && CMD+=("-Dae.core.version=$AE_CORE_VERSION")
   [ -n "${AE_ARTIFACT_ANALYSIS_VERSION:-}" ] && CMD+=("-Dae.artifact.analysis.version=$AE_ARTIFACT_ANALYSIS_VERSION")
   CMD+=("-Dinput.inventory.file=$1")
-  CMD+=("-Doutput.inventory.file=$2/$3")
-  CMD+=("-Dparam.reference.inventory.dir=$ENV_REFERENCE_INVENTORY_DIR")
+  CMD+=("-Doutput.inventory.file=$2")
+  CMD+=("-Dparam.reference.inventory.dir=$3")
 
   pass_command_info_to_logger "enrich-with-reference"
 }
@@ -285,21 +351,48 @@ main() {
   prepareInventories $WORKSPACE_DIR/01_extracted/ae-inventory-query-service-inventory-$INVENTORY_INDEX_VERSION.xlsx $WORKSPACE_DIR/02_prepared/ae-inventory-query-service-inventory-$INVENTORY_INDEX_VERSION.xlsx $WORKBENCH_DIR/scripts/prepare.kts
   prepareInventories $WORKSPACE_DIR/01_extracted/ae-inventory-importer-service-inventory-$INVENTORY_INDEX_VERSION.xlsx $WORKSPACE_DIR/02_prepared/ae-inventory-importer-service-inventory-$INVENTORY_INDEX_VERSION.xlsx $WORKBENCH_DIR/scripts/prepare.kts
 
+  portfolioUpload \
+    $WORKSPACE_DIR/02_prepared/ae-inventory-index-setup-inventory-$INVENTORY_INDEX_VERSION.xlsx \
+    metaeffekt-examples \
+    inventory-index:$INVENTORY_INDEX_VERSION \
+    index-setup \
+    $INVENTORY_INDEX_VERSION
+  portfolioUpload \
+    $WORKSPACE_DIR/02_prepared/ae-inventory-query-service-inventory-$INVENTORY_INDEX_VERSION.xlsx \
+    metaeffekt-examples \
+    inventory-index:$INVENTORY_INDEX_VERSION \
+    query-service \
+    $INVENTORY_INDEX_VERSION
+
+  portfolioUpload \
+    $WORKSPACE_DIR/02_prepared/ae-inventory-importer-service-inventory-$INVENTORY_INDEX_VERSION.xlsx \
+    metaeffekt-examples \
+    inventory-index:$INVENTORY_INDEX_VERSION \
+    importer-service \
+    $INVENTORY_INDEX_VERSION
+
+  # Only required once, as the pulled report contains the information of all inventory index input inventories.
+  portfolioDownload \
+    $WORKSPACE_DIR/03_aggregated/ \
+    metaeffekt-examples \
+    Reports:SNAPSHOT \
+    metaeffekt-examples \
+    report
 
   enrichInventoryWithReference \
     $WORKSPACE_DIR/02_prepared/ae-inventory-index-setup-inventory-$INVENTORY_INDEX_VERSION.xlsx \
+    $WORKSPACE_DIR/03_aggregated/ae-inventory-index-setup-inventory-$INVENTORY_INDEX_VERSION.xlsx \
     $WORKSPACE_DIR/03_aggregated/ \
-    ae-inventory-index-setup-inventory-$INVENTORY_INDEX_VERSION.xlsx \
 
   enrichInventoryWithReference \
     $WORKSPACE_DIR/02_prepared/ae-inventory-query-service-inventory-$INVENTORY_INDEX_VERSION.xlsx \
+    $WORKSPACE_DIR/03_aggregated/ae-inventory-query-service-inventory-$INVENTORY_INDEX_VERSION.xlsx \
     $WORKSPACE_DIR/03_aggregated/ \
-    ae-inventory-query-service-inventory-$INVENTORY_INDEX_VERSION.xlsx \
 
   enrichInventoryWithReference \
     $WORKSPACE_DIR/02_prepared/ae-inventory-importer-service-inventory-$INVENTORY_INDEX_VERSION.xlsx \
+    $WORKSPACE_DIR/03_aggregated/ae-inventory-importer-service-inventory-$INVENTORY_INDEX_VERSION.xlsx \
     $WORKSPACE_DIR/03_aggregated/ \
-    ae-inventory-importer-service-inventory-$INVENTORY_INDEX_VERSION.xlsx \
 
 
   enrichInventory \

@@ -1,0 +1,27 @@
+# Repository Paths
+ae.kontinuum.dir=/PATH/TO/KONTINUUM
+# ae.workbench.dir=/PATH/TO/WORKBENCH
+
+# Vulnerability Mirror
+vulnerability.mirror.dir=/PATH/TO/MIRROR
+vulnerability.mirror.url=https://MIRROR_URL/mirror.tar.gz
+
+# NVD API Key (optional)
+# nvd.api.key=NVD-KEY
+
+# Portfolio Manager Credentials (optional)
+# portfolio.manager.url=https://192.168.178.100:8444
+# portfolio.manager.token=TOKEN
+# portfolio.manager.client.keystore.password=KEYSTORE_PASSWORD
+# portfolio.manager.client.truststore.password=TRUSTSTORE_PASSWORD
+
+# Controls the versions of core and artifact-analysis. Only applicable for scripts run in this repository.
+ae.core.version=HEAD-SNAPSHOT
+ae.artifact.analysis.version=HEAD-SNAPSHOT
+# ae.portfolio.manager.version=HEAD-SNAPSHOT
+
+# Debug options
+# If true, enables the maven debug flag providing additional log information
+# debug=true
+# If true, dumps all entries written to the log file onto the console
+# dump.logs=true

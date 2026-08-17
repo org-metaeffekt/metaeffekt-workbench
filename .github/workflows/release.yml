@@ -58,15 +58,15 @@ jobs:
           cd ${{ github.workspace }}/.metaeffekt-kontinuum
           git checkout ${{ inputs.ae-kontinuum-version }}
 
-      - name: Create external.rc file
+      - name: Create .project.properties file
         run: |
-          touch ${{ github.workspace }}/external.rc
-          echo "EXTERNAL_KONTINUUM_DIR=${{ github.workspace }}/.metaeffekt-kontinuum" >> ${{ github.workspace }}/external.rc
-          echo "EXTERNAL_VULNERABILITY_MIRROR_DIR=${{ github.workspace }}/.mirror" >> ${{ github.workspace }}/external.rc
-          echo "EXTERNAL_VULNERABILITY_MIRROR_URL=${{ env.MIRROR_URL }}" >> ${{ github.workspace }}/external.rc
-          echo "AE_CORE_VERSION=${{ inputs.ae-core-version }}" >> ${{ github.workspace }}/external.rc
-          echo "AE_ARTIFACT_ANALYSIS_VERSION=${{ inputs.ae-artifact-analysis-version }}" >> ${{ github.workspace }}/external.rc
-          echo "DUMP_LOGS=true" >> ${{ github.workspace }}/external.rc
+          touch ${{ github.workspace }}/.project.properties
+          echo "ae.kontinuum.dir=${{ github.workspace }}/.metaeffekt-kontinuum" >> ${{ github.workspace }}/.project.properties
+          echo "vulnerability.mirror.dir=${{ github.workspace }}/.mirror" >> ${{ github.workspace }}/.project.properties
+          echo "vulnerability.mirror.url=${{ env.MIRROR_URL }}" >> ${{ github.workspace }}/.project.properties
+          echo "ae.core.version=${{ inputs.ae-core-version }}" >> ${{ github.workspace }}/.project.properties
+          echo "ae.artifact.analysis.version=${{ inputs.ae-artifact-analysis-version }}" >> ${{ github.workspace }}/.project.properties
+          echo "dump.logs=true" >> ${{ github.workspace }}/.project.properties
 
       - name: Restore vulnerability mirror and maven index cache
         uses: actions/cache/restore@v4

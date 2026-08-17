@@ -23,13 +23,13 @@ rather than in sub-scripts. This design aims to improve readability and simplifi
 
 Additionally, this repository requires a local instance of the [metaeffekt-kontinuum](https://github.com/org-metaeffekt/metaeffekt-kontinuum).
 
-To ensure all reference processes and pipelines in this repository can run, we need to create an external.rc file
-in the root of this repository. A template for this file has been provided here: [external-template.rc](external-template.rc).
+To ensure all reference processes and pipelines in this repository can run, a .project.properties file
+must be available in the root of this repository or in the encompassing integration harness. A template for this file has been provided here: [.project.properties.template](.project.properties.template).
 
 ## Running the Reference Pipeline
 
 To first get started it is recommended to execute one of the following reference pipelines. No adjustments to the actual
-pipeline scripts should be necessary if the external.rc file has been set correctly.
+pipeline scripts should be necessary if the .project.properties file has been set correctly.
 
 - [001_sample-product-pipeline_de.sh](tests/scripts/pipelines/001_sample-product-pipeline_de.sh)
 - [001_sample-product-pipeline_en.sh](tests/scripts/pipelines/001_sample-product-pipeline_en.sh)
@@ -38,13 +38,13 @@ pipeline scripts should be necessary if the external.rc file has been set correc
 
 **Note:** Scripts can be executed from any directory. All required resources for processor execution are included
 in this repository. The only additional requirement is a local instance of our vulnerability mirror which should automatically
-be downloaded when given the correct url in your external.rc file.
+be downloaded when given the correct url in your .project.properties file.
 
 ## Running with non-snapshot versions
 
 The default versioning by all processes and scripts in this repository utilizes HEAD-SNAPSHOT versions of core and
 artifact-analysis. To overwrite this and test the workbench scripts with release versions of core and artifact-analysis, change
-the necessary parameter in your external.rc file and the following files:
+the necessary parameter in your .project.properties file and the following files:
 
 - [workbench-parent.xml](processors/workbench-parent.xml)
 - [pom.xml](templates/report-template/pom.xml)
