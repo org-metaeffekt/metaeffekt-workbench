@@ -193,8 +193,8 @@ aggregate_licenses() {
     CMD+=("-Dinput.inventory.file=$INPUT_INVENTORY_FILE")
 
     CMD+=("-Dparam.reference.inventory.dir=$ENV_REFERENCE_INVENTORY_DIR")
-    CMD+=("-Dparam.target.component.dir=$PARAM_TARGET_COMPONENT_DIR")
-    CMD+=("-Dparam.target.license.dir=$PARAM_TARGET_LICENSE_DIR")
+    CMD+=("-Dparam.target.components.dir=$PARAM_TARGET_COMPONENT_DIR")
+    CMD+=("-Dparam.target.licenses.dir=$PARAM_TARGET_LICENSE_DIR")
 
     CMD+=("-Denv.tmd.password=$ENV_TMD_PASSWORD")
     CMD+=("-Denv.tmd.userkeys.file=$ENV_TMD_USERKEYS_FILE")
@@ -501,7 +501,7 @@ main() {
   set_global_variables
 
   # setup
-  update_mirror
+#  update_mirror
 
   # enrichment
   enrich_inventory_with_reference
@@ -515,22 +515,22 @@ main() {
 
   # create software distribution annex
   create_software_distribution_annex
-  aggregate_licenses
-  aggregate_sources
-  create_annex_archive
-
-   # create other annex documents
-  create_license_documentation
-  create_initial_license_documentation
-  create_custom_annex_document
-
-  # create vulnerability documents
-  create_vulnerability_report
-  create_vulnerability_summary_report
-  create_cert_report
-
-  # create dashboards
-  create_vulnerability_assessment_dashboard
+#  aggregate_licenses
+#  aggregate_sources
+#  create_annex_archive
+#
+#   # create other annex documents
+#  create_license_documentation
+#  create_initial_license_documentation
+#  create_custom_annex_document
+#
+#  # create vulnerability documents
+#  create_vulnerability_report
+#  create_vulnerability_summary_report
+#  create_cert_report
+#
+#  # create dashboards
+#  create_vulnerability_assessment_dashboard
 }
 
 main "$@"
