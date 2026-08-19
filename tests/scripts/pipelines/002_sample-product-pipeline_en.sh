@@ -501,7 +501,7 @@ main() {
   set_global_variables
 
   # setup
-#  update_mirror
+  update_mirror
 
   # enrichment
   enrich_inventory_with_reference
@@ -515,22 +515,22 @@ main() {
 
   # create software distribution annex
   create_software_distribution_annex
-#  aggregate_licenses
-#  aggregate_sources
-#  create_annex_archive
-#
-#   # create other annex documents
-#  create_license_documentation
-#  create_initial_license_documentation
-#  create_custom_annex_document
-#
-#  # create vulnerability documents
-#  create_vulnerability_report
-#  create_vulnerability_summary_report
-#  create_cert_report
-#
-#  # create dashboards
-#  create_vulnerability_assessment_dashboard
+  aggregate_licenses
+  aggregate_sources
+  create_annex_archive
+
+   # create other annex documents
+  create_license_documentation
+  create_initial_license_documentation
+  create_custom_annex_document
+
+  # create vulnerability documents
+  create_vulnerability_report
+  create_vulnerability_summary_report
+  create_cert_report
+
+  # create dashboards
+  create_vulnerability_assessment_dashboard
 }
 
 main "$@"
