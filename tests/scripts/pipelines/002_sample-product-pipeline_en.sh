@@ -193,8 +193,8 @@ aggregate_licenses() {
     CMD+=("-Dinput.inventory.file=$INPUT_INVENTORY_FILE")
 
     CMD+=("-Dparam.reference.inventory.dir=$ENV_REFERENCE_INVENTORY_DIR")
-    CMD+=("-Dparam.target.component.dir=$PARAM_TARGET_COMPONENT_DIR")
-    CMD+=("-Dparam.target.license.dir=$PARAM_TARGET_LICENSE_DIR")
+    CMD+=("-Dparam.target.components.dir=$PARAM_TARGET_COMPONENT_DIR")
+    CMD+=("-Dparam.target.licenses.dir=$PARAM_TARGET_LICENSE_DIR")
 
     CMD+=("-Denv.tmd.password=$ENV_TMD_PASSWORD")
     CMD+=("-Denv.tmd.userkeys.file=$ENV_TMD_USERKEYS_FILE")
