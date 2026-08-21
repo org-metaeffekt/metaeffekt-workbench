@@ -6,8 +6,8 @@ inventories:
   - "reference-inventory":
       folder: "${reference.inventory.path}"
       type: INPUT
-      licensePath: "${reference.license.path}"
-      componentPath: "${reference.component.path}"
+      licensesDir: "licenses"
+      componentsDir: "components"
 
   - "merged-inventory":
       file: "${param.computed.inventory.dir}/${asset.name}-merged-inventory.xlsx"
@@ -31,9 +31,6 @@ documents:
   "software-distribution-annex":
     type: ANNEX
     language: "${document.language}"
-    params:
-      targetComponentDir: "${target.component.dir}"
-      targetLicensesDir: "${target.licenses.dir}"
     parts:
       "software-distribution-annex":
         type: ANNEX
