@@ -103,6 +103,12 @@ pipeline {
 
                 // specify mirror source
                 sh 'echo "vulnerability.mirror.url=\\"http://ae-scanner/mirror/index/ae-mirror-index_gen6.tar.gz\\"" >> .project.properties'
+
+                // Portfolio Manager Credentials
+                sh 'echo "portfolio.manager.url=\\"https://192.168.178.100:8444\\"" >> .project.properties'
+                sh 'echo "portfolio.manager.client.keystore.password=\\"client-TEST-ks-pw\\"" >> .project.properties'
+                sh 'echo "portfolio.manager.client.truststore.password=\\"client-TEST-ts-pw\\"" >> .project.properties'
+                sh 'echo "portfolio.manager.token=\\"3e6c4faa-4dfc-4bae-b711-22225768274f\\"" >> .project.properties'
             }
         }
 
