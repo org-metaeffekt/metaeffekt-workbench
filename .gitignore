@@ -40,5 +40,5 @@
 **/workspace-003
 
 external.rc
-.project.properties
+.local.properties
 .workspace

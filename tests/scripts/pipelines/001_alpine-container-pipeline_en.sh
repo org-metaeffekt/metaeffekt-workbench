@@ -62,7 +62,7 @@ set_global_variables() {
 save_container() {
   log_info "Running update_mirror process."
 
-  CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/extract/extract_save-inspect-image.xml" compile)
+  CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/fetch/fetch_save-image.xml" compile)
   [ -n "${AE_CORE_VERSION:-}" ] && CMD+=("-Dae.core.version=$AE_CORE_VERSION")
   [ -n "${AE_ARTIFACT_ANALYSIS_VERSION:-}" ] && CMD+=("-Dae.artifact.analysis.version=$AE_ARTIFACT_ANALYSIS_VERSION")
   CMD+=("-Doutput.dir=$WORKSPACE_DIR/alpine-latest/00_fetched")
