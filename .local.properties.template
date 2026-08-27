@@ -1,0 +1,17 @@
+# Versioning
+ae.core.version=HEAD-SNAPSHOT
+ae.artifact.analysis.version=HEAD-SNAPSHOT
+
+# Portfolio Manager Credentials
+portfolio.manager.url=
+portfolio.manager.client.keystore.password=
+portfolio.manager.client.truststore.password=
+portfolio.manager.token=
+
+# Vulnerability Mirrror
+vulnerability.mirror.dir=/Users/jfuegen/Projects/metaeffekt-mirrors/gen6
+vulnerability.mirror.url=http://ae-scanner/mirror/index/ae-mirror-index_gen6.tar.gz
+nvd.api.key=
+
+# Repository Paths
+ae.kontinuum.dir=
