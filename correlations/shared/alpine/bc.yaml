@@ -1,0 +1,12 @@
+- affects:
+    - Id: bridge-1.5-r5
+  append:
+    Inapplicable CPE URIs: cpe:/a:adobe:bridge
+
+
+- affects:
+    - Id: openssh-10.4_p1-r0
+  append:
+    Inapplicable CPE URIs: cpe:/a:openbsd:openssh
+
+

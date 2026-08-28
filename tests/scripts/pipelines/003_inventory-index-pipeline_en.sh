@@ -342,7 +342,13 @@ main() {
   extractInventoryFromAsset $WORKSPACE_DIR/00_fetched/ae-inventory-query-service $WORKSPACE_DIR/01_extracted/scan_ae-inventory-query-service $WORKSPACE_DIR/01_extracted/ae-inventory-query-service-inventory-$INVENTORY_INDEX_VERSION.xlsx
 
 
-  attachAssetMetadata $WORKSPACE_DIR/01_extracted/ae-inventory-index-setup-inventory-$INVENTORY_INDEX_VERSION.xlsx ii-setup "Inventory Index - Setup" "$INVENTORY_INDEX_VERSION" "" ""
+  attachAssetMetadata \
+    $WORKSPACE_DIR/01_extracted/ae-inventory-index-setup-inventory-$INVENTORY_INDEX_VERSION.xlsx \
+    ii-setup "Inventory Index - Setup" \
+    "$INVENTORY_INDEX_VERSION" \
+    "" \
+    ""
+
   attachAssetMetadata $WORKSPACE_DIR/01_extracted/ae-inventory-importer-service-inventory-$INVENTORY_INDEX_VERSION.xlsx ii-importer "Inventory Index - Importer" "$INVENTORY_INDEX_VERSION" "" ""
   attachAssetMetadata $WORKSPACE_DIR/01_extracted/ae-inventory-query-service-inventory-$INVENTORY_INDEX_VERSION.xlsx ii-query-service "Inventory Index - Query Service" "$INVENTORY_INDEX_VERSION" "" ""
 

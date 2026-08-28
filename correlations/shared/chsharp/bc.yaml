@@ -1,0 +1,21 @@
+- affects:
+    - Id: Portable.BouncyCastle-1.9.0
+    - Id: Portable.BouncyCastle
+      Version: 1.9.0
+  append:
+    Addon CVEs: CVE-2016-1000341, CVE-2016-1000345, CVE-2023-33202, CVE-2024-29857, CVE-2024-30171, CVE-2025-8885, CVE-2026-8763, CVE-2026-12802, CVE-2026-12803, CVE-2026-12816, CVE-2026-13506, CVE-2026-13586, CVE-2026-14682, CVE-2026-15055, CVE-2026-58059, CVE-2026-58061, CVE-2026-59646, CVE-2026-59647, CVE-2026-59649, CVE-2026-59650
+
+- affects:
+    - Id: BouncyCastle.Cryptography-2.6.2
+    - Id: BouncyCastle.Cryptography
+      Version: 2.6.2
+  append:
+    Addon CVEs: CVE-2016-1000341, CVE-2016-1000345, CVE-2026-8763, CVE-2026-12802, CVE-2026-12803, CVE-2026-12816, CVE-2026-13506, CVE-2026-13586, CVE-2026-14682, CVE-2026-15055, CVE-2026-58059, CVE-2026-58060, CVE-2026-58061, CVE-2026-59646, CVE-2026-59647, CVE-2026-59649, CVE-2026-59650
+
+- affects:
+    - Id: BouncyCastle.Cryptography-2.7.0
+    - Id: BouncyCastle.Cryptography
+      Version: 2.7.0
+  append:
+    Addon CVEs: CVE-2016-1000341
+

@@ -24,7 +24,7 @@ pipeline {
                 script {
                     // NOTE: clearWs is not applicable for multibranch/single pipeline shared configuration; delete specifically
 
-                    // sh 'rm -rf ../.vulnerability-mirror_gen6'
+                    // sh 'rm -rf ../.vulnerability-mirror_gen7'
 
                     sh 'rm -rf .metaeffekt-core'
                     sh 'rm -rf .metaeffekt-kontinuum'
@@ -98,11 +98,11 @@ pipeline {
             steps {
                 sh 'echo "ae.kontinuum.dir=\\"$(pwd)/.metaeffekt-kontinuum\\"" > .local.properties'
 
-                // this is effectively workspace/.vulnerability-mirror_gen6; so next to the jobs workspace; reconsider as shared
-                sh 'echo "vulnerability.mirror.dir=\\"$(dirname $(pwd))/.vulnerability-mirror_gen6\\"" >> .local.properties'
+                // this is effectively workspace/.vulnerability-mirror_gen7; so next to the jobs workspace; reconsider as shared
+                sh 'echo "vulnerability.mirror.dir=\\"$(dirname $(pwd))/.vulnerability-mirror_gen7\\"" >> .local.properties'
 
                 // specify mirror source
-                sh 'echo "vulnerability.mirror.url=\\"http://ae-scanner/mirror/index/ae-mirror-index_gen6.tar.gz\\"" >> .local.properties'
+                sh 'echo "vulnerability.mirror.url=\\"http://ae-scanner/mirror/index/ae-mirror-index_gen7.tar.gz\\"" >> .local.properties'
 
                 // Portfolio Manager Credentials
                 sh 'echo "portfolio.manager.url=\\"https://192.168.178.100:8444\\"" >> .local.properties'
