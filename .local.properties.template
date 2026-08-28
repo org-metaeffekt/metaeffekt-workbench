@@ -5,10 +5,9 @@ ae.kontinuum.version=HEAD-SNAPSHOT
 ae.workbench.version=HEAD-SNAPSHOT
 ae.kontinuum.runtime.version=HEAD-SNAPSHOT
 ae.portfolio.manager.version=HEAD-SNAPSHOT
-s-dit-007.workbench.version=HEAD-SNAPSHOT
 
-
-# TermsMetaData
+# FIXME: how to handle universe?
+# Access to TermsMetaData; here Kosmos
 kosmos.password=
 
 # Docker Build Process
