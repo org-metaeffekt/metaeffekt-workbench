@@ -21,7 +21,7 @@ reports:
     classificationRating: "DEFAULT"
     controlRating: "DEFAULT"
     watermark: "Sample"
-    language: "en"
+    languages: ["en"]
 
 # Dashboards define which assets should have vulnerability dashboards generated.
 dashboards:
@@ -29,7 +29,6 @@ dashboards:
 
 portfolioManager:
   project: "metaeffekt-examples"
-  assetGroup: "metaeffekt-workbench:0.6.0"
 
 # Optional: global pipeline configuration
 options:
