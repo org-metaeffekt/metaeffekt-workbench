@@ -159,6 +159,7 @@
                     <!-- add restrictions here -->
                 </tspan>
                 <tspan x="375.185" y="1035.75">
+                    <!-- add restrictions here -->
                 </tspan>
                 <tspan x="375.185" y="1045.75">
                     &#169; ${document.copyright.year} ${organization.name}. All rights reserved.

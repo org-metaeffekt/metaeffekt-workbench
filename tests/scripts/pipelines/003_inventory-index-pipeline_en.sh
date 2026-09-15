@@ -178,12 +178,13 @@ portfolioDownload() {
 
   pass_command_info_to_logger "portfolio_download"
 
-  find $WORKSPACE_DIR/03_aggregated/ -type f -name "*.zip" -print0 | while IFS= read -r -d '' zip_file; do
+  find $WORKSPACE_DIR/03_aggregated/portfolio -type f -name "*.zip" -print0 | while IFS= read -r -d '' zip_file; do
       zip_dir=$(dirname "$zip_file")
       unzip -q -j "$zip_file" "*_report.xlsx" "*_report.xls" -d "$zip_dir" || true
       extracted_file=$(find "$zip_dir" -maxdepth 1 -type f \( -name "*_report.xlsx" -o -name "*_report.xls" \) | head -n 1)
       if [ -n "$extracted_file" ]; then
-          mv "$extracted_file" "$WORKSPACE_DIR/03_aggregated/inventory-index-portfolio-reference.xlsx"
+          mv "$extracted_file" "$WORKSPACE_DIR/03_aggregated/portfolio/inventory-index-portfolio-reference.xlsx"
+          rm $zip_file
       fi
   done
 }
@@ -315,6 +316,94 @@ enrichInventoryWithReference() {
   pass_command_info_to_logger "enrich-with-reference"
 }
 
+applyBusinessCase() {
+  CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/util/util_apply-business-case.xml" process-resources)
+  [ -n "${AE_CORE_VERSION:-}" ] && CMD+=("-Dae.core.version=$AE_CORE_VERSION")
+  [ -n "${AE_ARTIFACT_ANALYSIS_VERSION:-}" ] && CMD+=("-Dae.artifact.analysis.version=$AE_ARTIFACT_ANALYSIS_VERSION")
+  CMD+=("-Dinput.inventory.file=$1")
+  CMD+=("-Doutput.inventory.file=$2")
+  CMD+=("-Dparam.language.mode=en_US")
+  CMD+=("-Dparam.source.mode=DISTRIBUTION_ANNEX")
+  CMD+=("-Dparam.notice.mode.overwrite=true")
+  CMD+=("-Dparam.reference.inventory.dir=$3")
+  CMD+=("-Denv.tmd.source=$ENV_TMD_SOURCE")
+  CMD+=("-Denv.tmd.userkeys.file=$ENV_TMD_USERKEYS_FILE")
+  CMD+=("-Denv.tmd.password=$ENV_TMD_PASSWORD")
+
+  pass_command_info_to_logger "apply-business-case"
+}
+
+# $1: input inventory file
+# $1: target licenses dir
+# $2: target components dir
+aggregateLicenses() {
+  CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/util/util_aggregate-licenses.xml" process-resources)
+  [ -n "${AE_CORE_VERSION:-}" ] && CMD+=("-Dae.core.version=$AE_CORE_VERSION")
+  [ -n "${AE_ARTIFACT_ANALYSIS_VERSION:-}" ] && CMD+=("-Dae.artifact.analysis.version=$AE_ARTIFACT_ANALYSIS_VERSION")
+  CMD+=("-Dinput.inventory.file=$1")
+
+  CMD+=("-Dparam.target.licenses.dir=$2")
+  CMD+=("-Dparam.target.components.dir=$3")
+
+  CMD+=("-Dparam.fail.on.missing.license.file=false")
+  CMD+=("-Dparam.fail.on.missing.component.file=false")
+
+  CMD+=("-Denv.tmd.source=$ENV_TMD_SOURCE")
+  CMD+=("-Denv.tmd.userkeys.file=$ENV_TMD_USERKEYS_FILE")
+  CMD+=("-Denv.tmd.password=$ENV_TMD_PASSWORD")
+
+  pass_command_info_to_logger "aggregate-licenses"
+}
+
+
+# $1: input inventory dir
+# $2: output pdf file
+# $3: type (SDA)
+# $4: descriptor file
+# $5: language (en)
+# $6: reference inventory dir
+# $7: asset id
+# $8: asset name
+# $9: asset version
+# $10: product name
+# $11: product version
+# $12: watermark
+createSoftwareDistributionAnnex() {
+  PARAM_OVERVIEW_ADVISORS="CERT_FR"
+
+  CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/report/report_create-document.xml" verify)
+  [ -n "${AE_CORE_VERSION:-}" ] && CMD+=("-Dae.core.version=$AE_CORE_VERSION")
+  [ -n "${AE_ARTIFACT_ANALYSIS_VERSION:-}" ] && CMD+=("-Dae.artifact.analysis.version=$AE_ARTIFACT_ANALYSIS_VERSION")
+
+  CMD+=("-Dinput.inventory.dir=$1")
+  CMD+=("-Doutput.document.file=$2")
+
+  CMD+=("-Dparam.asset.descriptor.file=$4")
+  CMD+=("-Dparam.reference.inventory.dir=$6")
+
+  CMD+=("-Dparam.asset.id=$7")
+  CMD+=("-Dparam.asset.name=$8")
+  CMD+=("-Dparam.asset.version=$9")
+
+  CMD+=("-Dparam.product.name=${10}")
+  CMD+=("-Dparam.product.version=${11}")
+  CMD+=("-Dparam.product.watermark=${12}")
+
+  CMD+=("-Dparam.document.type=$3")
+  CMD+=("-Dparam.document.language=$5")
+
+  CMD+=("-Dparam.overview.advisors=$PARAM_OVERVIEW_ADVISORS")
+  CMD+=("-Dparam.property.selector.organization=metaeffekt")
+
+  CMD+=("-Denv.vulnerability.mirror.dir=$EXTERNAL_VULNERABILITY_MIRROR_DIR/.database")
+  CMD+=("-Denv.workbench.dir=$WORKBENCH_DIR")
+  CMD+=("-Denv.kontinuum.dir=$EXTERNAL_KONTINUUM_DIR")
+
+  CMD+=("-Dparam.computed.inventory.dir=$WORKSPACE_DIR/tmp")
+
+  pass_command_info_to_logger "createSoftwareDistributionAnnex"
+}
+
 main() {
   source_preload
   set_global_variables
@@ -349,13 +438,25 @@ main() {
     "" \
     ""
 
-  attachAssetMetadata $WORKSPACE_DIR/01_extracted/ae-inventory-importer-service-inventory-$INVENTORY_INDEX_VERSION.xlsx ii-importer "Inventory Index - Importer" "$INVENTORY_INDEX_VERSION" "" ""
-  attachAssetMetadata $WORKSPACE_DIR/01_extracted/ae-inventory-query-service-inventory-$INVENTORY_INDEX_VERSION.xlsx ii-query-service "Inventory Index - Query Service" "$INVENTORY_INDEX_VERSION" "" ""
+  attachAssetMetadata \
+    $WORKSPACE_DIR/01_extracted/ae-inventory-importer-service-inventory-$INVENTORY_INDEX_VERSION.xlsx \
+    ii-importer "Inventory Index - Importer" "$INVENTORY_INDEX_VERSION" "" ""
+  attachAssetMetadata \
+    $WORKSPACE_DIR/01_extracted/ae-inventory-query-service-inventory-$INVENTORY_INDEX_VERSION.xlsx \
+    ii-query-service "Inventory Index - Query Service" "$INVENTORY_INDEX_VERSION" "" ""
 
-
-  prepareInventories $WORKSPACE_DIR/01_extracted/ae-inventory-index-setup-inventory-$INVENTORY_INDEX_VERSION.xlsx $WORKSPACE_DIR/02_prepared/ae-inventory-index-setup-inventory-$INVENTORY_INDEX_VERSION.xlsx $WORKBENCH_DIR/scripts/prepare.kts
-  prepareInventories $WORKSPACE_DIR/01_extracted/ae-inventory-query-service-inventory-$INVENTORY_INDEX_VERSION.xlsx $WORKSPACE_DIR/02_prepared/ae-inventory-query-service-inventory-$INVENTORY_INDEX_VERSION.xlsx $WORKBENCH_DIR/scripts/prepare.kts
-  prepareInventories $WORKSPACE_DIR/01_extracted/ae-inventory-importer-service-inventory-$INVENTORY_INDEX_VERSION.xlsx $WORKSPACE_DIR/02_prepared/ae-inventory-importer-service-inventory-$INVENTORY_INDEX_VERSION.xlsx $WORKBENCH_DIR/scripts/prepare.kts
+  prepareInventories \
+    $WORKSPACE_DIR/01_extracted/ae-inventory-index-setup-inventory-$INVENTORY_INDEX_VERSION.xlsx \
+    $WORKSPACE_DIR/02_prepared/ae-inventory-index-setup-inventory-$INVENTORY_INDEX_VERSION.xlsx \
+    $WORKBENCH_DIR/scripts/prepare.kts
+  prepareInventories \
+    $WORKSPACE_DIR/01_extracted/ae-inventory-query-service-inventory-$INVENTORY_INDEX_VERSION.xlsx \
+    $WORKSPACE_DIR/02_prepared/ae-inventory-query-service-inventory-$INVENTORY_INDEX_VERSION.xlsx \
+    $WORKBENCH_DIR/scripts/prepare.kts
+  prepareInventories \
+    $WORKSPACE_DIR/01_extracted/ae-inventory-importer-service-inventory-$INVENTORY_INDEX_VERSION.xlsx \
+    $WORKSPACE_DIR/02_prepared/ae-inventory-importer-service-inventory-$INVENTORY_INDEX_VERSION.xlsx \
+    $WORKBENCH_DIR/scripts/prepare.kts
 
   portfolioUpload \
     $WORKSPACE_DIR/02_prepared/ae-inventory-index-setup-inventory-$INVENTORY_INDEX_VERSION.xlsx \
@@ -369,7 +470,6 @@ main() {
     inventory-index:$INVENTORY_INDEX_VERSION \
     query-service \
     $INVENTORY_INDEX_VERSION
-
   portfolioUpload \
     $WORKSPACE_DIR/02_prepared/ae-inventory-importer-service-inventory-$INVENTORY_INDEX_VERSION.xlsx \
     metaeffekt-examples \
@@ -379,27 +479,52 @@ main() {
 
   # Only required once, as the pulled report contains the information of all inventory index input inventories.
   portfolioDownload \
-    $WORKSPACE_DIR/03_aggregated/ \
+    $WORKSPACE_DIR/03_aggregated/portfolio \
     metaeffekt-examples \
     Reports:SNAPSHOT \
     metaeffekt-examples \
     report
 
+  # Enrich with results from portfolio manager
   enrichInventoryWithReference \
     $WORKSPACE_DIR/02_prepared/ae-inventory-index-setup-inventory-$INVENTORY_INDEX_VERSION.xlsx \
     $WORKSPACE_DIR/03_aggregated/ae-inventory-index-setup-inventory-$INVENTORY_INDEX_VERSION.xlsx \
-    $WORKSPACE_DIR/03_aggregated/ \
-
+    $WORKSPACE_DIR/03_aggregated/portfolio
   enrichInventoryWithReference \
     $WORKSPACE_DIR/02_prepared/ae-inventory-query-service-inventory-$INVENTORY_INDEX_VERSION.xlsx \
     $WORKSPACE_DIR/03_aggregated/ae-inventory-query-service-inventory-$INVENTORY_INDEX_VERSION.xlsx \
-    $WORKSPACE_DIR/03_aggregated/ \
-
+    $WORKSPACE_DIR/03_aggregated/portfolio
   enrichInventoryWithReference \
     $WORKSPACE_DIR/02_prepared/ae-inventory-importer-service-inventory-$INVENTORY_INDEX_VERSION.xlsx \
     $WORKSPACE_DIR/03_aggregated/ae-inventory-importer-service-inventory-$INVENTORY_INDEX_VERSION.xlsx \
-    $WORKSPACE_DIR/03_aggregated/ \
+    $WORKSPACE_DIR/03_aggregated/portfolio
 
+  # Apply business case (in place)
+  applyBusinessCase \
+    $WORKSPACE_DIR/03_aggregated/ae-inventory-index-setup-inventory-$INVENTORY_INDEX_VERSION.xlsx \
+    $WORKSPACE_DIR/07_grouped/setup/ae-inventory-index-setup-inventory-$INVENTORY_INDEX_VERSION.xlsx \
+    $ENV_REFERENCE_INVENTORY_DIR
+  applyBusinessCase \
+    $WORKSPACE_DIR/03_aggregated/ae-inventory-query-service-inventory-$INVENTORY_INDEX_VERSION.xlsx \
+    $WORKSPACE_DIR/07_grouped/setup/query-service/ae-inventory-query-service-inventory-$INVENTORY_INDEX_VERSION.xlsx \
+    $ENV_REFERENCE_INVENTORY_DIR
+  applyBusinessCase \
+    $WORKSPACE_DIR/03_aggregated/ae-inventory-importer-service-inventory-$INVENTORY_INDEX_VERSION.xlsx \
+    $WORKSPACE_DIR/07_grouped/setup/importer-service/ae-inventory-importer-service-inventory-$INVENTORY_INDEX_VERSION.xlsx \
+    $ENV_REFERENCE_INVENTORY_DIR
+
+  aggregateLicenses \
+    $WORKSPACE_DIR/07_grouped/setup/query-service/ae-inventory-query-service-inventory-$INVENTORY_INDEX_VERSION.xlsx \
+    $WORKSPACE_DIR/08_summarized/05_annex/licenses \
+    $WORKSPACE_DIR/08_summarized/05_annex/components
+  aggregateLicenses \
+    $WORKSPACE_DIR/02_prepared/ae-inventory-query-service-inventory-$INVENTORY_INDEX_VERSION.xlsx \
+    $WORKSPACE_DIR/08_summarized/05_annex/licenses \
+    $WORKSPACE_DIR/08_summarized/05_annex/components
+  aggregateLicenses \
+    $WORKSPACE_DIR/02_prepared/ae-inventory-importer-service-inventory-$INVENTORY_INDEX_VERSION.xlsx \
+    $WORKSPACE_DIR/08_summarized/05_annex/licenses \
+    $WORKSPACE_DIR/08_summarized/05_annex/components
 
   enrichInventory \
     $WORKSPACE_DIR/03_aggregated/ae-inventory-index-setup-inventory-$INVENTORY_INDEX_VERSION.xlsx \
@@ -408,7 +533,6 @@ main() {
     setup \
     default \
     "Inventory Index - HEAD-SNAPSHOT" "Index Setup" ""
-
   enrichInventory  \
     $WORKSPACE_DIR/03_aggregated/ae-inventory-query-service-inventory-$INVENTORY_INDEX_VERSION.xlsx  \
     $WORKSPACE_DIR/04_advised/ae-inventory-query-service-advised-inventory-$INVENTORY_INDEX_VERSION.xlsx \
@@ -416,7 +540,6 @@ main() {
     query-service \
     default \
     "Inventory Index - HEAD-SNAPSHOT" "Query Service" ""
-
   enrichInventory  \
     $WORKSPACE_DIR/03_aggregated/ae-inventory-importer-service-inventory-$INVENTORY_INDEX_VERSION.xlsx  \
     $WORKSPACE_DIR/04_advised/ae-inventory-importer-service-advised-inventory-$INVENTORY_INDEX_VERSION.xlsx \
@@ -424,7 +547,6 @@ main() {
     importer-service \
     default \
     "Inventory Index - HEAD-SNAPSHOT" "Importer Service" ""
-
 
   createVulnerabilityAssessmentDashboard \
     $WORKSPACE_DIR/04_advised/ae-inventory-index-setup-advised-inventory-$INVENTORY_INDEX_VERSION.xlsx \
@@ -443,6 +565,32 @@ main() {
     $WORKSPACE_DIR/04_advised/ae-inventory-importer-service-advised-inventory-$INVENTORY_INDEX_VERSION.html \
     ii-importer-service \
     default
+
+  # $1: input inventory dir
+  # $2: output pdf file
+  # $3: type (SDA)
+  # $4: descriptor file
+  # $5: language (en)
+  # $6: reference inventory dir
+  # $7: asset id
+  # $8: asset name
+  # $9: asset version
+  # $10: product name
+  # $11: product version
+  # $12: watermark
+  createSoftwareDistributionAnnex \
+        $WORKSPACE_DIR/07_grouped \
+        $WORKSPACE_DIR/08_summarized/05_annex/sda.pdf \
+        "SDA" \
+        $WORKBENCH_DIR/descriptors/asset-descriptor_GENERIC-software-distribution-annex.yaml \
+        "en" \
+        $ENV_REFERENCE_INVENTORY_DIR \
+        "inventory-index" \
+        "Inventory Index" \
+        "0.1.0" \
+        "Inventory Index" \
+        "0.1.0" \
+        "Inventory Index"
 
 
   # TODO: consider how this is done in a more aligned fashion; the target folders may be combined from different sources
@@ -463,19 +611,18 @@ part() {
   source_preload
   set_global_variables
 
-  enrichInventory  \
-    $WORKSPACE_DIR/02_prepared/ae-inventory-importer-service-inventory-$INVENTORY_INDEX_VERSION.xlsx  \
-    $WORKSPACE_DIR/04_advised/ae-inventory-importer-service-advised-inventory-$INVENTORY_INDEX_VERSION.xlsx \
-    $WORKSPACE_DIR/04_advised/tmp \
-    importer-service \
-    default \
-    "Inventory Index - HEAD-SNAPSHOT" "Importer Service" ""
 
-  createVulnerabilityAssessmentDashboard \
-    $WORKSPACE_DIR/04_advised/ae-inventory-importer-service-advised-inventory-$INVENTORY_INDEX_VERSION.xlsx \
-    $WORKSPACE_DIR/04_advised/ae-inventory-importer-service-advised-inventory-$INVENTORY_INDEX_VERSION.html \
-    ii-importer-service \
-    default
+  enrichInventoryWithReference \
+    $WORKSPACE_DIR/03_aggregated/ae-inventory-index-setup-inventory-$INVENTORY_INDEX_VERSION.xlsx \
+    $WORKSPACE_DIR/03_aggregated/ae-inventory-index-setup-inventory-$INVENTORY_INDEX_VERSION.xlsx \
+    $WORKSPACE_DIR/03_aggregated/portfolio
+
+  applyBusinessCase \
+    $WORKSPACE_DIR/03_aggregated/ae-inventory-index-setup-inventory-$INVENTORY_INDEX_VERSION.xlsx \
+    $WORKSPACE_DIR/07_grouped/setup/ae-inventory-index-setup-inventory-$INVENTORY_INDEX_VERSION.xlsx \
+    $ENV_REFERENCE_INVENTORY_DIR
+
+
 }
 
 main "$@"

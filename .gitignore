@@ -42,3 +42,5 @@
 external.rc
 .local.properties
 .workspace
+
+.local
