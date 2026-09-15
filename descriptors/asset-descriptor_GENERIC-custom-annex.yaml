@@ -28,7 +28,7 @@ transformations:
       command: "process-sources"
 
 documents:
-  "custom-annex-document":
+  "custom-annex":
     type: ANNEX
     language: "${document.language}"
     params:
