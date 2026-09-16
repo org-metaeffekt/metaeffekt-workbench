@@ -21,7 +21,7 @@ on:
         required: false
         type: string
 env:
-  MIRROR_URL: "https://metaeffekt.com/mirror/ae-vulnerability-mirror/ae-mirror-index_gen7-external.tar.gz"
+  MIRROR_URL: "https://metaeffekt.com/mirror/ae-vulnerability-mirror/ae-mirror-index_gen6-external.tar.gz"
 
 permissions:
   contents: write
@@ -33,7 +33,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Create release branch
         shell: bash
@@ -49,8 +49,8 @@ jobs:
 
       - name: Replace versions in parent processors
         run: |
-          sed -i 's|<ae.core.version>HEAD-SNAPSHOT</ae.core.version>|<ae.core.version>${{ inputs.ae-core-version }}</ae.core.version>|' templates/report-template/pom.xml
-          sed -i 's|<ae.artifact.analysis.version>HEAD-SNAPSHOT</ae.artifact.analysis.version>|<ae.artifact.analysis.version>${{ inputs.ae-artifact-analysis-version }}</ae.artifact.analysis.version>|' templates/report-template/pom.xml
+          sed -i -E 's|<ae.core.version>[^<]*</ae.core.version>|<ae.core.version>${{ inputs.ae-core-version }}</ae.core.version>|' templates/report-template/pom.xml
+          sed -i -E 's|<ae.artifact.analysis.version>[^<]*</ae.artifact.analysis.version>|<ae.artifact.analysis.version>${{ inputs.ae-artifact-analysis-version }}</ae.artifact.analysis.version>|' templates/report-template/pom.xml
 
       - name: Checkout metaeffekt-kontinuum
         run: |
@@ -60,10 +60,12 @@ jobs:
 
       - name: Create .local.properties file
         run: |
+          umask 077
           touch ${{ github.workspace }}/.local.properties
           echo "ae.kontinuum.dir=${{ github.workspace }}/.metaeffekt-kontinuum" >> ${{ github.workspace }}/.local.properties
           echo "vulnerability.mirror.dir=${{ github.workspace }}/.mirror" >> ${{ github.workspace }}/.local.properties
           echo "vulnerability.mirror.url=${{ env.MIRROR_URL }}" >> ${{ github.workspace }}/.local.properties
+          echo "nvd.api.key=${{ secrets.NVD_API_KEY }}" >> ${{ github.workspace }}/.local.properties
           echo "ae.core.version=${{ inputs.ae-core-version }}" >> ${{ github.workspace }}/.local.properties
           echo "ae.artifact.analysis.version=${{ inputs.ae-artifact-analysis-version }}" >> ${{ github.workspace }}/.local.properties
           echo "dump.logs=true" >> ${{ github.workspace }}/.local.properties
@@ -94,18 +96,15 @@ jobs:
             .maven-index
 
       - name: Commit changes
-        if: ${{ !env.ACT }}
         run: |
           git add templates/report-template/pom.xml
           git commit -m "Release ${{ inputs.version }}" || echo "No changes to commit"
 
       # We need to use --force here as previous failed pipeline might have pushed to the branch already.
       - name: Push changes
-        if: ${{ !env.ACT }}
         run: git push --set-upstream origin "release/${{ inputs.version }}" --force
 
       - name: Create Release
-        if: ${{ !env.ACT }}
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ inputs.version }}
@@ -113,3 +112,11 @@ jobs:
           name: ${{ inputs.version }}
           draft: false
           prerelease: false
+
+      # Remove the credential-bearing properties file and pipeline logs so they never leave the runner.
+      - name: Clean up local properties and logs
+        if: ${{ always() }}
+        shell: bash
+        run: |
+          find "${{ github.workspace }}" -maxdepth 3 -name '.local.properties' -type f -delete
+          find "${{ github.workspace }}" -maxdepth 3 -type d -name '.logs' -exec rm -rf {} +
