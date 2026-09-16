@@ -8,7 +8,7 @@ ae.portfolio.manager.version=HEAD-SNAPSHOT
 
 # FIXME: how to handle universe?
 # Access to TermsMetaData; here Kosmos
-kosmos.password=
+tmd.password=
 
 # Docker Build Process
 docker.image.tag=
