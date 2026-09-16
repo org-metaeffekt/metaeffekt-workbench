@@ -34,13 +34,15 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v7
+        with:
+          ref: main
+          fetch-depth: 0
 
-      - name: Create release branch
+      - name: Configure git
         shell: bash
         run: |
           git config --local user.email "github-actions[bot]@metaeffekt.com"
           git config --local user.name "github-actions[bot]"
-          git checkout -B release/${{ inputs.version }}
 
       - uses: actions/setup-java@v4
         with:
@@ -95,23 +97,30 @@ jobs:
             .mirror
             .maven-index
 
-      - name: Commit changes
+      # Commit the overrides on a throwaway commit and publish only the tag, so main is never modified.
+      - name: Create release commit and tag
         run: |
           git add templates/report-template/pom.xml
           git commit -m "Release ${{ inputs.version }}" || echo "No changes to commit"
+          git tag -f "${{ inputs.version }}"
+          # --force allows re-running a failed release; it does not affect main.
+          git push --force origin "refs/tags/${{ inputs.version }}"
 
-      # We need to use --force here as previous failed pipeline might have pushed to the branch already.
-      - name: Push changes
-        run: git push --set-upstream origin "release/${{ inputs.version }}" --force
+      - name: Create full source archive
+        run: |
+          git archive --format=tar.gz \
+            --prefix="metaeffekt-workbench-${{ inputs.version }}/" \
+            --output="metaeffekt-workbench-${{ inputs.version }}.tar.gz" \
+            "${{ inputs.version }}"
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ inputs.version }}
-          target_commitish: "release/${{ inputs.version }}"
           name: ${{ inputs.version }}
           draft: false
           prerelease: false
+          files: metaeffekt-workbench-${{ inputs.version }}.tar.gz
 
       # Remove the credential-bearing properties file and pipeline logs so they never leave the runner.
       - name: Clean up local properties and logs
