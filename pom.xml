@@ -60,7 +60,7 @@
                         <configuration>
                             <pipelineConfigPath>${project.basedir}/pipelines/sample-product-pipeline.yaml</pipelineConfigPath>
                             <outputFile>${project.basedir}/pipelines/target/sample-product-pipeline.sh</outputFile>
-                            <kosmosPassword>${kosmos.password}</kosmosPassword>
+                            <tmdPassword>${tmd.password}</tmdPassword>
                             <userkeysFile>${project.basedir}/config/kosmos/kosmos.consumer.keys</userkeysFile>
                             <artifactResolverConfigFile>${project.basedir}/config/resolver/artifact-resolver-config.yaml</artifactResolverConfigFile>
                             <artifactResolverProxyFile>${project.basedir}/config/resolver/artifact-resolver-proxy.yaml</artifactResolverProxyFile>
