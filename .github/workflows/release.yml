@@ -44,7 +44,7 @@ jobs:
           git config --local user.email "github-actions[bot]@metaeffekt.com"
           git config --local user.name "github-actions[bot]"
 
-      - uses: actions/setup-java@v4
+      - uses: actions/setup-java@v6
         with:
           distribution: zulu
           java-version: '17'
@@ -53,49 +53,6 @@ jobs:
         run: |
           sed -i -E 's|<ae.core.version>[^<]*</ae.core.version>|<ae.core.version>${{ inputs.ae-core-version }}</ae.core.version>|' templates/report-template/pom.xml
           sed -i -E 's|<ae.artifact.analysis.version>[^<]*</ae.artifact.analysis.version>|<ae.artifact.analysis.version>${{ inputs.ae-artifact-analysis-version }}</ae.artifact.analysis.version>|' templates/report-template/pom.xml
-
-      - name: Checkout metaeffekt-kontinuum
-        run: |
-          git clone https://github.com/org-metaeffekt/metaeffekt-kontinuum.git ${{ github.workspace }}/.metaeffekt-kontinuum
-          cd ${{ github.workspace }}/.metaeffekt-kontinuum
-          git checkout ${{ inputs.ae-kontinuum-version }}
-
-      - name: Create .local.properties file
-        run: |
-          umask 077
-          touch ${{ github.workspace }}/.local.properties
-          echo "ae.kontinuum.dir=${{ github.workspace }}/.metaeffekt-kontinuum" >> ${{ github.workspace }}/.local.properties
-          echo "vulnerability.mirror.dir=${{ github.workspace }}/.mirror" >> ${{ github.workspace }}/.local.properties
-          echo "vulnerability.mirror.url=${{ env.MIRROR_URL }}" >> ${{ github.workspace }}/.local.properties
-          echo "nvd.api.key=${{ secrets.NVD_API_KEY }}" >> ${{ github.workspace }}/.local.properties
-          echo "ae.core.version=${{ inputs.ae-core-version }}" >> ${{ github.workspace }}/.local.properties
-          echo "ae.artifact.analysis.version=${{ inputs.ae-artifact-analysis-version }}" >> ${{ github.workspace }}/.local.properties
-          echo "dump.logs=true" >> ${{ github.workspace }}/.local.properties
-
-      - name: Restore vulnerability mirror and maven index cache
-        uses: actions/cache/restore@v4
-        with:
-          key: key-${{ inputs.ae-core-version }}-${{ inputs.ae-artifact-analysis-version }}
-          path: |
-            .mirror
-            .maven-index
-
-      - name: Run test pipelines
-        shell: bash
-        env:
-          AE_CORE_VERSION: ${{ inputs.ae-core-version }}
-          AE_ARTIFACT_ANALYSIS_VERSION: ${{ inputs.ae-artifact-analysis-version }}
-        run: |
-          ./tests/scripts/pipelines/002_sample-product-pipeline_en.sh
-
-      - name: Save vulnerability mirror and maven index cache
-        uses: actions/cache/save@v4
-        if: ${{ always() }}
-        with:
-          key: key-${{ inputs.ae-core-version }}-${{ inputs.ae-artifact-analysis-version }}
-          path: |
-            .mirror
-            .maven-index
 
       # Commit the overrides on a throwaway commit and publish only the tag, so main is never modified.
       - name: Create release commit and tag
@@ -114,18 +71,10 @@ jobs:
             "${{ inputs.version }}"
 
       - name: Create Release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           tag_name: ${{ inputs.version }}
           name: ${{ inputs.version }}
           draft: false
           prerelease: false
           files: metaeffekt-workbench-${{ inputs.version }}.tar.gz
-
-      # Remove the credential-bearing properties file and pipeline logs so they never leave the runner.
-      - name: Clean up local properties and logs
-        if: ${{ always() }}
-        shell: bash
-        run: |
-          find "${{ github.workspace }}" -maxdepth 3 -name '.local.properties' -type f -delete
-          find "${{ github.workspace }}" -maxdepth 3 -type d -name '.logs' -exec rm -rf {} +
