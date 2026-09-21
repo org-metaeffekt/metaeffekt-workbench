@@ -103,6 +103,7 @@ enrich_inventory_patched() {
   CMD+=("-Dparam.assessment.dirs=$ASSESSMENT_DIR")
   CMD+=("-Dparam.correlation.dir=$CORRELATION_DIR")
   CMD+=("-Dparam.context.dirs=$CONTEXT_DIR")
+  CMD+=("-Dparam.activate.euvd=false")
 
   CMD+=("-Denv.vulnerability.mirror.dir=$EXTERNAL_VULNERABILITY_MIRROR_DIR/.database")
 
@@ -158,6 +159,7 @@ enrich_inventory_unpatched() {
   CMD+=("-Dparam.assessment.dirs=$ASSESSMENT_DIR")
   CMD+=("-Dparam.correlation.dir=$CORRELATION_DIR")
   CMD+=("-Dparam.context.dirs=$CONTEXT_DIR")
+  CMD+=("-Dparam.activate.euvd=false")
 
   CMD+=("-Denv.vulnerability.mirror.dir=$EXTERNAL_VULNERABILITY_MIRROR_DIR/.database")
 

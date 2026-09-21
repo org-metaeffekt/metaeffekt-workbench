@@ -86,6 +86,7 @@ enrich_inventory() {
   DASHBOARD_SUBJECT="Cisco Catalyst SD-WAN Manager"
   SECURITY_POLICY_ACTIVE_IDS="assessment_enrichment_configuration"
   ACTIVATE_MSRC="false"
+  ACTIVATE_EUVD="false"
 
   CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/advise/advise_enrich-inventory.xml" process-resources)
   [ -n "${AE_CORE_VERSION:-}" ] && CMD+=("-Dae.core.version=$AE_CORE_VERSION")
@@ -105,6 +106,7 @@ enrich_inventory() {
   CMD+=("-Dparam.correlation.dir=$CORRELATION_DIR")
   CMD+=("-Dparam.context.dirs=$CONTEXT_DIR")
   CMD+=("-Dparam.activate.msrc=$ACTIVATE_MSRC")
+  CMD+=("-Dparam.activate.euvd=$ACTIVATE_EUVD")
 
 
   CMD+=("-Denv.vulnerability.mirror.dir=$EXTERNAL_VULNERABILITY_MIRROR_DIR/.database")
