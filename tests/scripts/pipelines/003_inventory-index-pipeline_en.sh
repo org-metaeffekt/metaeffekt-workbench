@@ -204,7 +204,7 @@ enrichInventory() {
   CORRELATION_DIR="$WORKBENCH_DIR/correlations/shared"
   SECURITY_POLICY_ACTIVE_IDS="assessment_enrichment_configuration"
   ACTIVATE_MSRC="false"
-  ACTIVATE_EUVD="false"
+  ACTIVATE_EUVD="true"
 
   CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/advise/advise_enrich-inventory.xml" process-resources)
   [ -n "${AE_CORE_VERSION:-}" ] && CMD+=("-Dae.core.version=$AE_CORE_VERSION")
@@ -331,7 +331,7 @@ applyBusinessCase() {
   CMD+=("-Dparam.reference.inventory.dir=$3")
   CMD+=("-Denv.tmd.source=$TMD_TYPE") # Taken from .local.properties
   CMD+=("-Denv.tmd.userkeys.file=$ENV_TMD_USERKEYS_FILE")
-  CMD+=("-Denv.tmd.password=$TMD_PASSWORD") # Taken from .local.properties
+  CMD+=("-Denv.tmd.password=$ENV_TMD_PASSWORD")
 
   pass_command_info_to_logger "apply-business-case"
 }
@@ -556,13 +556,11 @@ main() {
     $WORKSPACE_DIR/04_advised/ae-inventory-index-setup-advised-inventory-$INVENTORY_INDEX_VERSION.html \
     ii-setup \
     default
-
   createVulnerabilityAssessmentDashboard \
     $WORKSPACE_DIR/04_advised/ae-inventory-query-service-advised-inventory-$INVENTORY_INDEX_VERSION.xlsx \
     $WORKSPACE_DIR/04_advised/ae-inventory-query-service-advised-inventory-$INVENTORY_INDEX_VERSION.html  \
     ii-query-service \
     default
-
   createVulnerabilityAssessmentDashboard \
     $WORKSPACE_DIR/04_advised/ae-inventory-importer-service-advised-inventory-$INVENTORY_INDEX_VERSION.xlsx \
     $WORKSPACE_DIR/04_advised/ae-inventory-importer-service-advised-inventory-$INVENTORY_INDEX_VERSION.html \
@@ -614,17 +612,22 @@ part() {
   source_preload
   set_global_variables
 
+  # setup
+  update_mirror
 
-  enrichInventoryWithReference \
+  enrichInventory \
     $WORKSPACE_DIR/03_aggregated/ae-inventory-index-setup-inventory-$INVENTORY_INDEX_VERSION.xlsx \
-    $WORKSPACE_DIR/03_aggregated/ae-inventory-index-setup-inventory-$INVENTORY_INDEX_VERSION.xlsx \
-    $WORKSPACE_DIR/03_aggregated/portfolio
+    $WORKSPACE_DIR/04_advised/ae-inventory-index-setup-advised-inventory-$INVENTORY_INDEX_VERSION.xlsx \
+    $WORKSPACE_DIR/04_advised/tmp \
+    setup \
+    default \
+    "Inventory Index - HEAD-SNAPSHOT" "Index Setup" ""
 
-  applyBusinessCase \
-    $WORKSPACE_DIR/03_aggregated/ae-inventory-index-setup-inventory-$INVENTORY_INDEX_VERSION.xlsx \
-    $WORKSPACE_DIR/07_grouped/setup/ae-inventory-index-setup-inventory-$INVENTORY_INDEX_VERSION.xlsx \
-    $ENV_REFERENCE_INVENTORY_DIR
-
+  createVulnerabilityAssessmentDashboard \
+    $WORKSPACE_DIR/04_advised/ae-inventory-index-setup-advised-inventory-$INVENTORY_INDEX_VERSION.xlsx \
+    $WORKSPACE_DIR/04_advised/ae-inventory-index-setup-advised-inventory-$INVENTORY_INDEX_VERSION.html \
+    ii-setup \
+    default
 
 }
 
