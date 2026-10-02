@@ -66,7 +66,6 @@ set_global_variables() {
   ENV_CR_DESCRIPTOR_FILE="$ENV_DESCRIPTOR_DIR/asset-descriptor_GENERIC-cert-report.yaml"
   ENV_VSR_DESCRIPTOR_FILE="$ENV_DESCRIPTOR_DIR/asset-descriptor_GENERIC-vulnerability-summary-report.yaml"
   ENV_LANGUAGE="en"
-  ENV_TMD_USERKEYS_FILE="$WORKBENCH_DIR/config/kosmos/kosmos.consumer.keys"
 
   TENANT_ID="metaeffekt"
   PROJECT_ID=$INVENTORY_INDEX_ID
@@ -329,7 +328,8 @@ applyBusinessCase() {
   CMD+=("-Dparam.source.mode=DISTRIBUTION_ANNEX")
   CMD+=("-Dparam.notice.mode.overwrite=true")
   CMD+=("-Dparam.reference.inventory.dir=$3")
-  CMD+=("-Denv.tmd.source=$TMD_TYPE") # Taken from .local.properties
+
+  CMD+=("-Denv.tmd.source=$ENV_TMD_SOURCE")
   CMD+=("-Denv.tmd.userkeys.file=$ENV_TMD_USERKEYS_FILE")
   CMD+=("-Denv.tmd.password=$ENV_TMD_PASSWORD")
 
@@ -351,9 +351,9 @@ aggregateLicenses() {
   CMD+=("-Dparam.fail.on.missing.license.file=false")
   CMD+=("-Dparam.fail.on.missing.component.file=false")
 
-  CMD+=("-Denv.tmd.source=$TMD_TYPE") # Taken from .local.properties
+  CMD+=("-Denv.tmd.source=$ENV_TMD_SOURCE")
   CMD+=("-Denv.tmd.userkeys.file=$ENV_TMD_USERKEYS_FILE")
-  CMD+=("-Denv.tmd.password=$TMD_PASSWORD") # Taken from .local.properties
+  CMD+=("-Denv.tmd.password=$ENV_TMD_PASSWORD")
 
   pass_command_info_to_logger "aggregate-licenses"
 }
