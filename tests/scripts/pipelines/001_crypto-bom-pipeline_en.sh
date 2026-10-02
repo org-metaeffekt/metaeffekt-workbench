@@ -149,6 +149,10 @@ generate_vulnerability_assessment_dashboard() {
   CMD+=("-Dparam.asset.id=$ASSET_ID")
   CMD+=("-Dparam.assessment.context=$ASSESSMENT_CONTEXT")
 
+  # enable threat data, threat prioritization and exploitability label
+  CMD+=("-Dparam.feature.threats=false")
+  CMD+=("-Dparam.feature.exploitability=false")
+
   CMD+=("-Denv.vulnerability.mirror.dir=$EXTERNAL_VULNERABILITY_MIRROR_DIR/.database")
 
   pass_command_info_to_logger "generate_vulnerability_assessment_dashboard"
