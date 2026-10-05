@@ -7,7 +7,9 @@ ae.kontinuum.runtime.version=HEAD-SNAPSHOT
 ae.portfolio.manager.version=HEAD-SNAPSHOT
 
 # Access to TermsMetaData; here Kosmos
-tmd.password=
+env.tmd.source="ae-kosmos"
+env.tmd.password="EuBsVvcjIElWdXVVtHmPJdsE"
+env.tmd.userkeys.file="<path-to-workbench/config/kosmos/kosmos.consumer.keys"
 
 # Docker Build Process
 docker.image.tag=

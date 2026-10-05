@@ -66,7 +66,6 @@ set_global_variables() {
   ENV_CR_DESCRIPTOR_FILE="$ENV_DESCRIPTOR_DIR/asset-descriptor_GENERIC-cert-report.yaml"
   ENV_VSR_DESCRIPTOR_FILE="$ENV_DESCRIPTOR_DIR/asset-descriptor_GENERIC-vulnerability-summary-report.yaml"
   ENV_LANGUAGE="en"
-  ENV_TMD_USERKEYS_FILE="$WORKBENCH_DIR/config/kosmos/kosmos.consumer.keys"
 
   TENANT_ID="metaeffekt"
   PROJECT_ID=$INVENTORY_INDEX_ID
@@ -204,7 +203,7 @@ enrichInventory() {
   CORRELATION_DIR="$WORKBENCH_DIR/correlations/shared"
   SECURITY_POLICY_ACTIVE_IDS="assessment_enrichment_configuration"
   ACTIVATE_MSRC="false"
-  ACTIVATE_EUVD="false"
+  ACTIVATE_EUVD="true"
 
   CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/advise/advise_enrich-inventory.xml" process-resources)
   [ -n "${AE_CORE_VERSION:-}" ] && CMD+=("-Dae.core.version=$AE_CORE_VERSION")
@@ -254,6 +253,10 @@ createVulnerabilityAssessmentDashboard() {
   CMD+=("-Dparam.tenant.id=$TENANT_ID")
   CMD+=("-Dparam.asset.id=$3")
   CMD+=("-Dparam.assessment.context=$4")
+
+  # enable threat data, threat prioritization and exploitability label
+  CMD+=("-Dparam.feature.threats=true")
+  CMD+=("-Dparam.feature.exploitability=true")
 
   CMD+=("-Denv.vulnerability.mirror.dir=$EXTERNAL_VULNERABILITY_MIRROR_DIR/.database")
 
@@ -329,9 +332,10 @@ applyBusinessCase() {
   CMD+=("-Dparam.source.mode=DISTRIBUTION_ANNEX")
   CMD+=("-Dparam.notice.mode.overwrite=true")
   CMD+=("-Dparam.reference.inventory.dir=$3")
-  CMD+=("-Denv.tmd.source=$TMD_TYPE") # Taken from .local.properties
+
+  CMD+=("-Denv.tmd.source=$ENV_TMD_SOURCE")
   CMD+=("-Denv.tmd.userkeys.file=$ENV_TMD_USERKEYS_FILE")
-  CMD+=("-Denv.tmd.password=$TMD_PASSWORD") # Taken from .local.properties
+  CMD+=("-Denv.tmd.password=$ENV_TMD_PASSWORD")
 
   pass_command_info_to_logger "apply-business-case"
 }
@@ -351,9 +355,9 @@ aggregateLicenses() {
   CMD+=("-Dparam.fail.on.missing.license.file=false")
   CMD+=("-Dparam.fail.on.missing.component.file=false")
 
-  CMD+=("-Denv.tmd.source=$TMD_TYPE") # Taken from .local.properties
+  CMD+=("-Denv.tmd.source=$ENV_TMD_SOURCE")
   CMD+=("-Denv.tmd.userkeys.file=$ENV_TMD_USERKEYS_FILE")
-  CMD+=("-Denv.tmd.password=$TMD_PASSWORD") # Taken from .local.properties
+  CMD+=("-Denv.tmd.password=$ENV_TMD_PASSWORD")
 
   pass_command_info_to_logger "aggregate-licenses"
 }
@@ -556,13 +560,11 @@ main() {
     $WORKSPACE_DIR/04_advised/ae-inventory-index-setup-advised-inventory-$INVENTORY_INDEX_VERSION.html \
     ii-setup \
     default
-
   createVulnerabilityAssessmentDashboard \
     $WORKSPACE_DIR/04_advised/ae-inventory-query-service-advised-inventory-$INVENTORY_INDEX_VERSION.xlsx \
     $WORKSPACE_DIR/04_advised/ae-inventory-query-service-advised-inventory-$INVENTORY_INDEX_VERSION.html  \
     ii-query-service \
     default
-
   createVulnerabilityAssessmentDashboard \
     $WORKSPACE_DIR/04_advised/ae-inventory-importer-service-advised-inventory-$INVENTORY_INDEX_VERSION.xlsx \
     $WORKSPACE_DIR/04_advised/ae-inventory-importer-service-advised-inventory-$INVENTORY_INDEX_VERSION.html \
@@ -614,19 +616,24 @@ part() {
   source_preload
   set_global_variables
 
+  # setup
+  update_mirror
 
-  enrichInventoryWithReference \
+  enrichInventory \
     $WORKSPACE_DIR/03_aggregated/ae-inventory-index-setup-inventory-$INVENTORY_INDEX_VERSION.xlsx \
-    $WORKSPACE_DIR/03_aggregated/ae-inventory-index-setup-inventory-$INVENTORY_INDEX_VERSION.xlsx \
-    $WORKSPACE_DIR/03_aggregated/portfolio
+    $WORKSPACE_DIR/04_advised/ae-inventory-index-setup-advised-inventory-$INVENTORY_INDEX_VERSION.xlsx \
+    $WORKSPACE_DIR/04_advised/tmp \
+    setup \
+    default \
+    "Inventory Index - HEAD-SNAPSHOT" "Index Setup" ""
 
-  applyBusinessCase \
-    $WORKSPACE_DIR/03_aggregated/ae-inventory-index-setup-inventory-$INVENTORY_INDEX_VERSION.xlsx \
-    $WORKSPACE_DIR/07_grouped/setup/ae-inventory-index-setup-inventory-$INVENTORY_INDEX_VERSION.xlsx \
-    $ENV_REFERENCE_INVENTORY_DIR
-
+  createVulnerabilityAssessmentDashboard \
+    $WORKSPACE_DIR/04_advised/ae-inventory-index-setup-advised-inventory-$INVENTORY_INDEX_VERSION.xlsx \
+    $WORKSPACE_DIR/04_advised/ae-inventory-index-setup-advised-inventory-$INVENTORY_INDEX_VERSION.html \
+    ii-setup \
+    default
 
 }
 
-main "$@"
-#part "$@"
+#main "$@"
+part "$@"
