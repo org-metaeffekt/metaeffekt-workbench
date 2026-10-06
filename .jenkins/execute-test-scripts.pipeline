@@ -110,7 +110,7 @@ pipeline {
                 sh 'echo "portfolio.manager.client.truststore.password=\\"client-TEST-ts-pw\\"" >> .local.properties'
                 sh 'echo "portfolio.manager.token=\\"3e6c4faa-4dfc-4bae-b711-22225768274f\\"" >> .local.properties'
                 sh 'echo "tmd.password=EuBsVvcjIElWdXVVtHmPJdsE" >> .local.properties'
-                sh 'echo "tmd.type=ae-kosmos" >> .local.properties'
+                sh 'echo "tmd.source=ae-kosmos" >> .local.properties'
 
             }
         }
