@@ -66,7 +66,8 @@ extract() {
   [ -n "${AE_CORE_VERSION:-}" ] && CMD+=("-Dae.core.version=$AE_CORE_VERSION")
   [ -n "${AE_ARTIFACT_ANALYSIS_VERSION:-}" ] && CMD+=("-Dae.artifact.analysis.version=$AE_ARTIFACT_ANALYSIS_VERSION")
   CMD+=("-Dinput.extract.dir=$WORKSPACE_DIR/ubuntu-linux-extraction/00_fetched")
-  CMD+=("-Dinput.exclude.patterns.file=$WORKSPACE_DIR/ubuntu-linux-extraction/config/excludes.yaml")
+  CMD+=("-Dparam.file.level.processing.activated=true")
+  CMD+=("-Dparam.file.exclude.patterns=$WORKSPACE_DIR/ubuntu-linux-extraction/config/excludes.yaml")
   CMD+=("-Doutput.inventory.file=$WORKSPACE_DIR/ubuntu-linux-extraction/01_extracted/ubuntu-linux-extraction.xlsx")
 
   pass_command_info_to_logger "extract"
