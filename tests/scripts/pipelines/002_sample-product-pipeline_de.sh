@@ -48,6 +48,8 @@ set_global_variables() {
 
   ENV_REFERENCE_INVENTORY_DIR="$WORKBENCH_DIR/inventories/example-reference-inventory/inventory"
 
+  ENV_TMD_USERKEYS_FILE="$WORKBENCH_DIR/config/kosmos/kosmos.consumer.keys"
+
   ENV_REPORT_TEMPLATE_DIR="$WORKBENCH_DIR/templates/report-template"
   PARAM_SECURITY_POLICY_FILE="$WORKBENCH_DIR/policies/security-policy/security-policy.json"
 
@@ -196,8 +198,8 @@ aggregate_licenses() {
     CMD+=("-Dparam.target.components.dir=$PARAM_TARGET_COMPONENT_DIR")
     CMD+=("-Dparam.target.licenses.dir=$PARAM_TARGET_LICENSE_DIR")
 
-    CMD+=("-Denv.tmd.source=$ENV_TMD_SOURCE")
-    CMD+=("-Denv.tmd.password=$ENV_TMD_PASSWORD")
+    CMD+=("-Denv.tmd.source=$TMD_SOURCE")
+    CMD+=("-Denv.tmd.password=$TMD_PASSWORD")
     CMD+=("-Denv.tmd.userkeys.file=$ENV_TMD_USERKEYS_FILE")
 
     pass_command_info_to_logger "aggregate_annex_folders_with_tmd"

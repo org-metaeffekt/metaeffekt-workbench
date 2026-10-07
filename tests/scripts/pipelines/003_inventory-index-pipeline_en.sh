@@ -49,6 +49,8 @@ set_global_variables() {
   LOG_DIR="$WORKBENCH_DIR/.logs"
   logger_init "$LOG_DIR/$INVENTORY_INDEX_ID-pipeline_en.log"
 
+  ENV_TMD_USERKEYS_FILE="$WORKBENCH_DIR/config/kosmos/kosmos.consumer.keys"
+
   ENV_REFERENCE_INVENTORY_DIR="$WORKBENCH_DIR/inventories/example-reference-inventory/inventory"
 
   ENV_REPORT_TEMPLATE_DIR="$WORKBENCH_DIR/templates/report-template"
@@ -333,9 +335,9 @@ applyBusinessCase() {
   CMD+=("-Dparam.notice.mode.overwrite=true")
   CMD+=("-Dparam.reference.inventory.dir=$3")
 
-  CMD+=("-Denv.tmd.source=$ENV_TMD_SOURCE")
+  CMD+=("-Denv.tmd.source=$TMD_SOURCE")
   CMD+=("-Denv.tmd.userkeys.file=$ENV_TMD_USERKEYS_FILE")
-  CMD+=("-Denv.tmd.password=$ENV_TMD_PASSWORD")
+  CMD+=("-Denv.tmd.password=$TMD_PASSWORD")
 
   pass_command_info_to_logger "apply-business-case"
 }
@@ -355,9 +357,9 @@ aggregateLicenses() {
   CMD+=("-Dparam.fail.on.missing.license.file=false")
   CMD+=("-Dparam.fail.on.missing.component.file=false")
 
-  CMD+=("-Denv.tmd.source=$ENV_TMD_SOURCE")
+  CMD+=("-Denv.tmd.source=$TMD_SOURCE")
   CMD+=("-Denv.tmd.userkeys.file=$ENV_TMD_USERKEYS_FILE")
-  CMD+=("-Denv.tmd.password=$ENV_TMD_PASSWORD")
+  CMD+=("-Denv.tmd.password=$TMD_PASSWORD")
 
   pass_command_info_to_logger "aggregate-licenses"
 }
