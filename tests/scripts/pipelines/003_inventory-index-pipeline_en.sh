@@ -637,5 +637,5 @@ part() {
 
 }
 
-#main "$@"
-part "$@"
+main "$@"
+#part "$@"
