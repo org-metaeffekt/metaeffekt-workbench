@@ -43,8 +43,8 @@ set_global_variables() {
   readonly KONTINUUM_PROCESSORS_DIR="$EXTERNAL_KONTINUUM_DIR/processors"
 
   LOG_DIR="$WORKBENCH_DIR/.logs"
-  logger_init "$LOG_DIR/linux-extraction-pipeline_en.log"
-  create_workspace_variables "$WORKSPACE_DIR/ubuntu-linux-extraction" "ubuntu-linux-extraction"
+  logger_init "$LOG_DIR/windows-extraction-pipeline_en.log"
+  create_workspace_variables "$WORKSPACE_DIR/windows-extraction" "windows-extraction"
 
   ENV_REFERENCE_INVENTORY_DIR="$WORKBENCH_DIR/inventories/example-reference-inventory/inventory"
   ENV_REFERENCE_LICENSES_DIR="$WORKBENCH_DIR/inventories/example-reference-inventory/licenses"
@@ -55,21 +55,21 @@ set_global_variables() {
   SECURITY_POLICY_ACTIVE_IDS="assessment_enrichment_configuration"
 
   TENANT_ID="metaeffekt"
-  ASSET_ID="ubuntu-linux-extraction"
+  ASSET_ID="windows-extraction"
   ASSESSMENT_CONTEXT="local"
 }
 
 extract() {
   log_info "Running update_mirror process."
 
-  CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/extract/extract_linux-arch-inventory.xml" prepare-package)
+  CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/extract/extract_windows-inventory.xml" prepare-package)
   [ -n "${AE_CORE_VERSION:-}" ] && CMD+=("-Dae.core.version=$AE_CORE_VERSION")
   [ -n "${AE_ARTIFACT_ANALYSIS_VERSION:-}" ] && CMD+=("-Dae.artifact.analysis.version=$AE_ARTIFACT_ANALYSIS_VERSION")
-  CMD+=("-Dinput.archive.file=$WORKSPACE_DIR/ubuntu-linux-extraction/00_input/extracted_files.tar.gz")
-  CMD+=("-Dparam.analysis.dir=$WORKSPACE_DIR/ubuntu-linux-extraction/01_analysis")
+  CMD+=("-Dinput.archive.file=$WORKSPACE_DIR/windows-extraction/00_input/windows-host.tgz")
+  CMD+=("-Dparam.analysis.dir=$WORKSPACE_DIR/windows-extraction/01_analysis")
   CMD+=("-Dparam.activate.file.processing=true")
   CMD+=("-Dparam.exclude.pattern.file=$WORKSPACE_DIR/config/excludes.yaml")
-  CMD+=("-Doutput.inventory.file=$WORKSPACE_DIR/ubuntu-linux-extraction/02_inventory/ubuntu-linux-extraction.xlsx")
+  CMD+=("-Doutput.inventory.file=$WORKSPACE_DIR/windows-extraction/02_inventory/windows-extraction.xlsx")
 
   pass_command_info_to_logger "extract"
 }
