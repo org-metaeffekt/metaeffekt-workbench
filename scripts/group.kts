@@ -85,6 +85,10 @@ fun processInventories() {
     )
     copyFilesToTargetLocation(
         File("$inputDirPath/06_advised/$assetName"),
+        File("$outputDirPath/$assetName/exploitability-report")
+    )
+    copyFilesToTargetLocation(
+        File("$inputDirPath/06_advised/$assetName"),
         File("$outputDirPath/$assetName/dashboard")
     )
 }
