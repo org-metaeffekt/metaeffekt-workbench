@@ -149,6 +149,8 @@ generate_vulnerability_assessment_dashboard() {
 
   CMD+=("-Denv.vulnerability.mirror.dir=$EXTERNAL_VULNERABILITY_MIRROR_DIR/.database")
 
+  CMD+=("-Denv.vulnerability.assessment.api=A")
+
   pass_command_info_to_logger "generate_vulnerability_assessment_dashboard"
 }
 
