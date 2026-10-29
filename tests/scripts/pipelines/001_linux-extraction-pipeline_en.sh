@@ -44,7 +44,7 @@ set_global_variables() {
 
   LOG_DIR="$WORKBENCH_DIR/.logs"
   logger_init "$LOG_DIR/linux-extraction-pipeline_en.log"
-  create_workspace_variables "$WORKSPACE_DIR/ubuntu-linux-extraction" "ubuntu-linux-extraction"
+  create_workspace_variables "$WORKSPACE_DIR/appliance-linux-extraction" "appliance-linux-extraction"
 
   ENV_REFERENCE_INVENTORY_DIR="$WORKBENCH_DIR/inventories/example-reference-inventory/inventory"
   ENV_REFERENCE_LICENSES_DIR="$WORKBENCH_DIR/inventories/example-reference-inventory/licenses"
@@ -55,33 +55,55 @@ set_global_variables() {
   SECURITY_POLICY_ACTIVE_IDS="assessment_enrichment_configuration"
 
   TENANT_ID="metaeffekt"
-  ASSET_ID="ubuntu-linux-extraction"
+  ASSET_ID="appliance-linux-extraction"
   ASSESSMENT_CONTEXT="local"
+}
+
+cut_at_first_dot() {
+    local input="$1"
+    printf '%s' "${input%%.*}"
+}
+
+fetch() {
+  ASSET_URL="http://ae-scanner/examples/"
+
+  CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/fetch/fetch_download-asset.xml" process-resources)
+  [ -n "${AE_CORE_VERSION:-}" ] && CMD+=("-Dae.core.version=$AE_CORE_VERSION")
+  [ -n "${AE_ARTIFACT_ANALYSIS_VERSION:-}" ] && CMD+=("-Dae.artifact.analysis.version=$AE_ARTIFACT_ANALYSIS_VERSION")
+  CMD+=("-Dparam.asset.url=${ASSET_URL}$1")
+  CMD+=("-Doutput.asset.dir=$WORKSPACE_DIR/appliance-linux-extraction/00_fetched")
+
+  pass_command_info_to_logger "fetch"
 }
 
 extract() {
   log_info "Running update_mirror process."
 
+  DISTRO=$(cut_at_first_dot "$1")
+
   CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/extract/extract_linux-arch-inventory.xml" prepare-package)
   [ -n "${AE_CORE_VERSION:-}" ] && CMD+=("-Dae.core.version=$AE_CORE_VERSION")
   [ -n "${AE_ARTIFACT_ANALYSIS_VERSION:-}" ] && CMD+=("-Dae.artifact.analysis.version=$AE_ARTIFACT_ANALYSIS_VERSION")
-  CMD+=("-Dinput.archive.file=$WORKSPACE_DIR/ubuntu-linux-extraction/00_input/extracted_files.tar.gz")
-  CMD+=("-Dparam.analysis.dir=$WORKSPACE_DIR/ubuntu-linux-extraction/01_analysis")
+  CMD+=("-Dinput.archive.file=$WORKSPACE_DIR/appliance-linux-extraction/00_fetched/$1")
+  CMD+=("-Dparam.analysis.dir=$WORKSPACE_DIR/appliance-linux-extraction/${DISTRO}/01_analysis")
   CMD+=("-Dparam.activate.file.processing=true")
   CMD+=("-Dparam.exclude.pattern.file=$WORKSPACE_DIR/config/excludes.yaml")
-  CMD+=("-Doutput.inventory.file=$WORKSPACE_DIR/ubuntu-linux-extraction/02_inventory/ubuntu-linux-extraction.xlsx")
+  CMD+=("-Doutput.inventory.file=$WORKSPACE_DIR/appliance-linux-extraction/${DISTRO}/02_inventory/${DISTRO}-extraction.xlsx")
 
   pass_command_info_to_logger "extract"
 }
-
 
 main() {
   source_preload
   set_global_variables
   SCRIPT_NAME=$(basename "$(readlink -f "$0")")
 
-  extract
+  EXTRACTED_FILES=("debian-13_arm.tar.gz" "rhel-10-x86_64.tar.gz" "ubuntu-26.04.tar.gz")
 
+  for file in "${EXTRACTED_FILES[@]}"; do
+    fetch "$file"
+    extract "$file"
+  done
 }
 
 main "$@"
