@@ -14,76 +14,36 @@
  * limitations under the License.
  */
 import org.metaeffekt.core.inventory.processor.model.AssetMetaData
-import org.metaeffekt.core.inventory.processor.reader.InventoryReader
-import org.metaeffekt.core.inventory.processor.writer.InventoryWriter
-import java.io.File
 
 /*
- This script loads every inventory from the "input.inventory.dir" directory, keeps only the assets marked as
- primary and writes each resulting inventory under its original name to the "output.inventory.dir" directory.
+ This script loads the inventory referenced by "input.inventory.dir" (despite its name, a single inventory file),
+ keeps only the assets marked as primary and writes the result to the file referenced by "output.inventory.dir".
  */
 
-val inputDirProperty = params["input.inventory.dir"]
-val outputDirProperty = params["output.inventory.dir"]
+val inputFileProperty = params["input.inventory.dir"]
+val outputFileProperty = params["output.inventory.dir"]
 
 logProperties()
-processInventories()
+processInventory()
 
 /**
- * Main script entrypoint. Reads all inventories in the input directory, filters their asset metadata and writes
- * the filtered inventories to the output directory.
+ * Main script entrypoint. Reads the input inventory, filters its asset metadata and writes the filtered inventory
+ * to the output file.
  */
-fun processInventories() {
-    val inputDirPath = requireNonBlank(inputDirProperty, "input.inventory.dir") ?: return
-    val outputDirPath = requireNonBlank(outputDirProperty, "output.inventory.dir") ?: return
+fun processInventory() {
+    val inputFilePath = requireNonBlank(inputFileProperty, "input.inventory.dir") ?: return
+    val outputFilePath = requireNonBlank(outputFileProperty, "output.inventory.dir") ?: return
 
-    val inputDir = File(inputDirPath)
-    if (!inputDir.exists() || !inputDir.isDirectory) {
-        println("ERROR: Input directory does not exist or is not a directory: $inputDirPath")
-        return
-    }
+    val inventory = loadInventory("input.inventory.dir")
 
-    val outputDir = File(outputDirPath)
-    if (!outputDir.exists() && !outputDir.mkdirs()) {
-        println("ERROR: Could not create output directory at $outputDirPath")
-        return
-    }
+    val assets = inventory.assetMetaData
+    val primaryAssets: List<AssetMetaData> = assets.filter { it.isPrimary() }
+    inventory.assetMetaData = primaryAssets
 
-    val inventoryFiles = inputDir.listFiles()
-        ?.filter { it.isFile && isInventoryFile(it) }
-        ?.sortedBy { it.name }
-        ?: emptyList()
+    writeInventory(inventory, "output.inventory.dir", createParents = true)
 
-    if (inventoryFiles.isEmpty()) {
-        println("WARNING: No inventories found in $inputDirPath")
-        return
-    }
-
-    val inventoryReader = InventoryReader()
-    val inventoryWriter = InventoryWriter()
-
-    for (inputFile in inventoryFiles) {
-        val inventory = inventoryReader.readInventory(inputFile)
-
-        val assets = inventory.assetMetaData
-        val primaryAssets: List<AssetMetaData> = assets.filter { it.isPrimary() }
-        inventory.assetMetaData = primaryAssets
-
-        // Keep the original file name so the result can be matched to its input.
-        val outputFile = File(outputDir, inputFile.name)
-        inventoryWriter.writeInventory(inventory, outputFile)
-
-        println("INFO: Wrote '${outputFile.path}' with ${primaryAssets.size} of ${assets.size} assets kept as primary.")
-    }
+    println("INFO: Wrote '$outputFilePath' with ${primaryAssets.size} of ${assets.size} assets kept as primary.")
 }
-
-/**
- * @return whether the given file has an extension supported by the InventoryReader
- */
-fun isInventoryFile(file: File): Boolean =
-    InventoryReader.getSupportedFileExtensions().any { extension ->
-        file.name.endsWith(extension, ignoreCase = true)
-    }
 
 fun requireNonBlank(value: String?, propertyName: String): String? {
     if (value.isNullOrBlank()) {
@@ -96,6 +56,6 @@ fun requireNonBlank(value: String?, propertyName: String): String? {
 
 fun logProperties() {
     println("INFO: Running report.pre.filter.kts with the following parameters:")
-    println("INFO: inputDirProperty = $inputDirProperty")
-    println("INFO: outputDirProperty = $outputDirProperty")
+    println("INFO: inputFileProperty = $inputFileProperty")
+    println("INFO: outputFileProperty = $outputFileProperty")
 }
