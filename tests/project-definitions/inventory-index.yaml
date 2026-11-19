@@ -1,0 +1,54 @@
+projectProperties:
+  project:
+    id: "ae-workbench"
+    name: "metaeffekt-workbench"
+    version: "HEAD-SNAPSHOT"
+    tenant: "ae"
+  assets:
+    - id: "inventory-index-setup"
+      name: "Inventory Index - Setup"
+      version: "HEAD-SNAPSHOT"
+      reference: "inventories/example-reference-inventory/inventory"
+      assessmentId: "inventory-index/setup"
+      context: "default"
+      urlResolver:
+        url: "http://ae-scanner/repository/org/metaeffekt/inventory-index/inventory-index-deployment-HEAD-SNAPSHOT.zip"
+    - id: "inventory-importer-service"
+      name: "Inventory Index - Importer"
+      version: "HEAD-SNAPSHOT"
+      reference: "inventories/example-reference-inventory/inventory"
+      assessmentId: "inventory-index/setup"
+      context: "default"
+      urlResolver:
+        url: "http://ae-scanner/repository/org/metaeffekt/inventory-index/ae-inventory-importer-service-HEAD-SNAPSHOT-exec.jar"
+    - id: "inventory-query-service"
+      name: "Inventory Index - Query Service"
+      version: "HEAD-SNAPSHOT"
+      reference: "inventories/example-reference-inventory/inventory"
+      assessmentId: "inventory-index/setup"
+      context: "default"
+      urlResolver:
+        url: "http://ae-scanner/repository/org/metaeffekt/inventory-index/ae-inventory-query-service-HEAD-SNAPSHOT-exec.jar"
+
+portfolioManager:
+  project: "metaeffekt-workbench"
+
+dashboards:
+  - assetIds: [ "inventory-index-setup", "inventory-importer-service", "inventory-query-service" ]
+
+reports:
+  - assetIds: [ "inventory-index-setup", "inventory-importer-service", "inventory-query-service" ]
+    types: [ "SDA" ]
+    organization: "metaeffekt"
+    classificationRating: "DEFAULT"
+    controlRating: "DEFAULT"
+    productName: "Inventory Index"
+    productVersion: "HEAD-SNAPSHOT"
+    productWatermark: "inventory-index"
+    overviewAdvisors: [ "CERT_FR" ]
+    locales: [ "en_US" ]
+
+options:
+  enrichment:
+    securityPolicyFile: "policies/security-policy/security-policy.json"
+    securityPolicyActiveIds: [ "base_configuration" ]

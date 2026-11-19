@@ -1,0 +1,17 @@
+projectProperties:
+  project:
+    id: "ae-workbench"
+    name: "metaeffekt-workbench"
+    version: "HEAD-SNAPSHOT"
+    tenant: "ae"
+  assets:
+    - id: "alpine"
+      name: "alpine"
+      version: "latest"
+      reference: "inventories/example-reference-inventory/inventory"
+      assessmentId: "demo"
+      context: "default"
+      containerResolver:
+        image: "alpine"
+        tag: "latest"
+        repoUrl: "docker.io"

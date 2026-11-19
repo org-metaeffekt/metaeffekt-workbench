@@ -24,6 +24,21 @@
     <version>WORKBENCH-SNAPSHOT</version>
     <packaging>pom</packaging>
 
+    <properties>
+        <input.project.definition>sample-product</input.project.definition>
+        <input.project.workspace.dir>workspace-001/sample-product</input.project.workspace.dir>
+    </properties>
+
+    <profiles>
+        <profile>
+            <id>alpine</id>
+            <properties>
+                <input.project.definition>alpine-container</input.project.definition>
+                <input.project.workspace.dir>workspace-001/alpine</input.project.workspace.dir>
+            </properties>
+        </profile>
+    </profiles>
+
     <build>
         <plugins>
             <plugin>
@@ -57,8 +72,8 @@
                             <goal>generate-local-pipeline</goal>
                         </goals>
                         <configuration>
-                            <pipelineConfigPath>${project.basedir}/pipelines/sample-product-pipeline.yaml</pipelineConfigPath>
-                            <outputFile>${project.basedir}/pipelines/target/sample-product-pipeline.sh</outputFile>
+                            <pipelineConfigPath>${project.basedir}/tests/project-definitions/${input.project.definition}.yaml</pipelineConfigPath>
+                            <outputFile>${project.basedir}/tests/target/${input.project.definition}/pipeline.sh</outputFile>
                             <tmdPassword>${tmd.password}</tmdPassword>
                             <userkeysFile>${project.basedir}/config/kosmos/kosmos.consumer.keys</userkeysFile>
                             <artifactResolverConfigFile>${project.basedir}/config/resolver/artifact-resolver-config.yaml</artifactResolverConfigFile>
@@ -67,7 +82,7 @@
                             <vulnerabilityMirrorDir>${vulnerability.mirror.dir}</vulnerabilityMirrorDir>
                             <vulnerabilityMirrorUrl>${vulnerability.mirror.url}</vulnerabilityMirrorUrl>
                             <workbenchDir>${project.basedir}</workbenchDir>
-                            <workspaceDir>${project.basedir}/.workspace/</workspaceDir>
+                            <workspaceDir>${project.basedir}/tests/resources/${input.project.workspace.dir}</workspaceDir>
                             <kontinuumDir>${ae.kontinuum.dir}</kontinuumDir>
                             <executionEnvironment>UNIX</executionEnvironment>
 
