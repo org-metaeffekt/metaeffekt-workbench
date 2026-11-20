@@ -26,10 +26,12 @@
         </booklists>
     </frontmatter>
 
+    <chapter href="cert-report/gen/parts/${part.purpose.identifier}/tpc_purpose.dita" />
+    <chapter href="cert-report/gen/parts/${part.context.identifier}/tpc_context.dita" />
     <chapter href="cert-report/gen/parts/${part.vulnerability.report.identifier}/tpc_inventory-cert.dita" />
 
     <!-- periodic -->
-    <chapter href="cert-report/static/en/tpc_vulnerability-cert-${ae.vulnerability.report.overview.switch}.dita" >
+    <chapter href="cert-report/gen/parts/${part.vulnerability.statistics.report.identifier}/tpc_vulnerability-overview.dita" >
 
         <!-- details -->
         <topicref href="cert-report/gen/parts/${part.vulnerability.report.identifier}/tpc_inventory-vulnerability-report.dita" />
@@ -40,7 +42,7 @@
 
 	<appendix href="cert-report/static/en/appendix.dita" >
 		<!-- overall -->
-		<topicref href="cert-report/static/en/tpc_vulnerability-cert-report-appendix.dita" />
+		<topicref href="cert-report/gen/parts/${part.vulnerability.statistics.report.all.identifier}/tpc_vulnerability-overview.dita" />
 	</appendix>
 	
     <backmatter>
@@ -49,7 +51,6 @@
                 <topicref format="ditamap" href="${report.module}/gen/glossary/en/gmap_glossary.ditamap" />
             </glossarylist>
         </booklists>
-        <topicref href="cert-report/static/en/tpc_vulnerability-report-notice.dita" />
         <topicref href="cert-report/static/en/tpc_report-history.dita" />
     </backmatter>
 	
