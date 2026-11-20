@@ -12,7 +12,7 @@ projectProperties:
       assessmentId: "demo"
       context: "default"
       urlResolver:
-        url: "file:/tests/resources/workspace-001/crypto-bom-SNAPSHOT/02_prepared/crypto-bom-SNAPSHOT/crypto-bom-inventory.xlsx"
+        url: "file:/tests/resources/input-inventories/crypto-bom-inventory.xlsx"
 
 dashboards:
   - assetIds: [ "crypto-bom" ]

@@ -12,7 +12,7 @@ projectProperties:
       assessmentId: "demo"
       context: "default"
       urlResolver:
-        url: "file:/tests/resources/workspace-001/cisco-catalyst-sd-wan-manager-20.12.5.2/02_prepared/cisco-catalyst-sd-wan-manager-20.12.5.2/cisco-catalyst-inventory.xls"
+        url: "file:${workbenchDir}/tests/resources/input-inventories/cisco-catalyst-inventory.xls"
 
 dashboards:
   - assetIds: [ "cisco-catalyst" ]
