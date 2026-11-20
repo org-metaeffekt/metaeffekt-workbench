@@ -15,11 +15,6 @@ on:
         description: 'Metaeffekt Artifact Analysis version to use for this release.'
         required: true
         type: string
-      ae-kontinuum-version:
-        description: 'Metaeffekt Kontinuum version tag or branch to utilize for testing.'
-        default: main
-        required: false
-        type: string
 env:
   MIRROR_URL: "https://metaeffekt.com/mirror/ae-vulnerability-mirror/ae-mirror-index_gen7-external.tar.gz"
 
@@ -35,7 +30,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v7
         with:
-          ref: main
           fetch-depth: 0
 
       - name: Configure git

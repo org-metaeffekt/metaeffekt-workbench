@@ -58,21 +58,23 @@ load_properties() {
   done < "$prop_file"
 }
 
-# Resolve .local.properties (prefer local workbench file before encompassing harness file)
-PROPERTIES_FILE=""
+# Load shared harness defaults first, then repository-local overrides.
+PROPERTIES_FILES=()
+if [ -f "$HARNESS_ROOT/.local.properties" ]; then
+  PROPERTIES_FILES+=("$HARNESS_ROOT/.local.properties")
+fi
 if [ -f "$WORKBENCH_ROOT/.local.properties" ]; then
-  PROPERTIES_FILE="$WORKBENCH_ROOT/.local.properties"
-elif [ -f "$HARNESS_ROOT/.local.properties" ]; then
-  PROPERTIES_FILE="$HARNESS_ROOT/.local.properties"
+  PROPERTIES_FILES+=("$WORKBENCH_ROOT/.local.properties")
 fi
 
-if [ -n "$PROPERTIES_FILE" ]; then
-  load_properties "$PROPERTIES_FILE"
-  echo "Successfully loaded .local.properties from $PROPERTIES_FILE"
-else
+if [ "${#PROPERTIES_FILES[@]}" -eq 0 ]; then
   echo "Terminating: .local.properties file not found in metaeffekt-workbench or encompassing integration harness."
   exit 1
 fi
+for PROPERTIES_FILE in "${PROPERTIES_FILES[@]}"; do
+  load_properties "$PROPERTIES_FILE"
+  echo "Successfully loaded .local.properties from $PROPERTIES_FILE"
+done
 
 if [ -f "$PRELOAD_SELF_DIR/log.sh" ]; then
   source "$PRELOAD_SELF_DIR/log.sh"

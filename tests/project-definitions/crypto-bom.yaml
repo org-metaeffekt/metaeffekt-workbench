@@ -1,0 +1,35 @@
+projectProperties:
+  project:
+    id: "ae-workbench"
+    name: "metaeffekt-workbench"
+    version: "HEAD-SNAPSHOT"
+    tenant: "ae"
+  assets:
+    - id: "crypto-bom"
+      name: "CryptoBOM"
+      version: "SNAPSHOT"
+      reference: "inventories/example-reference-inventory/inventory"
+      assessmentId: "demo"
+      context: "default"
+      urlResolver:
+        url: "file:/tests/resources/workspace-001/crypto-bom-SNAPSHOT/02_prepared/crypto-bom-SNAPSHOT/crypto-bom-inventory.xlsx"
+
+dashboards:
+  - assetIds: [ "crypto-bom" ]
+
+reports:
+  - assetIds: [ "crypto-bom" ]
+    types: [ "VR" ]
+    organization: "metaeffekt"
+    classificationRating: "DEFAULT"
+    controlRating: "DEFAULT"
+    productName: "CryptoBOM"
+    productVersion: "SNAPSHOT"
+    productWatermark: "Sample"
+    overviewAdvisors: [ "CERT_EU" ]
+    locales: [ "de_DE" ]
+
+options:
+  enrichment:
+    securityPolicyFile: "policies/security-policy/security-policy.json"
+    securityPolicyActiveIds: [ "base_configuration" ]
