@@ -61,6 +61,7 @@ set_global_variables() {
   ENV_VR_DESCRIPTOR_FILE="$ENV_DESCRIPTOR_DIR/asset-descriptor_GENERIC-vulnerability-report.yaml"
   ENV_CR_DESCRIPTOR_FILE="$ENV_DESCRIPTOR_DIR/asset-descriptor_GENERIC-cert-report.yaml"
   ENV_VSR_DESCRIPTOR_FILE="$ENV_DESCRIPTOR_DIR/asset-descriptor_GENERIC-vulnerability-summary-report.yaml"
+  ENV_ER_DESCRIPTOR_FILE="$ENV_DESCRIPTOR_DIR/asset-descriptor_GENERIC-exploitability-report.yaml"
   ENV_LANGUAGE="en"
 
   TENANT_ID="metaeffekt"
@@ -477,6 +478,43 @@ create_cert_report() {
   pass_command_info_to_logger "create_cert_report"
 }
 
+create_exploitability_report() {
+  OUTPUT_ER_FILE="$REPORTED_DIR/exploitability-report/$ENV_LANGUAGE/exploitability-report-$ENV_LANGUAGE.pdf"
+  OUTPUT_COMPUTED_INVENTORY_DIR="$ADDITIONAL_DIR/report"
+
+  PARAM_DOCUMENT_TYPE="ER"
+  PARAM_ASSET_ID="Sample Product"
+  PARAM_ASSET_NAME="SampleProduct"
+  PARAM_ASSET_VERSION="1.0.0"
+  PARAM_PRODUCT_NAME="Sample Product"
+  PARAM_PRODUCT_VERSION="1.0.0"
+  PARAM_PRODUCT_WATERMARK="Sample"
+
+  CMD=(mvn -f "$KONTINUUM_PROCESSORS_DIR/report/report_create-document.xml" verify)
+  [ -n "${AE_CORE_VERSION:-}" ] && CMD+=("-Dae.core.version=$AE_CORE_VERSION")
+  [ -n "${AE_ARTIFACT_ANALYSIS_VERSION:-}" ] && CMD+=("-Dae.artifact.analysis.version=$AE_ARTIFACT_ANALYSIS_VERSION")
+  CMD+=("-Dinput.inventory.dir=$GROUPED_CR_DIR")
+
+  CMD+=("-Doutput.document.file=$OUTPUT_ER_FILE")
+
+  CMD+=("-Dparam.asset.descriptor.file=$ENV_ER_DESCRIPTOR_FILE")
+  CMD+=("-Dparam.asset.id=$PARAM_ASSET_ID")
+  CMD+=("-Dparam.asset.name=$PARAM_ASSET_NAME")
+  CMD+=("-Dparam.asset.version=$PARAM_ASSET_VERSION")
+  CMD+=("-Dparam.product.version=$PARAM_PRODUCT_VERSION")
+  CMD+=("-Dparam.product.name=$PARAM_PRODUCT_NAME")
+  CMD+=("-Dparam.product.watermark=$PARAM_PRODUCT_WATERMARK")
+  CMD+=("-Dparam.document.type=$PARAM_DOCUMENT_TYPE")
+  CMD+=("-Dparam.document.language=$ENV_LANGUAGE")
+  CMD+=("-Dparam.property.selector.organization=metaeffekt")
+
+  CMD+=("-Denv.vulnerability.mirror.dir=$EXTERNAL_VULNERABILITY_MIRROR_DIR/.database")
+  CMD+=("-Denv.workbench.dir=$WORKBENCH_DIR")
+  CMD+=("-Denv.kontinuum.dir=$EXTERNAL_KONTINUUM_DIR")
+
+  pass_command_info_to_logger "create_exploitability_report"
+}
+
 create_vulnerability_assessment_dashboard() {
   OUTPUT_DASHBOARD_FILE="$REPORTED_DIR/sample-product-dashboard.html"
   SECURITY_POLICY_ACTIVE_IDS="assessment_enrichment_configuration"
@@ -531,6 +569,7 @@ main() {
   create_vulnerability_report
   create_vulnerability_summary_report
   create_cert_report
+  create_exploitability_report
 
   # create dashboards
   create_vulnerability_assessment_dashboard

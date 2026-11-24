@@ -132,8 +132,8 @@
                 <module>vulnerability-report-template</module>
             </modules>
             <properties>
-                <document.name>${asset.id} SW-REPORT</document.name>
-                <document.qualifier>${asset.id}_${asset.version}_SW-REPORT</document.qualifier>
+                <document.name>${asset.id} VR-REPORT</document.name>
+                <document.qualifier>${asset.id}_${asset.version}_VR-REPORT</document.qualifier>
                 <document.language>en</document.language>
             </properties>
         </profile>
@@ -144,8 +144,8 @@
                 <module>vulnerability-report-template</module>
             </modules>
             <properties>
-                <document.name>${asset.id} SW-REPORT</document.name>
-                <document.qualifier>${asset.id}_${asset.version}_SW-REPORT</document.qualifier>
+                <document.name>${asset.id} VR-REPORT</document.name>
+                <document.qualifier>${asset.id}_${asset.version}_VR-REPORT</document.qualifier>
                 <document.language>de</document.language>
             </properties>
         </profile>
@@ -156,8 +156,8 @@
                 <module>vulnerability-summary-report-template</module>
             </modules>
             <properties>
-                <document.name>${asset.id} SW-REPORT</document.name>
-                <document.qualifier>${asset.id}_${asset.version}_SW-REPORT</document.qualifier>
+                <document.name>${asset.id} VSR-REPORT</document.name>
+                <document.qualifier>${asset.id}_${asset.version}_VSR-REPORT</document.qualifier>
                 <document.language>en</document.language>
             </properties>
         </profile>
@@ -168,8 +168,8 @@
                 <module>vulnerability-summary-report-template</module>
             </modules>
             <properties>
-                <document.name>${asset.id} SW-REPORT</document.name>
-                <document.qualifier>${asset.id}_${asset.version}_SW-REPORT</document.qualifier>
+                <document.name>${asset.id} VSR-REPORT</document.name>
+                <document.qualifier>${asset.id}_${asset.version}_SVR-REPORT</document.qualifier>
                 <document.language>de</document.language>
             </properties>
         </profile>
@@ -180,8 +180,8 @@
                 <module>cert-report-template</module>
             </modules>
             <properties>
-                <document.name>${asset.id} CERT-SW-REPORT</document.name>
-                <document.qualifier>${asset.id}_${product.version}_CERT-REPORT</document.qualifier>
+                <document.name>${asset.id} CR-REPORT</document.name>
+                <document.qualifier>${asset.id}_${product.version}_CR-REPORT</document.qualifier>
                 <document.language>en</document.language>
             </properties>
         </profile>
@@ -192,8 +192,32 @@
                 <module>cert-report-template</module>
             </modules>
             <properties>
-                <document.name>${asset.id} CERT-SW-REPORT</document.name>
-                <document.qualifier>${asset.id}_${product.version}_CERT-REPORT</document.qualifier>
+                <document.name>${asset.id} CR-REPORT</document.name>
+                <document.qualifier>${asset.id}_${product.version}_CR-REPORT</document.qualifier>
+                <document.language>de</document.language>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>ER_en</id>
+            <modules>
+                <module>exploitability-report-template</module>
+            </modules>
+            <properties>
+                <document.name>${asset.id} ER-REPORT</document.name>
+                <document.qualifier>${asset.id}_${product.version}_ER-REPORT</document.qualifier>
+                <document.language>en</document.language>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>ER_de</id>
+            <modules>
+                <module>exploitability-report-template</module>
+            </modules>
+            <properties>
+                <document.name>${asset.id} ER-REPORT</document.name>
+                <document.qualifier>${asset.id}_${product.version}_ER-REPORT</document.qualifier>
                 <document.language>de</document.language>
             </properties>
         </profile>

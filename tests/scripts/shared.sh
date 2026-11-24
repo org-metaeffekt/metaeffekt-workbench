@@ -68,4 +68,5 @@ create_workspace_variables() {
   readonly GROUPED_SDA_DIR="$GROUPED_DIR/software-distribution-annex"
   readonly GROUPED_VR_DIR="$GROUPED_DIR/vulnerability-report"
   readonly GROUPED_VSR_DIR="$GROUPED_DIR/vulnerability-summary-report"
+  readonly GROUPED_ER_DIR="$GROUPED_DIR/exploitability-report"
 }

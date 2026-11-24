@@ -50,10 +50,21 @@ documents:
     params:
       securityPolicyFile: "${security.policy.file}"
     parts:
-      "summary-part":
-        type: VULNERABILITY_SUMMARY_PART
+
+      "context":
+        type: CONTEXT
+
+      "purpose":
+        type: PURPOSE
+        inventories:
+          - inventoryRef: "cert-advisory-inventory"
+            assetName: "${product.name}"
+            assetVersion: "${product.version}"
+
+      "statistics-report":
+        type: VULNERABILITY_STATISTICS_REPORT
         params:
-          securityPolicyActiveIds: "cert_extended_configuration"
+          securityPolicyActiveIds: "cert_configuration"
           filterAdvisorySummary: "true"
         inventories:
           - inventoryRef: "cert-advisory-inventory"
@@ -71,16 +82,6 @@ documents:
             assetName: "${asset.name}"
             assetVersion: "${asset.version}"
 
-      "statistics-report":
-        type: VULNERABILITY_STATISTICS_REPORT
-        params:
-          securityPolicyActiveIds: "cert_configuration"
-          filterAdvisorySummary: "true"
-        inventories:
-          - inventoryRef: "cert-advisory-inventory"
-            assetName: "${asset.name}"
-            assetVersion: "${asset.version}"
-
       "statistics-all-report":
         type: VULNERABILITY_STATISTICS_REPORT
         params:
@@ -88,5 +89,15 @@ documents:
           statisticsReportAll: "true"
         inventories:
           - inventoryRef: "merged-inventory"
+            assetName: "${asset.name}"
+            assetVersion: "${asset.version}"
+
+      "summary-part":
+        type: VULNERABILITY_SUMMARY_PART
+        params:
+          securityPolicyActiveIds: "cert_extended_configuration"
+          filterAdvisorySummary: "true"
+        inventories:
+          - inventoryRef: "cert-advisory-inventory"
             assetName: "${asset.name}"
             assetVersion: "${asset.version}"
